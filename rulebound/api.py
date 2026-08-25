@@ -33,11 +33,9 @@ REQUIRE_AUTH = os.getenv("REQUIRE_ENTRA_AUTH", "false").lower() == "true"
 
 
 def verify_entra_id_token(authorization: str = Header(None)) -> dict[str, Any]:
-    """
-    Validates Microsoft Entra ID (Azure AD) Bearer JWT token.
-    """
+    """Validates Microsoft Entra ID Bearer JWT token."""
     if not REQUIRE_AUTH:
-        return {"sub": "developer@local", "roles": ["RuleBound.Admin"]}
+        return {"sub": "rishi@northwind.com", "roles": ["RuleBound.Architect"]}
 
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
@@ -132,6 +130,7 @@ def get_room_full_data(room_id: str):
             "depth": item.dimensions_mm.depth,
             "height": item.dimensions_mm.height,
             "price": item.list_price_inr,
+            "finishes": item.compatible_finish_ids,
         }
         for item in pack.catalog
     }
@@ -160,14 +159,13 @@ def get_room_full_data(room_id: str):
 @app.get("/api/v1/room/{room_id}/dxf")
 def download_dxf(room_id: str):
     dxf_path = ROOT_DIR / f"OUTPUT/{room_id}/layout.dxf"
-    if not dxf_path.exists():
-        pack = load_asset_pack(DATA_DIR)
-        room = pack.rooms_by_id.get(room_id)
-        if not room:
-            raise HTTPException(status_code=404, detail="Room not found.")
-        gen = LayoutGenerator()
-        placements = gen.generate_candidate_layout(room, pack)
-        export_layout_to_dxf(room, placements, pack, dxf_path)
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    gen = LayoutGenerator()
+    placements = gen.generate_candidate_layout(room, pack)
+    export_layout_to_dxf(room, placements, pack, dxf_path)
 
     return FileResponse(
         dxf_path,
@@ -237,112 +235,226 @@ def calculate_quote(req: PricingRequest, user=Depends(verify_entra_id_token)):
 @app.get("/", response_class=HTMLResponse)
 def index_visualizer():
     html_content = """<!DOCTYPE html>
-<html lang="en">
+<html class="dark" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>RuleBound | Interactive Floor Plan Visualizer</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>RuleBound | Precision CAD & Deterministic Pricing Studio</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "background": "#020617",
+            "surface": "#0b1326",
+            "surface-dim": "#0b1326",
+            "surface-bright": "#31394d",
+            "surface-container": "#171f33",
+            "surface-container-low": "#131b2e",
+            "surface-container-high": "#222a3d",
+            "surface-container-highest": "#2d3449",
+            "primary": "#8aebff",
+            "primary-container": "#22d3ee",
+            "secondary": "#4edea3",
+            "secondary-container": "#00a572",
+            "outline": "#859397",
+            "outline-variant": "#3c494c",
+            "error": "#ffb4ab",
+            "error-container": "#93000a",
+            "on-surface": "#dae2fd",
+            "on-surface-variant": "#bbc9cd",
+          },
+          fontFamily: {
+            sans: ["Inter", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { background-color: #0b0f19; color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .card { background: #151d30; border: 1px solid #1e293b; border-radius: 12px; }
-    .navbar { background: #0f172a; border-bottom: 1px solid #1e293b; }
-    .badge-rule { font-size: 0.8rem; padding: 4px 8px; border-radius: 6px; }
-    #canvas-container { position: relative; width: 100%; height: 580px; background: #090d16; border-radius: 8px; border: 1px solid #1e293b; overflow: hidden; }
-    canvas { display: block; }
-    .table-dark { background: #151d30; }
-    .btn-action { font-weight: 600; border-radius: 8px; padding: 8px 16px; transition: all 0.2s ease; }
+    body { background-color: #020617; color: #dae2fd; overflow: hidden; font-family: 'Inter', sans-serif; }
+    .glass-panel { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .glow-active { box-shadow: 0 0 10px rgba(34, 211, 238, 0.35); border-color: #22d3ee; }
+    .cad-grid-bg { background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px); background-size: 24px 24px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3c494c; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
   </style>
 </head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-dark px-4 py-3">
-    <a class="navbar-brand fw-bold text-primary" href="#"><i class="fa-solid fa-cube me-2"></i>RULEBOUND <span class="badge bg-primary text-white ms-2">LIVE DEFENCE</span></a>
-    <div class="ms-auto d-flex gap-2">
-      <a href="/docs" target="_blank" class="btn btn-outline-info btn-sm"><i class="fa-solid fa-book me-1"></i> Swagger API</a>
-      <span class="badge bg-success align-self-center py-2 px-3"><i class="fa-solid fa-shield-check me-1"></i> Deterministic Engine v1.0</span>
+<body class="flex flex-col h-screen antialiased select-none">
+
+  <!-- Top Header Navigation -->
+  <header class="h-14 bg-surface-container border-b border-outline-variant/60 flex justify-between items-center px-6 z-50">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded bg-primary-container/20 border border-primary flex items-center justify-center text-primary font-bold">
+          <span class="material-symbols-outlined text-base">domain</span>
+        </div>
+        <span class="font-bold text-lg tracking-tight text-white">NORTHWIND <span class="text-primary font-mono text-xs font-semibold px-2 py-0.5 rounded bg-primary/10 border border-primary/30">RULEBOUND</span></span>
+      </div>
+      <div class="h-4 w-px bg-outline-variant/60 mx-1"></div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        <span class="text-xs font-mono text-secondary font-medium tracking-wide">DETERMINISTIC ENGINE ONLINE</span>
+      </div>
     </div>
-  </nav>
+    <div class="flex items-center gap-3">
+      <a href="/docs" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono text-on-surface-variant hover:text-primary hover:bg-surface-container-high border border-outline-variant/50 transition-colors flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-sm">api</span> OpenAPI Spec
+      </a>
+      <div class="flex items-center gap-2 pl-3 border-l border-outline-variant/60">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-600 to-emerald-500 border border-white/20 flex items-center justify-center text-white text-xs font-bold font-mono">
+          RS
+        </div>
+        <div class="text-left hidden sm:block">
+          <div class="text-xs font-semibold leading-none text-white">Rishi Sharma</div>
+          <div class="text-[10px] font-mono text-on-surface-variant leading-none mt-1">Lead Systems Engineer</div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-  <div class="container-fluid px-4 py-3">
-    <div class="row g-3">
-      <!-- Control & Plan View Column -->
-      <div class="col-lg-8">
-        <div class="card p-3 shadow-sm h-100">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex align-items-center gap-3">
-              <label class="fw-bold"><i class="fa-solid fa-door-open me-1"></i> Select Room:</label>
-              <select id="roomSelect" class="form-select form-select-sm bg-dark text-light border-secondary" style="width: 260px;" onchange="loadSelectedRoom()">
-                <option value="ROOM-01">ROOM-01: Harbour Design Studio</option>
-                <option value="ROOM-02">ROOM-02: Cedar Client Workshop</option>
-                <option value="ROOM-03">ROOM-03: Nimbus Hybrid Team Room</option>
-                <option value="ROOM-04">ROOM-04: Orchard Focus Library</option>
-                <option value="ROOM-05">ROOM-05: Summit Project Hub</option>
-              </select>
-            </div>
-            <div class="d-flex gap-2">
-              <button class="btn btn-danger btn-sm btn-action" onclick="injectViolation()"><i class="fa-solid fa-triangle-exclamation me-1"></i> Inject Violation</button>
-              <button class="btn btn-warning btn-sm btn-action" onclick="triggerArbitration()"><i class="fa-solid fa-gavel me-1"></i> Run Arbitration Repair</button>
-              <button class="btn btn-primary btn-sm btn-action" onclick="downloadDXF()"><i class="fa-solid fa-download me-1"></i> Download DXF</button>
-            </div>
-          </div>
+  <!-- Main Container -->
+  <div class="flex flex-1 overflow-hidden">
 
-          <div id="briefBox" class="alert alert-secondary py-2 px-3 small mb-2 bg-dark text-info border-secondary">
-            Loading brief...
-          </div>
+    <!-- Left Navigation Sidebar -->
+    <nav class="w-64 bg-surface-container-low border-r border-outline-variant/40 flex flex-col justify-between p-3 z-40">
+      <div class="space-y-4">
+        <!-- Room Selector -->
+        <div>
+          <label class="block text-[11px] font-mono text-on-surface-variant uppercase tracking-wider mb-2 font-semibold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-primary">meeting_room</span> Benchmark Rooms
+          </label>
+          <select id="roomSelect" onchange="loadSelectedRoom()" class="w-full bg-surface-container border border-outline-variant/60 rounded px-2.5 py-2 text-xs font-sans text-white focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-all">
+            <option value="ROOM-01">ROOM-01: Harbour Design Studio</option>
+            <option value="ROOM-02">ROOM-02: Cedar Client Workshop</option>
+            <option value="ROOM-03">ROOM-03: Nimbus Hybrid Team</option>
+            <option value="ROOM-04">ROOM-04: Orchard Focus Library</option>
+            <option value="ROOM-05">ROOM-05: Summit Project Hub</option>
+          </select>
+        </div>
 
-          <div id="canvas-container">
-            <canvas id="planCanvas"></canvas>
+        <!-- Room Specs Details -->
+        <div class="glass-panel p-3 rounded text-xs space-y-2 border border-outline-variant/30 font-mono">
+          <div class="flex justify-between text-[11px] text-on-surface-variant">
+            <span>CAPACITY:</span> <span id="specCapacity" class="text-white font-bold">12 occupants</span>
           </div>
-          <div class="d-flex justify-content-between text-muted small mt-2">
-            <span><i class="fa-solid fa-info-circle me-1"></i> Left Click & Drag to Pan | Scroll to Zoom</span>
-            <span id="canvasStats">Dimensions: -- | Scale: --</span>
+          <div class="flex justify-between text-[11px] text-on-surface-variant">
+            <span>DIMENSIONS:</span> <span id="specDimensions" class="text-white font-bold">7200 x 5400 mm</span>
+          </div>
+          <div class="flex justify-between text-[11px] text-on-surface-variant">
+            <span>EGRESS WIDTH:</span> <span id="specEgress" class="text-secondary font-bold">1100 mm min</span>
+          </div>
+        </div>
+
+        <!-- Natural Language Brief Card -->
+        <div class="bg-surface-container/60 p-3 rounded border border-outline-variant/30">
+          <div class="text-[10px] font-mono uppercase text-primary font-bold mb-1.5 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs">description</span> Client Specification Brief
+          </div>
+          <p id="briefText" class="text-[11px] leading-relaxed text-on-surface-variant">
+            Loading brief description...
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Defense Action Hub -->
+      <div class="space-y-2 pt-3 border-t border-outline-variant/40">
+        <button onclick="injectViolation()" class="w-full py-2 px-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/40 rounded text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm">warning</span> Inject Violation
+        </button>
+        <button onclick="triggerArbitration()" class="w-full py-2 px-3 bg-primary/10 hover:bg-primary/20 text-primary border border-primary/40 rounded text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm">gavel</span> Run Arbitration Repair
+        </button>
+        <button onclick="downloadDXF()" class="w-full py-2 px-3 bg-surface-container hover:bg-surface-bright text-white border border-outline-variant/60 rounded text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm">download</span> Export AutoCAD DXF
+        </button>
+      </div>
+    </nav>
+
+    <!-- Center: Interactive CAD Canvas -->
+    <main class="flex-1 relative bg-background cad-grid-bg overflow-hidden flex flex-col">
+      <div id="canvas-container" class="w-full h-full relative cursor-grab active:cursor-grabbing">
+        <canvas id="planCanvas"></canvas>
+      </div>
+
+      <!-- Floating Canvas Overlay Controls -->
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-panel rounded-lg px-3 py-1.5 flex items-center gap-3 shadow-2xl z-30">
+        <button onclick="zoomBy(1.2)" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-bright/50 transition-colors"><span class="material-symbols-outlined text-base">zoom_in</span></button>
+        <button onclick="zoomBy(0.8)" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-bright/50 transition-colors"><span class="material-symbols-outlined text-base">zoom_out</span></button>
+        <button onclick="fitToRoom()" class="p-1.5 text-on-surface-variant hover:text-primary rounded hover:bg-surface-bright/50 transition-colors"><span class="material-symbols-outlined text-base">fit_screen</span></button>
+        <div class="w-px h-5 bg-outline-variant/60"></div>
+        <div class="flex items-center gap-4 text-xs font-mono text-on-surface-variant">
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500"></span> Desks</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-amber-400"></span> Seating</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-indigo-400"></span> Collab</span>
+          <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-pink-500"></span> Storage</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Data Panel: Pricing Engine & Spatial Verifier -->
+    <aside class="w-96 bg-surface-container-low border-l border-outline-variant/40 flex flex-col h-full overflow-hidden z-40">
+      
+      <!-- Top Tier: Deterministic Pricing Engine -->
+      <div class="flex-1 flex flex-col border-b border-outline-variant/40 overflow-hidden">
+        <div class="p-3.5 bg-surface-container flex justify-between items-center border-b border-outline-variant/40">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary text-base">payments</span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Deterministic Pricing</span>
+          </div>
+          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold">PRICED</span>
+        </div>
+
+        <!-- Scrollable Quote Lines Table -->
+        <div id="quoteLinesContainer" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Quote Summary Footer -->
+        <div class="p-3.5 bg-surface-container border-t border-outline-variant/40 space-y-1.5 font-mono text-xs">
+          <div class="flex justify-between text-on-surface-variant">
+            <span>Net Goods:</span> <span id="summaryGoods" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="flex justify-between text-on-surface-variant">
+            <span>Labour (Band):</span> <span id="summaryLabour" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="flex justify-between text-on-surface-variant">
+            <span>Freight:</span> <span id="summaryFreight" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="pt-2 border-t border-outline-variant/40 flex justify-between items-baseline">
+            <span class="text-xs font-bold text-primary uppercase">Grand Total (INR):</span>
+            <span id="summaryGrandTotal" class="text-lg font-bold text-emerald-400 font-mono">₹0</span>
           </div>
         </div>
       </div>
 
-      <!-- Pricing & Violation Diagnostics Column -->
-      <div class="col-lg-4">
-        <div class="card p-3 shadow-sm mb-3">
-          <h5 class="fw-bold border-bottom border-secondary pb-2"><i class="fa-solid fa-calculator text-success me-2"></i>Deterministic Quote</h5>
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="text-muted">Quote ID:</span>
-            <span id="quoteId" class="fw-bold font-monospace text-light">--</span>
+      <!-- Bottom Tier: Spatial Constraint Verifier & Lyapunov Engine -->
+      <div class="h-64 flex flex-col bg-surface-dim overflow-hidden">
+        <div class="p-3 bg-surface-container flex justify-between items-center border-b border-outline-variant/40">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-secondary text-base">verified_user</span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Spatial Verifier</span>
           </div>
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="text-muted">Status:</span>
-            <span id="quoteStatus" class="badge bg-success">PRICED</span>
-          </div>
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="text-muted">Net Goods (INR):</span>
-            <span id="netGoods" class="fw-bold text-light">--</span>
-          </div>
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="text-muted">Labour (INR):</span>
-            <span id="labourInr" class="fw-bold text-light">--</span>
-          </div>
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="text-muted">Freight (INR):</span>
-            <span id="freightInr" class="fw-bold text-light">--</span>
-          </div>
-          <hr class="border-secondary my-2">
-          <div class="d-flex justify-content-between align-items-center my-2">
-            <span class="fs-5 fw-bold text-success">Grand Total:</span>
-            <span id="grandTotal" class="fs-4 fw-bold text-success font-monospace">₹0</span>
-          </div>
+          <span id="violationCountTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold">0 VIOLATIONS</span>
         </div>
 
-        <div class="card p-3 shadow-sm h-50">
-          <h5 class="fw-bold border-bottom border-secondary pb-2 d-flex justify-content-between">
-            <span><i class="fa-solid fa-shield-halved text-warning me-2"></i>Spatial Verifier</span>
-            <span id="violationCountBadge" class="badge bg-success">0 Violations</span>
-          </h5>
-          <div id="violationList" class="overflow-auto flex-grow-1 small" style="max-height: 220px;">
-            <div class="text-success p-2"><i class="fa-solid fa-circle-check me-2"></i>All 8 spatial rules strictly satisfied (RB-GEO-001 to RB-GEO-008).</div>
+        <!-- Violation Feed -->
+        <div id="violationFeed" class="flex-1 overflow-y-auto p-3 space-y-2 font-mono text-xs">
+          <div class="p-3 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">check_circle</span>
+            All 8 spatial constraints satisfied (RB-GEO-001 - RB-GEO-008).
           </div>
         </div>
       </div>
-    </div>
+
+    </aside>
   </div>
 
   <script>
@@ -364,7 +476,14 @@ def index_visualizer():
       const roomId = document.getElementById('roomSelect').value;
       const res = await fetch(`/api/v1/room/${roomId}/data`);
       currentData = await res.json();
-      document.getElementById('briefBox').innerHTML = `<strong>Brief:</strong> ${currentData.room.brief}`;
+      
+      document.getElementById('briefText').innerText = currentData.room.brief;
+      document.getElementById('specCapacity').innerText = `${currentData.room.capacity} occupants`;
+      const xs = currentData.room.boundary_mm.map(p => p[0]);
+      const ys = currentData.room.boundary_mm.map(p => p[1]);
+      document.getElementById('specDimensions').innerText = `${Math.max(...xs)} x ${Math.max(...ys)} mm`;
+      document.getElementById('specEgress').innerText = `${currentData.room.egress.min_width_mm} mm min`;
+
       updateQuoteUI(currentData.quote);
       updateViolationsUI(currentData.layout.violations);
       fitToRoom();
@@ -378,29 +497,30 @@ def index_visualizer():
       const ys = bounds.map(p => p[1]);
       const width = Math.max(...xs) - Math.min(...xs);
       const height = Math.max(...ys) - Math.min(...ys);
-      const scaleX = (canvas.width - 100) / width;
-      const scaleY = (canvas.height - 100) / height;
+      const scaleX = (canvas.width - 120) / width;
+      const scaleY = (canvas.height - 120) / height;
       zoom = Math.min(scaleX, scaleY);
-      panX = 50;
-      panY = canvas.height - 50;
+      panX = 60;
+      panY = canvas.height - 60;
+      draw();
+    }
+
+    function zoomBy(factor) {
+      zoom *= factor;
+      draw();
     }
 
     function draw() {
       if (!currentData) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Grid background
-      ctx.strokeStyle = '#1e293b';
-      ctx.lineWidth = 0.5;
-      for (let x = 0; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
-      for (let y = 0; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
-
       const bounds = currentData.room.boundary_mm;
-      
-      // 1. Draw Room Polygon Boundary
+
+      // 1. Draw Room Perimeter Polygon
+      ctx.save();
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 3;
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
       ctx.beginPath();
       bounds.forEach((pt, idx) => {
         let sx = panX + pt[0] * zoom;
@@ -411,28 +531,28 @@ def index_visualizer():
       ctx.fill();
       ctx.stroke();
 
-      // 2. Draw Egress Corridor
+      // 2. Draw Marked Egress Corridor
       const egress = currentData.room.egress;
       const door = currentData.room.doors.find(d => d.door_id === egress.from_door_id);
       if (door) {
-        let dx = door.wall === 'south' ? door.offset_mm + door.width_mm/2 : (door.wall === 'west' ? 0 : 7200);
+        let dx = door.wall === 'south' ? door.offset_mm + door.width_mm/2 : (door.wall === 'west' ? 0 : 8400);
         let dy = door.wall === 'south' ? 0 : door.offset_mm + door.width_mm/2;
         let sx1 = panX + dx * zoom, sy1 = panY - dy * zoom;
         let sx2 = panX + egress.to_point_mm[0] * zoom, sy2 = panY - egress.to_point_mm[1] * zoom;
         
-        ctx.strokeStyle = 'rgba(6, 182, 212, 0.4)';
+        ctx.strokeStyle = 'rgba(34, 211, 238, 0.25)';
         ctx.lineWidth = egress.min_width_mm * zoom;
         ctx.lineCap = 'round';
         ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
 
-        ctx.strokeStyle = '#06b6d4';
+        ctx.strokeStyle = '#22d3ee';
         ctx.lineWidth = 2;
-        ctx.setLineDash([6, 6]);
+        ctx.setLineDash([8, 8]);
         ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
         ctx.setLineDash([]);
       }
 
-      // 3. Draw Door Swing Clearance
+      // 3. Draw Door Swing Clearance Arcs
       currentData.room.doors.forEach(d => {
         let hx = (d.wall === 'south' ? d.offset_mm : (d.wall === 'west' ? 0 : 8400));
         let hy = (d.wall === 'south' ? 0 : d.offset_mm);
@@ -447,7 +567,14 @@ def index_visualizer():
       });
 
       // 4. Draw Furniture Placements
-      const colorMap = { 'desk': '#10b981', 'chair': '#f59e0b', 'storage': '#ec4899', 'collaboration': '#6366f1', 'accessory': '#64748b' };
+      const colorMap = {
+        'desk': { fill: '#10b981', stroke: '#34d399', text: '#ffffff' },
+        'chair': { fill: '#f59e0b', stroke: '#fbbf24', text: '#000000' },
+        'storage': { fill: '#ec4899', stroke: '#f472b6', text: '#ffffff' },
+        'collaboration': { fill: '#6366f1', stroke: '#818cf8', text: '#ffffff' },
+        'accessory': { fill: '#64748b', stroke: '#94a3b8', text: '#ffffff' }
+      };
+
       currentData.layout.placements.forEach(p => {
         const item = currentData.catalog[p.sku] || { width: 1200, depth: 600, family: 'desk' };
         let sx = panX + p.x_mm * zoom;
@@ -458,50 +585,84 @@ def index_visualizer():
         ctx.save();
         ctx.translate(sx + sw/2, sy - sh/2);
         ctx.rotate(-p.rotation_deg * Math.PI / 180);
-        ctx.fillStyle = colorMap[item.family] || '#10b981';
+        
+        const style = colorMap[item.family] || colorMap['desk'];
+        ctx.fillStyle = style.fill;
         ctx.fillRect(-sw/2, -sh/2, sw, sh);
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = style.stroke;
+        ctx.lineWidth = 1.5;
         ctx.strokeRect(-sw/2, -sh/2, sw, sh);
 
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '9px monospace';
+        ctx.fillStyle = style.text;
+        ctx.font = 'bold 9px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(p.placement_id, 0, 3);
         ctx.restore();
       });
+      ctx.restore();
     }
 
     function updateQuoteUI(q) {
-      document.getElementById('quoteId').innerText = q.quote_id;
-      document.getElementById('quoteStatus').innerText = q.status.toUpperCase();
-      document.getElementById('quoteStatus').className = q.status === 'priced' ? 'badge bg-success' : 'badge bg-danger';
-      document.getElementById('netGoods').innerText = '₹' + (q.summary.goods_after_adjustments_inr || 0).toLocaleString();
-      document.getElementById('labourInr').innerText = '₹' + (q.summary.labour_inr || 0).toLocaleString();
-      document.getElementById('freightInr').innerText = '₹' + (q.summary.freight_inr || 0).toLocaleString();
-      document.getElementById('grandTotal').innerText = '₹' + (q.summary.grand_total_inr || 0).toLocaleString();
+      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase();
+      document.getElementById('quoteStatusBadge').className = q.status === 'priced' 
+        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold'
+        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40 font-bold';
+
+      const container = document.getElementById('quoteLinesContainer');
+      container.innerHTML = q.lines.map(line => `
+        <div class="p-2.5 rounded bg-surface-container border border-outline-variant/30 hover:border-primary/50 transition-colors">
+          <div class="flex justify-between items-start">
+            <span class="text-white font-bold">${line.sku} <span class="text-on-surface-variant font-normal">(${line.finish_id})</span></span>
+            <span class="text-emerald-400 font-bold">₹${line.net_goods_inr.toLocaleString()}</span>
+          </div>
+          <div class="flex justify-between text-[10px] text-on-surface-variant mt-1">
+            <span>Qty: ${line.quantity} × ₹${line.unit_list_price_inr.toLocaleString()}</span>
+            <span>Uplift: +₹${line.finish_uplift_inr.toLocaleString()}</span>
+          </div>
+          <div class="text-[9px] text-primary/80 mt-1">
+            Trace: QTY_DISC -₹${line.quantity_discount_inr.toLocaleString()} (RB-PRC-009)
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('summaryGoods').innerText = '₹' + (q.summary.goods_after_adjustments_inr || 0).toLocaleString();
+      document.getElementById('summaryLabour').innerText = '₹' + (q.summary.labour_inr || 0).toLocaleString();
+      document.getElementById('summaryFreight').innerText = '₹' + (q.summary.freight_inr || 0).toLocaleString();
+      document.getElementById('summaryGrandTotal').innerText = '₹' + (q.summary.grand_total_inr || 0).toLocaleString();
     }
 
     function updateViolationsUI(vList) {
-      const listDiv = document.getElementById('violationList');
-      const badge = document.getElementById('violationCountBadge');
+      const feed = document.getElementById('violationFeed');
+      const tag = document.getElementById('violationCountTag');
       if (!vList || vList.length === 0) {
-        badge.className = 'badge bg-success';
-        badge.innerText = '0 Violations (Valid)';
-        listDiv.innerHTML = '<div class="text-success p-2"><i class="fa-solid fa-circle-check me-2"></i>All spatial rules strictly satisfied (RB-GEO-001 to RB-GEO-008).</div>';
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold';
+        tag.innerText = '0 VIOLATIONS';
+        feed.innerHTML = `
+          <div class="p-3 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">check_circle</span>
+            All 8 spatial constraints satisfied (RB-GEO-001 - RB-GEO-008).
+          </div>
+        `;
       } else {
-        badge.className = 'badge bg-danger';
-        badge.innerText = `${vList.length} Violations`;
-        listDiv.innerHTML = vList.map(v => `
-          <div class="alert alert-danger py-2 px-3 mb-2 small bg-dark text-danger border-danger">
-            <strong>${v.rule_id}:</strong> ${v.message}
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40 font-bold';
+        tag.innerText = `${vList.length} VIOLATIONS`;
+        feed.innerHTML = vList.map(v => `
+          <div class="p-3 rounded bg-red-500/10 border border-red-500/40 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="text-red-400 font-bold text-xs">${v.rule_id}</span>
+              <span class="px-1.5 py-0.2 bg-red-500 text-black font-bold text-[9px] rounded">VIOLATION</span>
+            </div>
+            <div class="text-[11px] text-white">${v.message}</div>
+            <div class="grid grid-cols-2 gap-2 text-[10px] pt-1.5 border-t border-red-500/30">
+              <div><span class="text-on-surface-variant">MEASURED:</span> <span class="text-red-300 font-bold">${JSON.stringify(v.measured)}</span></div>
+              <div><span class="text-on-surface-variant">REQUIRED:</span> <span class="text-emerald-300 font-bold">${JSON.stringify(v.required)}</span></div>
+            </div>
           </div>
         `).join('');
       }
     }
 
     async function injectViolation() {
-      // Deliberately place a desk in the door swing & overlapping
       currentData.layout.placements.push({
         placement_id: 'INJECT-001',
         sku: 'NW-DES-001',
@@ -545,7 +706,7 @@ def index_visualizer():
       window.location.href = `/api/v1/room/${roomId}/dxf`;
     }
 
-    // Interactive canvas panning & zooming
+    // Canvas pan & zoom handlers
     canvas.addEventListener('mousedown', (e) => { isDragging = true; startX = e.clientX - panX; startY = e.clientY - panY; });
     window.addEventListener('mouseup', () => isDragging = false);
     canvas.addEventListener('mousemove', (e) => {
@@ -556,8 +717,7 @@ def index_visualizer():
     });
     canvas.addEventListener('wheel', (e) => {
       e.preventDefault();
-      const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
-      zoom *= zoomFactor;
+      zoom *= e.deltaY < 0 ? 1.12 : 0.88;
       draw();
     });
 
