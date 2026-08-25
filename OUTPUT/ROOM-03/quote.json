@@ -1,0 +1,183 @@
+{
+  "currency": "INR",
+  "lines": [
+    {
+      "base_amount_inr": 37200,
+      "finish_id": "F16",
+      "finish_uplift_inr": 3906,
+      "line_id": "L001",
+      "net_goods_inr": 39990,
+      "quantity": 6,
+      "quantity_discount_inr": 1116,
+      "sku": "NW-ACC-003",
+      "trace": [
+        {
+          "amount_inr": 37200,
+          "inputs": {
+            "quantity": 6,
+            "unit_price": 6200
+          },
+          "rule_id": "CATALOG"
+        },
+        {
+          "amount_inr": 3906,
+          "inputs": {
+            "base_amount_inr": 37200,
+            "uplift_bps": 1050
+          },
+          "rule_id": "RB-PRC-010"
+        },
+        {
+          "amount_inr": -1116,
+          "inputs": {
+            "base_amount_inr": 37200,
+            "discount_bps": 300
+          },
+          "rule_id": "RB-PRC-009"
+        }
+      ],
+      "unit_list_price_inr": 6200
+    },
+    {
+      "base_amount_inr": 144150,
+      "finish_id": "F02",
+      "finish_uplift_inr": 3604,
+      "line_id": "L002",
+      "net_goods_inr": 137663,
+      "quantity": 10,
+      "quantity_discount_inr": 10091,
+      "sku": "NW-CHA-008",
+      "trace": [
+        {
+          "amount_inr": 144150,
+          "inputs": {
+            "quantity": 10,
+            "unit_price": 14415
+          },
+          "rule_id": "CATALOG"
+        },
+        {
+          "amount_inr": 3604,
+          "inputs": {
+            "base_amount_inr": 144150,
+            "uplift_bps": 250
+          },
+          "rule_id": "RB-PRC-010"
+        },
+        {
+          "amount_inr": -10091,
+          "inputs": {
+            "base_amount_inr": 144150,
+            "discount_bps": 700
+          },
+          "rule_id": "RB-PRC-009"
+        }
+      ],
+      "unit_list_price_inr": 14415
+    },
+    {
+      "base_amount_inr": 26915,
+      "finish_id": "F05",
+      "finish_uplift_inr": 942,
+      "line_id": "L003",
+      "net_goods_inr": 27857,
+      "quantity": 1,
+      "quantity_discount_inr": 0,
+      "sku": "NW-COL-002",
+      "trace": [
+        {
+          "amount_inr": 26915,
+          "inputs": {
+            "quantity": 1,
+            "unit_price": 26915
+          },
+          "rule_id": "CATALOG"
+        },
+        {
+          "amount_inr": 942,
+          "inputs": {
+            "base_amount_inr": 26915,
+            "uplift_bps": 350
+          },
+          "rule_id": "RB-PRC-010"
+        },
+        {
+          "amount_inr": 0,
+          "inputs": {
+            "base_amount_inr": 26915,
+            "discount_bps": 0
+          },
+          "rule_id": "RB-PRC-009"
+        }
+      ],
+      "unit_list_price_inr": 26915
+    },
+    {
+      "base_amount_inr": 174400,
+      "finish_id": "F05",
+      "finish_uplift_inr": 6104,
+      "line_id": "L004",
+      "net_goods_inr": 175272,
+      "quantity": 8,
+      "quantity_discount_inr": 5232,
+      "sku": "NW-DES-006",
+      "trace": [
+        {
+          "amount_inr": 174400,
+          "inputs": {
+            "quantity": 8,
+            "unit_price": 21800
+          },
+          "rule_id": "CATALOG"
+        },
+        {
+          "amount_inr": 6104,
+          "inputs": {
+            "base_amount_inr": 174400,
+            "uplift_bps": 350
+          },
+          "rule_id": "RB-PRC-010"
+        },
+        {
+          "amount_inr": -5232,
+          "inputs": {
+            "base_amount_inr": 174400,
+            "discount_bps": 300
+          },
+          "rule_id": "RB-PRC-009"
+        }
+      ],
+      "unit_list_price_inr": 21800
+    }
+  ],
+  "quote_id": "QUOTE-ROOM-03",
+  "room_id": "ROOM-03",
+  "status": "priced",
+  "summary": {
+    "freight_inr": 15231,
+    "goods_after_adjustments_inr": 380782,
+    "grand_total_inr": 402876,
+    "labour_inr": 6863,
+    "labour_minutes": 549,
+    "labour_rate_inr_per_hour": 750
+  },
+  "summary_trace": [
+    {
+      "amount_inr": 6863,
+      "inputs": {
+        "rate_inr_per_hour": 750,
+        "total_labour_minutes": 549
+      },
+      "rule_id": "RB-PRC-011"
+    },
+    {
+      "amount_inr": 15231,
+      "inputs": {
+        "band": "above_250000",
+        "goods_inr": 380782,
+        "percent_bps": 400
+      },
+      "rule_id": "RB-PRC-012"
+    }
+  ]
+}

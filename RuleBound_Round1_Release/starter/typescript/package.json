@@ -1,0 +1,13 @@
+{
+  "name": "rulebound-starter",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "run": "node dist/runner.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.0"
+  }
+}
