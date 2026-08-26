@@ -85,7 +85,7 @@ RuleBound indexes, enforces, and audits all **14 domain rules** across geometry,
 
 The Arbitration State Machine converts spatial violations into structured geometric repairs using a strictly decreasing Lyapunov potential function $\Phi(L)$:
 
-$$\Phi(L) = 1000 \cdot N_{\text{violations}} + \sum \text{depth}_{\text{penetration}} + \sum \text{deficit}_{\text{clearance}}$$
+$$\Phi(L) = 1000 \cdot N_{\text{violations}} + \sum \text{Depth}_{\text{penetration}} + \sum \text{Deficit}_{\text{clearance}}$$
 
 ```mermaid
 sequenceDiagram
@@ -120,31 +120,31 @@ sequenceDiagram
 
 ## 💰 Mathematical Price Provenance Formula
 
-All financial computations adhere strictly to integer INR arithmetic using Python's `decimal.Decimal` and `ROUND_HALF_UP`:
+All financial computations adhere strictly to integer INR arithmetic using Python's `decimal.Decimal` and `ROUND_HALF_UP` (exact half-up integer rounding: $\lfloor x + 0.5 \rfloor$):
 
 1. **Base Line List Amount**:
    $$\text{Base} = \text{Quantity} \times \text{Unit List Price}$$
 
 2. **Finish Surcharge Uplift (`RB-PRC-010`)**:
-   $$\text{Uplift} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Uplift}_{\text{bps}}}{10000} \right)$$
+   $$\text{Uplift} = \left\lfloor \frac{\text{Base} \times \text{UpliftBps}}{10000} + 0.5 \right\rfloor$$
 
 3. **Quantity Break Discount (`RB-PRC-009`)**:
-   $$\text{Discount} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Discount}_{\text{bps}}}{10000} \right)$$
+   $$\text{Discount} = \left\lfloor \frac{\text{Base} \times \text{DiscountBps}}{10000} + 0.5 \right\rfloor$$
 
 4. **Net Line Goods**:
-   $$\text{Net Goods}_{i} = \text{Base}_{i} + \text{Uplift}_{i} - \text{Discount}_{i}$$
+   $$\text{NetGoods}_{i} = \text{Base}_{i} + \text{Uplift}_{i} - \text{Discount}_{i}$$
 
 5. **Cumulative Net Goods**:
-   $$\text{Total Net Goods} = \sum_{i} \text{Net Goods}_{i}$$
+   $$\text{TotalNetGoods} = \sum_{i} \text{NetGoods}_{i}$$
 
 6. **Assembly Labour (`RB-PRC-011`)**:
-   $$\text{Labour (INR)} = \text{round\_half\_up}\left( \frac{\sum \text{Minutes} \times \text{Hourly Rate}}{60} \right)$$
+   $$\text{Labour (INR)} = \left\lfloor \frac{\sum \text{Minutes} \times \text{HourlyRate}}{60} + 0.5 \right\rfloor$$
 
 7. **Freight Surcharge (`RB-PRC-012`)**:
-   $$\text{Freight (INR)} = \begin{cases} 5000 & \text{if } \text{Total Net Goods} \le 100000 \\ 9000 & \text{if } 100000 < \text{Total Net Goods} \le 250000 \\ \text{round\_half\_up}\left( \frac{\text{Total Net Goods} \times 400}{10000} \right) & \text{if } \text{Total Net Goods} > 250000 \end{cases}$$
+   $$\text{Freight (INR)} = \begin{cases} 5000 & \text{if } \text{TotalNetGoods} \le 100000 \\ 9000 & \text{if } 100000 < \text{TotalNetGoods} \le 250000 \\ \left\lfloor \frac{\text{TotalNetGoods} \times 400}{10000} + 0.5 \right\rfloor & \text{if } \text{TotalNetGoods} > 250000 \end{cases}$$
 
 8. **Executive Grand Total**:
-   $$\text{Grand Total (INR)} = \text{Total Net Goods} + \text{Labour} + \text{Freight}$$
+   $$\text{Grand Total (INR)} = \text{TotalNetGoods} + \text{Labour} + \text{Freight}$$
 
 ---
 
