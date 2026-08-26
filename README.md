@@ -41,7 +41,14 @@ python RuleBound_Round1_Release/tools/check_determinism.py --command 'python run
 DETERMINISTIC: 15 files are byte-identical
 ```
 
-### 4. Run Test Suite
+### 4. Run Live Violation & Repair Demonstration
+Execute the full 9-step technical demonstration for video recording:
+
+```bash
+python demo.py
+```
+
+### 5. Run Test Suite
 ```bash
 python -m pytest
 ```
