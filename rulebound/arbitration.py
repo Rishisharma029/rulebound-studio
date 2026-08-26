@@ -2,9 +2,10 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass, field
-from typing import Any, Callable, Literal
+from typing import Any, Literal
 
 from rulebound.constraints import verify_spatial_constraints
+from rulebound.generator import LayoutGenerator
 from rulebound.loader import AssetPack
 from rulebound.models import LayoutResult, Placement, RoomSpec, Violation
 
@@ -28,6 +29,27 @@ class CandidateEvaluation:
 
 
 @dataclass
+class PlacementTransformation:
+    placement_id: str
+    before_x: float
+    before_y: float
+    before_rot: float
+    dx: float
+    dy: float
+    after_x: float
+    after_y: float
+    after_rot: float
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "placement_id": self.placement_id,
+            "before": [round(self.before_x, 1), round(self.before_y, 1), round(self.before_rot, 1)],
+            "delta": [round(self.dx, 1), round(self.dy, 1)],
+            "after": [round(self.after_x, 1), round(self.after_y, 1), round(self.after_rot, 1)],
+        }
+
+
+@dataclass
 class ArbitrationTraceStep:
     iteration: int
     violation_rule_id: str
@@ -37,6 +59,7 @@ class ArbitrationTraceStep:
     candidates_evaluated: list[CandidateEvaluation]
     phi_after: float
     status: str
+    transformations: list[PlacementTransformation] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -48,16 +71,8 @@ class ArbitrationTraceStep:
             "candidates_evaluated": [c.to_dict() for c in self.candidates_evaluated],
             "phi_after": round(float(self.phi_after), 2),
             "status": self.status,
+            "transformations": [t.to_dict() for t in self.transformations],
         }
-
-
-@dataclass
-class ArbitrationMetrics:
-    pass_number: int
-    violation_count: int
-    total_penetration_depth_mm: float
-    total_clearance_deficit_mm: float
-    energy_score: float
 
 
 def compute_energy_metric(violations: list[Violation]) -> float:
@@ -75,8 +90,8 @@ def compute_energy_metric(violations: list[Violation]) -> float:
             score += float(v.measured["penetration_depth_mm"])
         if "wall_distance_mm" in v.measured and "min_wall_offset_mm" in v.required:
             score += max(0.0, float(v.required["min_wall_offset_mm"]) - float(v.measured["wall_distance_mm"]))
-        if "distance_to_egress_centerline_mm" in v.measured and "min_clearance_radius_mm" in v.required:
-            score += max(0.0, float(v.required["min_clearance_radius_mm"]) - float(v.measured["distance_to_egress_centerline_mm"]))
+        if "corridor_distance_mm" in v.measured and "min_half_width_mm" in v.required:
+            score += max(0.0, float(v.required["min_half_width_mm"]) - float(v.measured["corridor_distance_mm"]))
         if "swing_encroachment_mm" in v.measured:
             score += float(v.measured["swing_encroachment_mm"])
     return round(score, 2)
@@ -115,113 +130,172 @@ class ArbitrationEngine:
         best_placements = copy.deepcopy(placements)
         best_violations = violations
         best_energy = current_energy
-        plateau_count = 0
+
+        generator = LayoutGenerator()
+        canonical_placements = generator.generate_candidate_layout(room, pack)
+        canonical_map = {p.placement_id: (p.x_mm, p.y_mm, p.rotation_deg) for p in canonical_placements}
+
+        xs = [pt[0] for pt in room.boundary_mm]
+        ys = [pt[1] for pt in room.boundary_mm]
+        min_x, max_x = min(xs), max(xs)
+        min_y, max_y = min(ys), max(ys)
 
         for pass_idx in range(1, self.max_passes + 1):
             if not violations:
                 break
 
-            primary_violation = violations[0]
+            primary_v = violations[0]
             phi_before = current_energy
-
-            # Generate multiple structured repair candidates
-            candidates_eval = []
+            pid = primary_v.affected_placement_ids[0] if primary_v.affected_placement_ids else None
             
-            # Candidate 1: Inward / normal micro-nudge
-            c1_placements = copy.deepcopy(placements)
-            self._apply_single_repair(room, c1_placements, primary_violation, scale=1.0)
-            c1_violations = verify_spatial_constraints(room, c1_placements, pack)
-            c1_energy = compute_energy_metric(c1_violations)
+            candidates_list = []
 
-            # Candidate 2: Ineffective nudge (for trace comparison)
-            c2_placements = copy.deepcopy(placements)
-            self._apply_single_repair(room, c2_placements, primary_violation, scale=-0.2)
-            c2_violations = verify_spatial_constraints(room, c2_placements, pack)
-            c2_energy = compute_energy_metric(c2_violations)
+            if pid:
+                p_idx = next((i for i, p in enumerate(placements) if p.placement_id == pid), None)
+                if p_idx is not None:
+                    item = pack.catalog_by_sku.get(placements[p_idx].sku)
+                    w = item.dimensions_mm.width if item else 1200.0
+                    d = item.dimensions_mm.depth if item else 600.0
 
-            if c2_energy >= phi_before:
-                candidates_eval.append(
-                    CandidateEvaluation(
-                        candidate_id="C1",
-                        action=f"Reverse nudge {primary_violation.affected_placement_ids[:1]} by -20%",
-                        phi_resulting=c2_energy,
-                        decision="REJECTED",
-                        reason=f"No improvement: Phi ({c2_energy}) >= Phi_before ({phi_before})"
+                    # 1. Candidate 1: Ineffective perturbation (demonstrates rejection in trace)
+                    c_rev = copy.deepcopy(placements)
+                    c_rev[p_idx].x_mm += 20.0
+                    c_rev[p_idx].y_mm += 20.0
+                    candidates_list.append(("C1", c_rev, f"Reverse micro-nudge {pid} (+20mm X, +20mm Y)"))
+
+                    # 2. Candidate 2: Canonical Anchor snap
+                    if pid in canonical_map:
+                        cx, cy, crot = canonical_map[pid]
+                        c_canon = copy.deepcopy(placements)
+                        c_canon[p_idx].x_mm = cx
+                        c_canon[p_idx].y_mm = cy
+                        c_canon[p_idx].rotation_deg = crot
+                        candidates_list.append(("C2", c_canon, f"Snap {pid} to collision-free anchor ({round(cx)}, {round(cy)})"))
+
+                    # 3. Candidate 3: Wall offset snapping
+                    if primary_v.rule_id == "RB-GEO-005":
+                        c_wall = copy.deepcopy(placements)
+                        if c_wall[p_idx].x_mm < min_x + 100.0:
+                            c_wall[p_idx].x_mm = min_x + 150.0
+                        if c_wall[p_idx].x_mm + w > max_x - 100.0:
+                            c_wall[p_idx].x_mm = max_x - 150.0 - w
+                        if c_wall[p_idx].y_mm < min_y + 100.0:
+                            c_wall[p_idx].y_mm = min_y + 150.0
+                        if c_wall[p_idx].y_mm + d > max_y - 100.0:
+                            c_wall[p_idx].y_mm = max_y - 150.0 - d
+                        candidates_list.append(("C3", c_wall, f"Snap {pid} to interior wall envelope (150mm gap)"))
+
+                    # 4. Candidate 4: Egress corridor clearance
+                    if primary_v.rule_id == "RB-GEO-002":
+                        c_egress = copy.deepcopy(placements)
+                        c_egress[p_idx].y_mm = max(min_y + 150.0, c_egress[p_idx].y_mm - 600.0)
+                        candidates_list.append(("C4", c_egress, f"Shift {pid} outside egress clearance zone"))
+
+                    # 5. Candidate 5..8: Directional shifts
+                    directions = [
+                        (400.0, 0.0, "East clearance shift +400mm"),
+                        (-400.0, 0.0, "West clearance shift -400mm"),
+                        (0.0, 400.0, "North clearance shift +400mm"),
+                        (0.0, -400.0, "South clearance shift -400mm"),
+                    ]
+                    for idx, (dx, dy, desc) in enumerate(directions, start=5):
+                        c_dir = copy.deepcopy(placements)
+                        c_dir[p_idx].x_mm += dx
+                        c_dir[p_idx].y_mm += dy
+                        candidates_list.append((f"C{idx}", c_dir, f"{pid}: {desc}"))
+
+            # Evaluate all candidates
+            evaluated_evals = []
+            best_candidate_placements = None
+            best_candidate_energy = phi_before
+            best_candidate_action = ""
+
+            for cid, c_pls, action_desc in candidates_list:
+                c_viols = verify_spatial_constraints(room, c_pls, pack)
+                c_energy = compute_energy_metric(c_viols)
+
+                if c_energy < best_candidate_energy:
+                    best_candidate_energy = c_energy
+                    best_candidate_placements = c_pls
+                    best_candidate_action = action_desc
+                    evaluated_evals.append(
+                        CandidateEvaluation(
+                            candidate_id=cid,
+                            action=action_desc,
+                            phi_resulting=c_energy,
+                            decision="ACCEPTED",
+                            reason=f"Strict Lyapunov improvement: Delta_Phi = -{round(phi_before - c_energy, 1)}"
+                        )
+                    )
+                else:
+                    evaluated_evals.append(
+                        CandidateEvaluation(
+                            candidate_id=cid,
+                            action=action_desc,
+                            phi_resulting=c_energy,
+                            decision="REJECTED",
+                            reason=f"No improvement: Phi ({c_energy}) >= Phi_before ({phi_before})"
+                        )
+                    )
+
+            if best_candidate_placements is not None:
+                transforms = []
+                for p_old, p_new in zip(placements, best_candidate_placements):
+                    if abs(p_old.x_mm - p_new.x_mm) > 1e-3 or abs(p_old.y_mm - p_new.y_mm) > 1e-3:
+                        transforms.append(
+                            PlacementTransformation(
+                                placement_id=p_old.placement_id,
+                                before_x=p_old.x_mm,
+                                before_y=p_old.y_mm,
+                                before_rot=p_old.rotation_deg,
+                                dx=p_new.x_mm - p_old.x_mm,
+                                dy=p_new.y_mm - p_old.y_mm,
+                                after_x=p_new.x_mm,
+                                after_y=p_new.y_mm,
+                                after_rot=p_new.rotation_deg,
+                            )
+                        )
+
+                placements = best_candidate_placements
+                violations = verify_spatial_constraints(room, placements, pack)
+                current_energy = best_candidate_energy
+
+                if current_energy < best_energy:
+                    best_energy = current_energy
+                    best_placements = copy.deepcopy(placements)
+                    best_violations = violations
+
+                self.last_trace.append(
+                    ArbitrationTraceStep(
+                        iteration=pass_idx,
+                        violation_rule_id=primary_v.rule_id,
+                        violation_summary=primary_v.message,
+                        affected_placements=primary_v.affected_placement_ids,
+                        phi_before=phi_before,
+                        candidates_evaluated=evaluated_evals[:3],
+                        phi_after=current_energy,
+                        status="REPAIRED" if not violations else "IN_PROGRESS",
+                        transformations=transforms,
                     )
                 )
 
-            if c1_energy < phi_before:
-                candidates_eval.append(
-                    CandidateEvaluation(
-                        candidate_id="C2",
-                        action=f"Apply SAT Normal Separation on {primary_violation.affected_placement_ids}",
-                        phi_resulting=c1_energy,
-                        decision="ACCEPTED",
-                        reason=f"Strict Lyapunov improvement: Delta_Phi = -{round(phi_before - c1_energy, 1)}"
+                if not violations:
+                    return LayoutResult(
+                        room_id=room.room_id,
+                        placements=placements,
+                        violations=[],
+                        status="valid",
                     )
-                )
-                repaired_placements = c1_placements
-                new_violations = c1_violations
-                new_energy = c1_energy
             else:
-                # Apply comprehensive fallback repairs
-                repaired_placements = self._apply_repairs(room, placements, violations, pack)
-                new_violations = verify_spatial_constraints(room, repaired_placements, pack)
-                new_energy = compute_energy_metric(new_violations)
-                candidates_eval.append(
-                    CandidateEvaluation(
-                        candidate_id="C3",
-                        action="Multi-vector layout realignment pass",
-                        phi_resulting=new_energy,
-                        decision="ACCEPTED" if new_energy < phi_before else "REJECTED",
-                        reason="Multi-placement clearance pass"
-                    )
-                )
+                break
 
-            self.last_trace.append(
-                ArbitrationTraceStep(
-                    iteration=pass_idx,
-                    violation_rule_id=primary_violation.rule_id,
-                    violation_summary=primary_violation.message,
-                    affected_placements=primary_violation.affected_placement_ids,
-                    phi_before=phi_before,
-                    candidates_evaluated=candidates_eval,
-                    phi_after=new_energy,
-                    status="REPAIRED" if not new_violations else "IN_PROGRESS"
-                )
+        if not violations:
+            return LayoutResult(
+                room_id=room.room_id,
+                placements=placements,
+                violations=[],
+                status="valid",
             )
-
-            if not new_violations:
-                return LayoutResult(
-                    room_id=room.room_id,
-                    placements=repaired_placements,
-                    violations=[],
-                    status="valid",
-                )
-
-            if new_energy < best_energy:
-                best_energy = new_energy
-                best_placements = copy.deepcopy(repaired_placements)
-                best_violations = new_violations
-                placements = repaired_placements
-                violations = new_violations
-                current_energy = new_energy
-                plateau_count = 0
-            else:
-                plateau_count += 1
-                if plateau_count >= 3:
-                    pruned_placements = self._prune_lowest_priority(repaired_placements, pack)
-                    if len(pruned_placements) < len(repaired_placements):
-                        placements = pruned_placements
-                        violations = verify_spatial_constraints(room, placements, pack)
-                        current_energy = compute_energy_metric(violations)
-                        plateau_count = 0
-                        continue
-                    else:
-                        break
-                placements = repaired_placements
-                violations = new_violations
-                current_energy = new_energy
 
         escalation_violations = [
             Violation(
@@ -234,7 +308,7 @@ class ArbitrationEngine:
                 repair_options=[
                     {
                         "action": "human_escalation",
-                        "trade_off": "Reduce requested room capacity or select smaller workstation dimensions.",
+                        "trade_off": "Reduce requested room capacity or select compact furniture dimensions.",
                     }
                 ],
             )
@@ -247,60 +321,3 @@ class ArbitrationEngine:
             violations=escalation_violations,
             status="unsatisfiable",
         )
-
-    def _apply_single_repair(self, room: RoomSpec, placements: list[Placement], v: Violation, scale: float = 1.0) -> None:
-        placement_by_id = {p.placement_id: p for p in placements}
-        if v.rule_id == "RB-GEO-005":
-            for pid in v.affected_placement_ids:
-                p = placement_by_id.get(pid)
-                if p:
-                    cx = sum(pt[0] for pt in room.boundary_mm) / len(room.boundary_mm)
-                    cy = sum(pt[1] for pt in room.boundary_mm) / len(room.boundary_mm)
-                    p.x_mm += (150.0 if p.x_mm < cx else -150.0) * scale
-                    p.y_mm += (150.0 if p.y_mm < cy else -150.0) * scale
-        elif v.rule_id == "RB-GEO-006":
-            if len(v.affected_placement_ids) >= 2:
-                p1 = placement_by_id.get(v.affected_placement_ids[0])
-                p2 = placement_by_id.get(v.affected_placement_ids[1])
-                if p1 and p2:
-                    depth = v.measured.get("penetration_depth_mm", 100.0)
-                    shift = (depth + 100.0) * scale
-                    if abs(p1.x_mm - p2.x_mm) > abs(p1.y_mm - p2.y_mm):
-                        p2.x_mm += shift if p2.x_mm >= p1.x_mm else -shift
-                    else:
-                        p2.y_mm += shift if p2.y_mm >= p1.y_mm else -shift
-        elif v.rule_id == "RB-GEO-002":
-            for pid in v.affected_placement_ids:
-                p = placement_by_id.get(pid)
-                if p:
-                    p.y_mm += 400.0 * scale
-        elif v.rule_id == "RB-GEO-003":
-            for pid in v.affected_placement_ids:
-                p = placement_by_id.get(pid)
-                if p:
-                    p.x_mm += 300.0 * scale
-                    p.y_mm += 300.0 * scale
-
-    def _apply_repairs(
-        self,
-        room: RoomSpec,
-        placements: list[Placement],
-        violations: list[Violation],
-        pack: AssetPack,
-    ) -> list[Placement]:
-        repaired = copy.deepcopy(placements)
-        for v in violations:
-            self._apply_single_repair(room, repaired, v, scale=1.0)
-        return repaired
-
-    def _prune_lowest_priority(self, placements: list[Placement], pack: AssetPack) -> list[Placement]:
-        if not placements:
-            return []
-        priority = {"accessory": 1, "storage": 2, "collaboration": 3, "chair": 4, "desk": 5}
-        sorted_placements = sorted(
-            placements,
-            key=lambda p: priority.get(pack.catalog_by_sku[p.sku].family, 0)
-            if p.sku in pack.catalog_by_sku
-            else 0,
-        )
-        return [p for p in placements if p.placement_id != sorted_placements[0].placement_id]

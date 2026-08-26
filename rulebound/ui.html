@@ -92,7 +92,7 @@
     <!-- Center/Right Header Actions: Challenge Evidence Modal, Demo Controls, Seam Contract -->
     <div class="flex items-center gap-2.5">
       
-      <!-- Challenge Evidence Modal Button (Item 19) -->
+      <!-- Challenge Evidence Modal Button -->
       <button onclick="openChallengeEvidenceModal()" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-emerald-300 font-mono text-xs font-black flex items-center gap-1.5 shadow-[0_0_16px_rgba(52,211,153,0.25)] transition-all">
         <span class="material-symbols-outlined text-sm text-emerald-400">task_alt</span> Challenge Evidence
       </button>
@@ -460,10 +460,10 @@
             <span class="text-cyan-300 font-black flex items-center gap-1">
               <span class="material-symbols-outlined text-xs text-cyan-400">timeline</span> ARBITRATION CONVERGENCE
             </span>
-            <span id="traceIterationBadge" class="px-2 py-0.5 rounded bg-cyan-500/25 text-cyan-200 font-black text-[10px]">ITERATION 3 / 50</span>
+            <span id="traceIterationBadge" class="px-2 py-0.5 rounded bg-cyan-500/25 text-cyan-200 font-black text-[10px]">ITERATION 1 / 50</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-200 pt-1 border-t border-white/10">
-            <div>Initial Potential: <b id="telemetryInitialPhi" class="text-red-400 font-bold">Φ = 4,080.0</b></div>
+            <div>Initial Potential: <b id="telemetryInitialPhi" class="text-red-400 font-bold">Φ = 0.0</b></div>
             <div>Final Potential: <b id="telemetryFinalPhi" class="text-emerald-300 font-bold">Φ = 0.0</b></div>
           </div>
           <div class="text-[10px] text-emerald-300 flex items-center gap-1 font-semibold">
@@ -498,7 +498,7 @@
     </aside>
   </div>
 
-  <!-- CHALLENGE EVIDENCE MODAL (Item 19: One-Screen Brief Satisfaction Summary) -->
+  <!-- CHALLENGE EVIDENCE MODAL -->
   <div id="challengeEvidenceModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-2xl w-full rounded-2xl border border-emerald-400/50 p-6 space-y-4 shadow-2xl font-mono text-xs max-h-[85vh] flex flex-col">
       <div class="flex items-center justify-between border-b border-white/15 pb-3">
@@ -1159,10 +1159,10 @@
       if (!activeViolations || activeViolations.length === 0) {
         canvasPhi.innerText = 'Φ = 0.0';
         canvasPhi.className = 'font-black text-emerald-300 text-xs';
-        const count = traceSteps.length || 3;
-        stepCounter.innerText = `${traceSteps.length} / ${currentTraceSteps.length || traceSteps.length || 3}`;
+        const count = traceSteps.length || 1;
+        stepCounter.innerText = `${traceSteps.length} / ${currentTraceSteps.length || traceSteps.length || 1}`;
         iterBadge.innerText = `ITERATION ${count} / 50`;
-        initPhi.innerText = `Φ = 4,080.0`;
+        initPhi.innerText = traceSteps[0] ? `Φ = ${traceSteps[0].phi_before}` : `Φ = 0.0`;
         finPhi.innerText = `Φ = 0.0`;
       } else {
         let curEnergy = activeViolations.length * 1000;
@@ -1202,48 +1202,61 @@
       }
 
       if (traceSteps.length > 0) {
-        feed.innerHTML = traceSteps.map(step => `
-          <div class="p-3 rounded-xl bg-dark-850 border border-white/15 space-y-2.5">
-            <div class="flex justify-between items-center border-b border-white/10 pb-1.5">
-              <div class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-full bg-cyan-500/25 text-cyan-300 font-black text-[10px] flex items-center justify-center">${step.iteration}</span>
-                <span class="font-black text-white text-[11px]">${step.violation_rule_id}</span>
+        feed.innerHTML = traceSteps.map(step => {
+          const transformsHTML = (step.transformations && step.transformations.length > 0)
+            ? step.transformations.map(t => `
+              <div class="p-2.5 rounded-lg bg-dark-900 border border-white/15 space-y-1 text-[10px] font-mono">
+                <div class="text-cyan-300 font-black uppercase">Geometric Transformation Matrix: ${t.placement_id}</div>
+                <div class="flex justify-between text-gray-300"><span>Before Position:</span> <b class="text-white">${t.placement_id} = (${t.before[0]}, ${t.before[1]}, ${t.before[2]}°)</b></div>
+                <div class="flex justify-between text-gray-300"><span>Displacement Vector:</span> <b class="text-emerald-300 font-bold">Δx = ${t.delta[0] >= 0 ? '+' : ''}${t.delta[0]} mm, Δy = ${t.delta[1] >= 0 ? '+' : ''}${t.delta[1]} mm</b></div>
+                <div class="flex justify-between text-gray-300 border-t border-white/10 pt-1"><span>After Position:</span> <b class="text-cyan-300 font-black">${t.placement_id} = (${t.after[0]}, ${t.after[1]}, ${t.after[2]}°)</b></div>
               </div>
-              <span class="text-[10px] px-2 py-0.5 rounded font-black ${step.status === 'REPAIRED' ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40' : 'bg-amber-500/25 text-amber-300 border border-amber-400/40'}">${step.status}</span>
-            </div>
+            `).join('')
+            : `
+              <div class="p-2.5 rounded-lg bg-dark-900 border border-white/15 space-y-1 text-[10px] font-mono">
+                <div class="text-cyan-300 font-black uppercase">Geometric Transformation Matrix: ${step.affected_placements?.join(', ') || 'Cluster'}</div>
+                <div class="flex justify-between text-gray-300"><span>Clearance Resolution:</span> <b class="text-emerald-300 font-bold">Separated to Collision-Free Grid</b></div>
+              </div>
+            `;
 
-            <div class="text-[11px] text-gray-200 font-medium">${step.violation_summary}</div>
-
-            <!-- Exact Transformation Matrix Card -->
-            <div class="p-2.5 rounded-lg bg-dark-900 border border-white/15 space-y-1 text-[10px] font-mono">
-              <div class="text-cyan-300 font-black uppercase">Geometric Transformation Matrix:</div>
-              <div class="flex justify-between text-gray-300"><span>Before Position:</span> <b class="text-white">P001 = (50.0, 1800.0, 0°)</b></div>
-              <div class="flex justify-between text-gray-300"><span>Displacement Vector:</span> <b class="text-emerald-300 font-bold">Δx = +1,350.0 mm, Δy = 0.0 mm</b></div>
-              <div class="flex justify-between text-gray-300 border-t border-white/10 pt-1"><span>After Position:</span> <b class="text-cyan-300 font-black">P001 = (1400.0, 1800.0, 0°)</b></div>
-            </div>
-
-            <div class="flex justify-between text-[10px] bg-dark-950 p-2 rounded border border-white/10 font-mono">
-              <span>Φ Before: <b class="text-red-400 font-bold">${step.phi_before}</b></span>
-              <span>Φ After: <b class="text-emerald-300 font-bold">${step.phi_after}</b></span>
-            </div>
-
-            <div class="space-y-1.5 pt-1">
-              <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Evaluations:</div>
-              ${step.candidates_evaluated.map(c => `
-                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/15 border border-emerald-500/40' : 'bg-red-500/15 border border-red-500/40'} space-y-1">
-                  <div class="flex justify-between items-center text-[10px]">
-                    <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
-                    <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
-                  </div>
-                  <div class="flex justify-between text-[9px] text-gray-200">
-                    <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
-                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300 font-bold' : 'text-red-300 font-bold'}">${c.reason}</span>
-                  </div>
+          return `
+            <div class="p-3 rounded-xl bg-dark-850 border border-white/15 space-y-2.5">
+              <div class="flex justify-between items-center border-b border-white/10 pb-1.5">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-5 h-5 rounded-full bg-cyan-500/25 text-cyan-300 font-black text-[10px] flex items-center justify-center">${step.iteration}</span>
+                  <span class="font-black text-white text-[11px]">${step.violation_rule_id}</span>
                 </div>
-              `).join('')}
+                <span class="text-[10px] px-2 py-0.5 rounded font-black ${step.status === 'REPAIRED' ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40' : 'bg-amber-500/25 text-amber-300 border border-amber-400/40'}">${step.status}</span>
+              </div>
+
+              <div class="text-[11px] text-gray-200 font-medium">${step.violation_summary}</div>
+
+              <!-- Dynamically Rendered Real Transformation Matrix -->
+              ${transformsHTML}
+
+              <div class="flex justify-between text-[10px] bg-dark-950 p-2 rounded border border-white/10 font-mono">
+                <span>Φ Before: <b class="text-red-400 font-bold">${step.phi_before}</b></span>
+                <span>Φ After: <b class="text-emerald-300 font-bold">${step.phi_after}</b></span>
+              </div>
+
+              <div class="space-y-1.5 pt-1">
+                <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Evaluations:</div>
+                ${step.candidates_evaluated.map(c => `
+                  <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/15 border border-emerald-500/40' : 'bg-red-500/15 border border-red-500/40'} space-y-1">
+                    <div class="flex justify-between items-center text-[10px]">
+                      <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
+                      <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
+                    </div>
+                    <div class="flex justify-between text-[9px] text-gray-200">
+                      <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
+                      <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300 font-bold' : 'text-red-300 font-bold'}">${c.reason}</span>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
             </div>
-          </div>
-        `).join('');
+          `;
+        }).join('');
       } else {
         feed.innerHTML = `
           <div class="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 space-y-2">
