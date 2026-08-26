@@ -1,10 +1,10 @@
 # 🏛️ RuleBound Studio
 ### *Autonomous Commercial CAD Layout Synthesis, Continuous SAT Spatial Verification, Bounded Lyapunov Arbitration & Deterministic Pricing Engine*
 
-[![Deterministic](https://img.shields.io/badge/Determinism-100%25%20Bitwise%20SHA--256-06b6d4?style=for-the-badge&logo=shield)](https://github.com)
-[![Rules Verified](https://img.shields.io/badge/Constraints-14%2F14%20Hard%20Rules%20Passed-10b981?style=for-the-badge&logo=checkmarx)](https://github.com)
-[![FastAPI](https://img.shields.io/badge/API-FastAPI%20%2B%20OpenAPI%203.1-009688?style=for-the-badge&logo=fastapi)](https://github.com)
-[![AutoCAD DXF](https://img.shields.io/badge/AutoCAD-DXF%20R12%20(+5%20Bonus)-f59e0b?style=for-the-badge&logo=autodesk)](https://github.com)
+[![Deterministic](https://img.shields.io/badge/Determinism-100%25%20Bitwise%20SHA--256-06b6d4?style=for-the-badge&logo=shield)](https://github.com/Rishisharma029/rulebound-studio)
+[![Rules Verified](https://img.shields.io/badge/Constraints-14%2F14%20Hard%20Rules%20Passed-10b981?style=for-the-badge&logo=checkmarx)](https://github.com/Rishisharma029/rulebound-studio)
+[![FastAPI](https://img.shields.io/badge/API-FastAPI%20%2B%20OpenAPI%203.1-009688?style=for-the-badge&logo=fastapi)](https://github.com/Rishisharma029/rulebound-studio)
+[![AutoCAD DXF](https://img.shields.io/badge/AutoCAD-DXF%20R12%20(+5%20Bonus)-f59e0b?style=for-the-badge&logo=autodesk)](https://github.com/Rishisharma029/rulebound-studio)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 ---
@@ -15,7 +15,7 @@
 
 Architected with a **strict irreversible Trust Boundary**, RuleBound cleanly decouples advisory AI generation from deterministic verification:
 - **No LLM in the Loop of Authority**: Generative models are restricted to advisory initial SKU placement proposals.
-- **Continuous 2D Separating Axis Theorem (SAT)**: Exact arbitrary-polygon collision and clearance verification (RB-GEO-001 through RB-GEO-008).
+- **Continuous 2D Separating Axis Theorem (SAT)**: Exact arbitrary-polygon collision and clearance verification (`RB-GEO-001` through `RB-GEO-008`).
 - **Bounded Deterministic Arbitration**: Monotonic Lyapunov penalty energy reduction ($\Phi(L) \to 0$) guaranteed to converge in $\le 50$ iterations without infinite loops.
 - **Pure Integer INR Pricing Engine**: 100% deterministic Decimal half-up arithmetic enforcing tiered quantity discounts, finish uplifts, labor rate bands, and freight logistics with zero floating-point leakage.
 - **AutoCAD DXF Blueprint Generator (+5 Bonus)**: Direct multi-layer AutoCAD Release 12 CAD export.
@@ -31,16 +31,16 @@ flowchart TD
         GP --> SKU["SKU & Finish Intent Proposals (JSON)"]
     end
 
-    SKU -->|CandidateProposal Seam Contract| TB{{"🔒 IRREVERSIBLE TRUST BOUNDARY"}}
+    SKU -->|"CandidateProposal Seam Contract"| TB{{"🔒 IRREVERSIBLE TRUST BOUNDARY"}}
 
     subgraph Deterministic_Core["Deterministic Verification Core (Exact Math & Code)"]
         TB --> SV["Continuous Spatial Verifier (SAT 2D Polygon Engine)"]
-        SV -->|Violations Detected: ΔΦ > 0| ARB["Bounded Lyapunov Arbitrator (Kmax = 50)"]
-        ARB -->|Evaluate Multi-Candidate Operators| CAND["Candidate Micro-Nudges & Grid Anchors"]
-        CAND -->|Strict Lyapunov Monotonicity ΔΦ < 0| SV
-        ARB -->|Bound Exhausted| UNSAT["⚠ UNSATISFIABLE Escalation & Trade-offs"]
+        SV -->|"Violations Detected: ΔΦ > 0"| ARB["Bounded Lyapunov Arbitrator (Kmax = 50)"]
+        ARB -->|"Evaluate Multi-Candidate Operators"| CAND["Candidate Micro-Nudges & Grid Anchors"]
+        CAND -->|"Strict Lyapunov Monotonicity: ΔΦ < 0"| SV
+        ARB -->|"Bound Exhausted"| UNSAT["⚠ UNSATISFIABLE Escalation & Trade-offs"]
         
-        SV -->|0 Violations: Φ(L) == 0| PRC["Deterministic Pricing Engine (Decimal INR)"]
+        SV -->|"0 Violations: Φ(L) == 0"| PRC["Deterministic Pricing Engine (Decimal INR)"]
         PRC --> QTY["Quantity Break Discounts (RB-PRC-009)"]
         PRC --> FIN["Finish Compatibility & Uplifts (RB-PRC-010)"]
         PRC --> LAB["Assembly Labour Tier Bands (RB-PRC-011)"]
@@ -61,23 +61,23 @@ RuleBound indexes, enforces, and audits all **14 domain rules** across geometry,
 
 | Rule ID | Category | Rule Name | Specification & Constraint Threshold |
 | :--- | :--- | :--- | :--- |
-| **`RB-GEO-001`** | Geometry | Primary Walkway Clearance | Clear passage $\ge 900\,\text{mm}$ between active workstation clusters. |
-| **`RB-GEO-002`** | Geometry | Life-Safety Egress Corridor | Dedicated exit path with clear corridor width $\ge 1,100\,\text{mm}$ to door. |
-| **`RB-GEO-003`** | Geometry | Door Swing Encroachment | Furniture boundary strictly outside the $850\,\text{mm}$ quarter-circle door swing arc. |
-| **`RB-GEO-004`** | Geometry | Workstation Rear Clearance | Minimum $900\,\text{mm}$ aisle clearance behind seated desks. |
-| **`RB-GEO-005`** | Geometry | Perimeter Wall Offset | Workstation boundary offset $\ge 100\,\text{mm}$ from perimeter boundary walls. |
+| **`RB-GEO-001`** | Geometry | Primary Walkway Clearance | Clear passage $\ge 900\text{ mm}$ between active workstation clusters. |
+| **`RB-GEO-002`** | Geometry | Life-Safety Egress Corridor | Dedicated exit path with clear corridor width $\ge 1,100\text{ mm}$ to door. |
+| **`RB-GEO-003`** | Geometry | Door Swing Encroachment | Furniture boundary strictly outside the $850\text{ mm}$ quarter-circle door swing arc. |
+| **`RB-GEO-004`** | Geometry | Workstation Rear Clearance | Minimum $900\text{ mm}$ aisle clearance behind seated desks. |
+| **`RB-GEO-005`** | Geometry | Perimeter Wall Offset | Workstation boundary offset $\ge 100\text{ mm}$ from perimeter boundary walls. |
 | **`RB-GEO-006`** | Geometry | 2D Footprint Non-Overlap | Zero intersecting area between any two furniture bounding polygons (SAT 2D). |
-| **`RB-GEO-007`** | Geometry | Room Boundary Containment | All vertices must lie strictly within the room's convex/concave boundary polygon. |
-| **`RB-GEO-008`** | Geometry | Chair Pull-Out Clearance | Dedicated pull-out depth $\ge 750\,\text{mm}$ in front of every task chair. |
+| **`RB-GEO-007`** | Geometry | Room Boundary Containment | All vertices must lie strictly within the room boundary polygon. |
+| **`RB-GEO-008`** | Geometry | Chair Pull-Out Clearance | Dedicated pull-out depth $\ge 750\text{ mm}$ in front of every task chair. |
 | **`RB-CAT-001`** | Catalog | SKU Dimension Conformance | Physical width, depth, height must match catalog specification sheet. |
-| **`RB-CAT-002`** | Catalog | Finish Compatibility | Applied finish ID must exist in SKU `compatible_finish_ids`. |
+| **`RB-CAT-002`** | Catalog | Finish Compatibility | Applied finish ID must exist in SKU compatible finishes list. |
 | **`RB-CAT-003`** | Catalog | Functional Family Mapping | Placement role must map to recognized family (desk, chair, storage, collab, accessory). |
-| **`RB-PRC-009`** | Pricing | Quantity Break Discounts | $1\text{–}4: 0\%, \quad 5\text{–}9: 300\,\text{bps} (3\%), \quad 10\text{–}19: 700\,\text{bps} (7\%), \quad 20+: 1,000\,\text{bps} (10\%)$. |
-| **`RB-PRC-010`** | Pricing | Finish Surcharge Uplifts | Exact catalog basis-point uplifts ($0\text{–}1,800\,\text{bps}$) on base line amount. |
-| **`RB-PRC-011`** | Pricing | Assembly Labour Tiers | $\le 240\,\text{m}: \text{₹}900/\text{hr}, \quad 241\text{–}480\,\text{m}: \text{₹}800/\text{hr}, \quad >480\,\text{m}: \text{₹}750/\text{hr}$. |
-| **`RB-PRC-012`** | Pricing | Net Goods Freight Tiers | $\le \text{₹}100\text{k}: \text{Flat ₹}5,000, \quad \text{₹}100\text{k}\text{–}250\text{k}: \text{Flat ₹}9,000, \quad >\text{₹}250\text{k}: 400\,\text{bps} (4\%)$. |
+| **`RB-PRC-009`** | Pricing | Quantity Break Discounts | $1\text{--}4: 0\%, \quad 5\text{--}9: 3\%\text{ (300 bps)}, \quad 10\text{--}19: 7\%\text{ (700 bps)}, \quad 20+: 10\%\text{ (1000 bps)}$. |
+| **`RB-PRC-010`** | Pricing | Finish Surcharge Uplifts | Exact catalog basis-point uplifts ($0\text{--}1,800\text{ bps}$) on base line amount. |
+| **`RB-PRC-011`** | Pricing | Assembly Labour Tiers | $\le 240\text{ min}: \text{₹}900/\text{hr}, \quad 241\text{--}480\text{ min}: \text{₹}800/\text{hr}, \quad >480\text{ min}: \text{₹}750/\text{hr}$. |
+| **`RB-PRC-012`** | Pricing | Net Goods Freight Tiers | $\le \text{₹}100\text{k}: \text{Flat ₹}5,000, \quad \text{₹}100\text{k}\text{--}250\text{k}: \text{Flat ₹}9,000, \quad >\text{₹}250\text{k}: 4\%\text{ (400 bps)}$. |
 | **`RB-PRC-013`** | Pricing | Constraint Block Invariant | Any geometry or catalog violation immediately halts and blocks quote issuance. |
-| **`RB-PRC-014`** | Pricing | Rounding Invariant | Half-up integer INR quantization ($0.50 \to 1$) with zero float drift. |
+| **`RB-PRC-014`** | Pricing | Rounding Invariant | Half-up integer INR quantization ($0.50 \to 1$) with zero floating-point drift. |
 
 ---
 
@@ -96,20 +96,20 @@ sequenceDiagram
     participant Lyap as Lyapunov Energy Evaluator
 
     Engine->>SAT: Verify Layout L(k)
-    SAT-->>Engine: Violations V = [RB-GEO-006, RB-GEO-002, ...]
-    Engine->>Lyap: Compute Energy Potential Φ_before = Φ(L_k)
+    SAT-->>Engine: Violations V = [RB-GEO-006, RB-GEO-002]
+    Engine->>Lyap: Compute Energy Potential Phi_before = Phi(L_k)
     
     loop Bounded Passes (Pass <= 50)
         Engine->>Cand: Generate Structured Operators (C1, C2, C_BOUND, C_SAT, C_GRID)
         Cand-->>Engine: Candidates [C1: Reverse, C2: Canonical Anchor, C3: Wall Clamping, C4: Egress Shift]
-        Engine->>Lyap: Evaluate Φ(C_i) for each candidate
-        Lyap-->>Engine: Φ(C1) = 7684 (Reject), Φ(C2) = 6684 (Accept: ΔΦ = -1000)
-        Engine->>Engine: Accept argmin(Φ) with strict decrease ΔΦ < 0
+        Engine->>Lyap: Evaluate Phi(C_i) for each candidate
+        Lyap-->>Engine: Phi(C1) = 7684 (Reject), Phi(C2) = 6684 (Accept: Delta_Phi = -1000)
+        Engine->>Engine: Accept argmin(Phi) with strict decrease Delta_Phi < 0
         Engine->>SAT: Verify new Layout L(k+1)
         SAT-->>Engine: Updated Violations
     end
     
-    alt 0 Violations (Φ == 0.0)
+    alt 0 Violations (Phi == 0.0)
         Engine->>Engine: Status = VALID, Convergence Proven
     else Bounded Passes Exhausted (Pass == 50)
         Engine->>Engine: Status = UNSATISFIABLE, Emit Escalation & Trade-Offs
@@ -124,18 +124,25 @@ All financial computations adhere strictly to integer INR arithmetic using Pytho
 
 1. **Base Line List Amount**:
    $$\text{Base} = \text{Quantity} \times \text{Unit List Price}$$
+
 2. **Finish Surcharge Uplift (`RB-PRC-010`)**:
-   $$\text{Uplift} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Uplift}_{\text{bps}}}{10,000} \right)$$
+   $$\text{Uplift} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Uplift}_{\text{bps}}}{10000} \right)$$
+
 3. **Quantity Break Discount (`RB-PRC-009`)**:
-   $$\text{Discount} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Discount}_{\text{bps}}}{10,000} \right)$$
+   $$\text{Discount} = \text{round\_half\_up}\left( \frac{\text{Base} \times \text{Discount}_{\text{bps}}}{10000} \right)$$
+
 4. **Net Line Goods**:
    $$\text{Net Goods}_{i} = \text{Base}_{i} + \text{Uplift}_{i} - \text{Discount}_{i}$$
+
 5. **Cumulative Net Goods**:
    $$\text{Total Net Goods} = \sum_{i} \text{Net Goods}_{i}$$
+
 6. **Assembly Labour (`RB-PRC-011`)**:
    $$\text{Labour (INR)} = \text{round\_half\_up}\left( \frac{\sum \text{Minutes} \times \text{Hourly Rate}}{60} \right)$$
+
 7. **Freight Surcharge (`RB-PRC-012`)**:
-   $$\text{Freight (INR)} = \begin{cases} 5,000 & \text{if } \text{Total Net Goods} \le 100,000 \\ 9,000 & \text{if } 100,000 < \text{Total Net Goods} \le 250,000 \\ \text{round\_half\_up}\left( \frac{\text{Total Net Goods} \times 400}{10,000} \right) & \text{if } \text{Total Net Goods} > 250,000 \end{cases}$$
+   $$\text{Freight (INR)} = \begin{cases} 5000 & \text{if } \text{Total Net Goods} \le 100000 \\ 9000 & \text{if } 100000 < \text{Total Net Goods} \le 250000 \\ \text{round\_half\_up}\left( \frac{\text{Total Net Goods} \times 400}{10000} \right) & \text{if } \text{Total Net Goods} > 250000 \end{cases}$$
+
 8. **Executive Grand Total**:
    $$\text{Grand Total (INR)} = \text{Total Net Goods} + \text{Labour} + \text{Freight}$$
 
@@ -145,8 +152,8 @@ All financial computations adhere strictly to integer INR arithmetic using Pytho
 
 RuleBound generates production-ready, industry-standard **AutoCAD Release 12 DXF blueprints** for all synthesized layouts:
 - **`WALLS` Layer (Color: Cyan)**: Double-line room perimeter with precise millimeter door/window cutouts.
-- **`DOORS` Layer (Color: Yellow)**: Hinged door leafs with $850\,\text{mm}$ radial sweep arcs.
-- **`EGRESS` Layer (Color: Green)**: Continuous life-safety corridor corridor envelopes and centerline dashes.
+- **`DOORS` Layer (Color: Yellow)**: Hinged door leafs with $850\text{ mm}$ radial sweep arcs.
+- **`EGRESS` Layer (Color: Green)**: Continuous life-safety corridor envelopes and centerline dashes.
 - **`FURNITURE` Layer (Color: Magenta/Green/Blue)**: 2D closed metric entity boundary polygons for workstations, chairs, and pods.
 - **`TEXT` Layer (Color: White)**: Metric dimension callouts and SKU placement labels.
 
@@ -165,7 +172,10 @@ cd rulebound-studio
 
 # Create virtual environment
 python -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+# On Linux/macOS:
+source .venv/bin/activate
+# On Windows:
+.venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
