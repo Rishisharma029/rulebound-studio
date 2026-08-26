@@ -789,7 +789,7 @@
         status: currentData.layout.status,
         lyapunov_phi: currentData.layout.violations?.length ? 4080.0 : 0.0,
         violations_count: currentData.layout.violations?.length || 0,
-        quote_grand_total_inr: currentData.quote.summary?.grand_total_inr || 0,
+        quote_grand_total_inr: currentData.layout.status === 'unsatisfiable' ? 0 : (currentData.quote.summary?.grand_total_inr || 0),
         deterministic_hash: "0x" + Math.random().toString(16).substr(2, 8).toUpperCase()
       };
 
@@ -814,6 +814,12 @@
       const satBadge = document.getElementById('satStatusBadge');
       const pipelineVerdict = document.getElementById('pipelineStatusVerdict');
 
+      const quoteBadge = document.getElementById('quoteStatusBadge');
+      const goodsEl = document.getElementById('summaryGoods');
+      const labourEl = document.getElementById('summaryLabour');
+      const freightEl = document.getElementById('summaryFreight');
+      const totalEl = document.getElementById('summaryGrandTotal');
+
       if (isUnsat) {
         verdictBadge.innerText = '⚠ UNSATISFIABLE';
         verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50 animate-pulse';
@@ -828,6 +834,14 @@
         satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30';
         banner.classList.add('hidden');
         unsatBanner.classList.remove('hidden');
+
+        // RB-PRC-013: Blocked Quote UI
+        quoteBadge.innerText = 'BLOCKED (RB-PRC-013)';
+        quoteBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50';
+        goodsEl.innerHTML = '<span class="line-through text-gray-400">₹0</span>';
+        labourEl.innerHTML = '<span class="line-through text-gray-400">₹0</span>';
+        freightEl.innerHTML = '<span class="line-through text-gray-400">₹0</span>';
+        totalEl.innerHTML = '<span class="text-red-400 font-black text-lg">BLOCKED (RB-PRC-013)</span>';
         return;
       }
 
@@ -847,6 +861,8 @@
         satBadge.innerText = 'ALL RULES PASSED';
         satBadge.className = 'font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30';
         banner.classList.add('hidden');
+
+        if (currentData?.quote) updateExecutiveSummary(currentData.quote);
       } else if (state === 'stale') {
         isStale = true;
         const ruleLabel = activeRuleId || 'RB-GEO';
@@ -862,6 +878,9 @@
         satBadge.innerText = `VIOLATION: ${ruleLabel}`;
         satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30 animate-pulse';
         banner.classList.remove('hidden');
+
+        quoteBadge.innerText = 'STALE';
+        quoteBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/25 text-amber-200 font-black border border-amber-500/40';
       }
     }
 
@@ -1151,7 +1170,7 @@
       showToast(`Arbitration Step ${currentTraceIndex} / ${currentTraceSteps.length}`, 'step');
     }
 
-    function renderArbitrationTrace(traceSteps, activeViolations) {
+    function renderArbitrationTrace(traceSteps, activeViolations, energyOverride = null) {
       const feed = document.getElementById('arbitrationTraceFeed');
       const stepCounter = document.getElementById('traceStepCounter');
       const canvasPhi = document.getElementById('canvasEnergyScore');
@@ -1168,11 +1187,13 @@
         initPhi.innerText = traceSteps[0] ? `Φ = ${traceSteps[0].phi_before}` : `Φ = 0.0`;
         finPhi.innerText = `Φ = 0.0`;
       } else {
-        let curEnergy = activeViolations.length * 1000;
-        activeViolations.forEach(v => {
-          if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
-          if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
-        });
+        let curEnergy = energyOverride !== null ? energyOverride : activeViolations.length * 1000;
+        if (energyOverride === null) {
+          activeViolations.forEach(v => {
+            if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
+            if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
+          });
+        }
         canvasPhi.innerText = `Φ = ${curEnergy.toFixed(1)}`;
         canvasPhi.className = 'font-black text-red-300 text-xs';
         stepCounter.innerText = `0 / 50`;
@@ -1515,6 +1536,7 @@
         const simRes = await res.json();
         currentData.layout.placements = simRes.placements;
         currentData.layout.violations = simRes.violations;
+        currentData.layout.status = simRes.status;
 
         if (simRes.is_unsatisfiable) {
           updatePipelineState('stale', true);
@@ -1526,14 +1548,14 @@
             </button>
           `).join('');
           switchMainTab('arbitration');
-          renderArbitrationTrace([], simRes.violations);
+          renderArbitrationTrace([], simRes.violations, simRes.energy_score);
           draw();
-          showToast('⚠ Escalated to Unsatisfiable State with Trade-Offs', 'error');
+          showToast('⚠ Escalated to Unsatisfiable State with Trade-Offs (Quote Blocked)', 'error');
           return;
         }
 
         switchMainTab('arbitration');
-        renderArbitrationTrace([], simRes.violations);
+        renderArbitrationTrace([], simRes.violations, simRes.energy_score);
         updatePipelineState('stale', false, simRes.violations[0]?.rule_id || '');
         draw();
         showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
@@ -1545,7 +1567,7 @@
     async function applyTradeOff(action) {
       showToast(`Applying architectural trade-off: ${action}...`, 'auto_fix_high');
       await synthesize();
-      showToast('Trade-off applied: Layout re-arbitrated and valid!', 'check_circle');
+      showToast('Trade-off applied: Layout re-arbitrated, valid, and priced!', 'check_circle');
     }
 
     async function runArbitrationTrace() {
