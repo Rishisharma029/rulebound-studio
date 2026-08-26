@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RuleBound Studio | Commercial CAD & Pricing Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+            },
+            dark: {
+              950: '#070b12',
+              900: '#0c1322',
+              850: '#111a2e',
+              800: '#16223b',
+              700: '#213050',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #070b12; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow: hidden; }
+    .cad-bg {
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+      background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
+    }
+    .glass-card {
+      background: rgba(12, 19, 34, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #213050; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #22d3ee; }
+  </style>
+</head>
+<body class="flex flex-col h-screen select-none antialiased">
+
+  <!-- Top Header Navigation -->
+  <header class="h-14 bg-dark-900/90 border-b border-white/10 flex items-center justify-between px-5 z-50 backdrop-blur-md">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.25)]">
+          <span class="material-symbols-outlined text-lg">architecture</span>
+        </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="font-extrabold text-base tracking-tight text-white">NORTHWIND</span>
+          <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">RULEBOUND</span>
+        </div>
+      </div>
+      <div class="h-4 w-px bg-white/10 mx-1"></div>
+      
+      <!-- Room Quick Picker -->
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-gray-400 text-sm">meeting_room</span>
+        <select id="roomSelect" class="bg-dark-850 border border-white/10 rounded-md px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-cyan-400 cursor-pointer">
+          <option value="ROOM-01">ROOM-01 · Harbour Design Studio (12p)</option>
+          <option value="ROOM-02">ROOM-02 · Cedar Client Workshop (16p)</option>
+          <option value="ROOM-03">ROOM-03 · Nimbus Hybrid Team (10p)</option>
+          <option value="ROOM-04">ROOM-04 · Orchard Focus Library (14p)</option>
+          <option value="ROOM-05">ROOM-05 · Summit Project Hub (18p)</option>
+        </select>
+      </div>
+
+      <!-- Engine Status Badge -->
+      <div id="engineStatusBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-semibold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>DETERMINISTIC ENGINE ONLINE</span>
+      </div>
+    </div>
+
+    <!-- Right Header Actions -->
+    <div class="flex items-center gap-2.5">
+      <button onclick="synthesize()" class="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-dark-950 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(34,211,238,0.35)] transition-all">
+        <span class="material-symbols-outlined text-sm">auto_awesome</span> Synthesize Layout
+      </button>
+      <button onclick="verify()" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
+        <span class="material-symbols-outlined text-sm text-emerald-400">verified</span> Verify Rules
+      </button>
+      <button onclick="calculateQuote()" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
+        <span class="material-symbols-outlined text-sm text-amber-400">payments</span> Calculate Quote
+      </button>
+      <a id="dxfExportLink" href="#" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
+        <span class="material-symbols-outlined text-sm text-cyan-400">download</span> Export DXF
+      </a>
+      <div class="h-4 w-px bg-white/10 mx-1"></div>
+      <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Documentation">
+        <span class="material-symbols-outlined text-base">api</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Workspace 3-Zone Layout -->
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <!-- Left Specs & Brief Sidebar -->
+    <aside class="w-72 bg-dark-900 border-r border-white/10 flex flex-col justify-between p-4 overflow-y-auto z-40">
+      <div class="space-y-4">
+        
+        <!-- Room Info Card -->
+        <div class="glass-card rounded-xl p-3.5 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold">Room Specifications</span>
+            <span id="roomCapacityBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">12 Occupants</span>
+          </div>
+          <div class="text-sm font-bold text-white tracking-tight" id="roomNameDisplay">Harbour Design Studio</div>
+          
+          <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-white/10">
+            <div>
+              <span class="text-[10px] text-gray-400 block">BOUNDS</span>
+              <span id="specBounds" class="text-white font-semibold text-[11px]">7.2 x 5.4 m</span>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block">EGRESS WIDTH</span>
+              <span id="specEgress" class="text-emerald-400 font-semibold text-[11px]">1100 mm min</span>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block">DOORS</span>
+              <span id="specDoors" class="text-white font-semibold text-[11px]">1 Door (South)</span>
+            </div>
+            <div>
+              <span class="text-[10px] text-gray-400 block">WINDOWS</span>
+              <span id="specWindows" class="text-white font-semibold text-[11px]">1 Window (North)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brief Narrative -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2">
+          <div class="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold">
+            <span class="material-symbols-outlined text-xs text-amber-400">description</span> Client Specification
+          </div>
+          <p id="roomBriefText" class="text-xs leading-relaxed text-gray-300">
+            Loading specification brief...
+          </p>
+        </div>
+
+        <!-- Catalog Filter List -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> Catalog Catalog
+            </span>
+            <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300">0 items</span>
+          </div>
+          <div id="catalogList" class="space-y-1.5 max-h-48 overflow-y-auto pr-1 text-xs">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Reset & Layer Toggles -->
+      <div class="pt-3 border-t border-white/10 space-y-2">
+        <div class="text-[10px] font-mono uppercase text-gray-400 font-semibold flex items-center justify-between">
+          <span>Layer Visibility</span>
+          <button onclick="fitRoomToScreen()" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-0.5">
+            <span class="material-symbols-outlined text-[11px]">fit_screen</span> Recenter
+          </button>
+        </div>
+        <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-gray-300">
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="layerCorridor" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Egress Path
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="layerDoors" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Door Arcs
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="layerLabels" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Labels
+          </label>
+          <label class="flex items-center gap-1.5 cursor-pointer">
+            <input type="checkbox" id="layerDimensions" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Dimensions
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Center CAD Canvas Viewport -->
+    <main class="flex-1 relative bg-dark-950 cad-bg flex flex-col overflow-hidden">
+      
+      <!-- Canvas Container -->
+      <div id="canvas-container" class="w-full h-full relative cursor-grab active:cursor-grabbing">
+        <canvas id="planCanvas"></canvas>
+      </div>
+
+      <!-- Floating Hover Tooltip Card -->
+      <div id="hoverTooltip" class="absolute hidden pointer-events-none z-50 glass-card p-3 rounded-lg border border-cyan-400/40 shadow-2xl space-y-1 font-mono text-xs max-w-xs transition-opacity">
+        <div class="flex items-center justify-between gap-3">
+          <span id="ttSku" class="font-bold text-white text-[11px]">NW-DES-001</span>
+          <span id="ttFamily" class="text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-emerald-500/20 text-emerald-300">DESK</span>
+        </div>
+        <div id="ttName" class="text-[11px] text-gray-300 font-sans font-medium">Modular Workstation</div>
+        <div class="grid grid-cols-2 gap-x-3 gap-y-1 pt-1 border-t border-white/10 text-[10px] text-gray-400">
+          <div>DIM: <span id="ttDim" class="text-white font-semibold">1200 x 600 mm</span></div>
+          <div>POS: <span id="ttPos" class="text-white font-semibold">1400, 1800</span></div>
+          <div>ROT: <span id="ttRot" class="text-white font-semibold">0°</span></div>
+          <div>PRICE: <span id="ttPrice" class="text-emerald-400 font-semibold">₹18,500</span></div>
+        </div>
+      </div>
+
+      <!-- Floating Canvas Bottom Controls -->
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2 flex items-center gap-4 shadow-2xl z-30">
+        <div class="flex items-center gap-1.5 text-xs font-mono text-gray-300 pr-2 border-r border-white/10">
+          <span class="w-2 h-2 rounded-sm bg-emerald-400"></span> Desks
+          <span class="w-2 h-2 rounded-sm bg-amber-400 ml-2"></span> Chairs
+          <span class="w-2 h-2 rounded-sm bg-cyan-400 ml-2"></span> Collab
+          <span class="w-2 h-2 rounded-sm bg-pink-400 ml-2"></span> Storage
+          <span class="w-2 h-2 rounded-sm bg-violet-400 ml-2"></span> Acc
+        </div>
+        
+        <div class="flex items-center gap-1">
+          <button onclick="zoomCanvas(1.2)" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Zoom In">
+            <span class="material-symbols-outlined text-sm">zoom_in</span>
+          </button>
+          <button onclick="zoomCanvas(0.8)" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Zoom Out">
+            <span class="material-symbols-outlined text-sm">zoom_out</span>
+          </button>
+          <button onclick="fitRoomToScreen()" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Reset Zoom">
+            <span class="material-symbols-outlined text-sm">fit_screen</span>
+          </button>
+        </div>
+
+        <div class="text-[11px] font-mono text-cyan-400 pl-2 border-l border-white/10" id="zoomLevelDisplay">
+          100%
+        </div>
+      </div>
+
+      <!-- Realtime Coordinates Overlay -->
+      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-lg text-[11px] font-mono text-gray-400 pointer-events-none z-20 flex items-center gap-3">
+        <span>X: <b id="cursorX" class="text-white">0</b> mm</span>
+        <span>Y: <b id="cursorY" class="text-white">0</b> mm</span>
+        <span class="text-cyan-400">CAD Precision Mode</span>
+      </div>
+
+    </main>
+
+    <!-- Right Inspector Sidebar: Constraint Verifier & Pricing Engine -->
+    <aside class="w-96 bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
+      
+      <!-- Top Half: Deterministic Pricing Breakdown -->
+      <div class="flex-1 flex flex-col border-b border-white/10 overflow-hidden">
+        <div class="p-3.5 bg-dark-850 flex justify-between items-center border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-400 text-base">payments</span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Deterministic Pricing</span>
+          </div>
+          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">PRICED (INR)</span>
+        </div>
+
+        <!-- Scrollable Quote Lines Table -->
+        <div id="quoteLinesContainer" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Quote Summary Footer -->
+        <div class="p-3.5 bg-dark-850 border-t border-white/10 space-y-1.5 font-mono text-xs">
+          <div class="flex justify-between text-gray-400">
+            <span>Net Goods (After Disc):</span> <span id="summaryGoods" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="flex justify-between text-gray-400">
+            <span>Labour (Band Rate):</span> <span id="summaryLabour" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="flex justify-between text-gray-400">
+            <span>Freight (Tier):</span> <span id="summaryFreight" class="text-white font-semibold">₹0</span>
+          </div>
+          <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+            <span class="text-xs font-bold text-cyan-400 uppercase">Grand Total (INR):</span>
+            <span id="summaryGrandTotal" class="text-lg font-bold text-emerald-400 font-mono">₹0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Half: Spatial Constraint Verifier (RB-GEO-001 - RB-GEO-008) -->
+      <div class="h-72 flex flex-col bg-dark-950 overflow-hidden">
+        <div class="p-3 bg-dark-850 flex justify-between items-center border-b border-white/10">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-400 text-base">verified_user</span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Spatial Verifier</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span id="energyMetricTag" class="text-[10px] font-mono text-cyan-300">Energy: 0.0</span>
+            <span id="violationCountTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">0 VIOLATIONS</span>
+          </div>
+        </div>
+
+        <!-- Violation Stream -->
+        <div id="violationFeed" class="flex-1 overflow-y-auto p-3 space-y-2 font-mono text-xs">
+          <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">check_circle</span>
+            All 8 spatial constraints satisfied (RB-GEO-001 through RB-GEO-008).
+          </div>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 rounded-xl bg-dark-850 border border-cyan-400/40 text-white font-medium text-xs shadow-2xl opacity-0 transform translate-y-3 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2">
+    <span class="material-symbols-outlined text-cyan-400 text-base" id="toastIcon">info</span>
+    <span id="toastMsg">Action notification</span>
+  </div>
+
+  <script>
+    let currentData = null;
+    let canvas = document.getElementById('planCanvas');
+    let ctx = canvas.getContext('2d');
+    let panX = 0, panY = 0, zoom = 0.08;
+    let isDragging = false, startX, startY;
+    let hoveredPlacement = null;
+
+    const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
+
+    function showToast(msg, icon = 'info') {
+      const el = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').innerText = msg;
+      document.getElementById('toastIcon').innerText = icon;
+      el.classList.remove('opacity-0', 'translate-y-3', 'pointer-events-none');
+      el.classList.add('opacity-100', 'translate-y-0');
+      setTimeout(() => {
+        el.classList.add('opacity-0', 'translate-y-3', 'pointer-events-none');
+        el.classList.remove('opacity-100', 'translate-y-0');
+      }, 2600);
+    }
+
+    function resizeCanvas() {
+      const container = document.getElementById('canvas-container');
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = container.clientWidth * ratio;
+      canvas.height = container.clientHeight * ratio;
+      canvas.style.width = container.clientWidth + 'px';
+      canvas.style.height = container.clientHeight + 'px';
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      draw();
+    }
+    window.addEventListener('resize', resizeCanvas);
+
+    async function loadSelectedRoom() {
+      const roomId = document.getElementById('roomSelect').value;
+      try {
+        const res = await fetch(`/api/v1/room/${roomId}/data`);
+        currentData = await res.json();
+
+        document.getElementById('roomNameDisplay').innerText = currentData.room.name;
+        document.getElementById('roomCapacityBadge').innerText = `${currentData.room.capacity} Occupants`;
+        document.getElementById('roomBriefText').innerText = currentData.room.brief || 'No brief specified.';
+
+        const xs = currentData.room.boundary_mm.map(p => p[0]);
+        const ys = currentData.room.boundary_mm.map(p => p[1]);
+        const wM = (Math.max(...xs) / 1000).toFixed(1);
+        const hM = (Math.max(...ys) / 1000).toFixed(1);
+        document.getElementById('specBounds').innerText = `${wM} x ${hM} m (${Math.max(...xs)} x ${Math.max(...ys)} mm)`;
+        document.getElementById('specEgress').innerText = `${currentData.room.egress.min_width_mm} mm min`;
+        document.getElementById('specDoors').innerText = `${currentData.room.doors.length} Door (${currentData.room.doors[0]?.wall || 'South'})`;
+        document.getElementById('specWindows').innerText = `${currentData.room.windows.length} Window (${currentData.room.windows[0]?.wall || 'North'})`;
+        document.getElementById('dxfExportLink').href = `/api/v1/room/${roomId}/dxf`;
+
+        renderCatalogList(currentData.catalog);
+        updateQuoteUI(currentData.quote);
+        updateViolationsUI(currentData.layout.violations);
+        fitRoomToScreen();
+      } catch (err) {
+        showToast('Error loading room data: ' + err.message, 'error');
+      }
+    }
+
+    function renderCatalogList(catalog) {
+      const entries = Object.values(catalog || {});
+      document.getElementById('catalogCountBadge').innerText = `${entries.length} Items`;
+      document.getElementById('catalogList').innerHTML = entries.map(item => `
+        <div class="p-2 rounded bg-dark-850 border border-white/5 flex justify-between items-center hover:border-cyan-400/40 transition-colors">
+          <div>
+            <div class="font-bold text-white font-mono text-[11px]">${item.sku}</div>
+            <div class="text-[10px] text-gray-400">${item.name}</div>
+          </div>
+          <div class="text-right font-mono text-[11px] font-bold text-emerald-400">
+            ${money(item.price)}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function fitRoomToScreen() {
+      if (!currentData) return;
+      const bounds = currentData.room.boundary_mm;
+      const xs = bounds.map(p => p[0]);
+      const ys = bounds.map(p => p[1]);
+      const minX = Math.min(...xs), maxX = Math.max(...xs);
+      const minY = Math.min(...ys), maxY = Math.max(...ys);
+      const spanX = maxX - minX;
+      const spanY = maxY - minY;
+
+      const cW = canvas.clientWidth || 800;
+      const cH = canvas.clientHeight || 600;
+      const scaleX = (cW - 160) / spanX;
+      const scaleY = (cH - 160) / spanY;
+      zoom = Math.min(scaleX, scaleY);
+
+      panX = (cW - spanX * zoom) / 2;
+      panY = cH - (cH - spanY * zoom) / 2;
+      updateZoomBadge();
+      draw();
+    }
+
+    function zoomCanvas(factor) {
+      zoom = Math.max(0.02, Math.min(0.5, zoom * factor));
+      updateZoomBadge();
+      draw();
+    }
+
+    function updateZoomBadge() {
+      document.getElementById('zoomLevelDisplay').innerText = `${Math.round(zoom * 1250)}%`;
+    }
+
+    // World to Screen Coordinate Converters (Cartesian Y up -> Screen Y down)
+    function toScreenX(x) { return panX + x * zoom; }
+    function toScreenY(y) { return panY - y * zoom; }
+    function toWorldX(sx) { return (sx - panX) / zoom; }
+    function toWorldY(sy) { return (panY - sy) / zoom; }
+
+    function draw() {
+      if (!currentData) return;
+      const cW = canvas.clientWidth;
+      const cH = canvas.clientHeight;
+      ctx.clearRect(0, 0, cW, cH);
+
+      const bounds = currentData.room.boundary_mm;
+      const xs = bounds.map(p => p[0]), ys = bounds.map(p => p[1]);
+      const minX = Math.min(...xs), maxX = Math.max(...xs);
+      const minY = Math.min(...ys), maxY = Math.max(...ys);
+
+      // 1. Draw Architectural Room Floor
+      ctx.save();
+      ctx.fillStyle = '#0c1626';
+      ctx.beginPath();
+      bounds.forEach((pt, i) => {
+        let sx = toScreenX(pt[0]), sy = toScreenY(pt[1]);
+        if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+      });
+      ctx.closePath();
+      ctx.fill();
+
+      // Subtle Room Floor Grid
+      ctx.strokeStyle = 'rgba(34, 211, 238, 0.05)';
+      ctx.lineWidth = 1;
+      for (let x = minX + 600; x < maxX; x += 600) {
+        ctx.beginPath(); ctx.moveTo(toScreenX(x), toScreenY(minY)); ctx.lineTo(toScreenX(x), toScreenY(maxY)); ctx.stroke();
+      }
+      for (let y = minY + 600; y < maxY; y += 600) {
+        ctx.beginPath(); ctx.moveTo(toScreenX(minX), toScreenY(y)); ctx.lineTo(toScreenX(maxX), toScreenY(y)); ctx.stroke();
+      }
+
+      // 2. Draw Room Exterior Walls (Double-line CAD Profile)
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = Math.max(3, 150 * zoom);
+      ctx.lineJoin = 'miter';
+      ctx.beginPath();
+      bounds.forEach((pt, i) => {
+        let sx = toScreenX(pt[0]), sy = toScreenY(pt[1]);
+        if (i === 0) ctx.moveTo(sx, sy); else ctx.lineTo(sx, sy);
+      });
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // 3. Draw Dimension Callouts
+      if (document.getElementById('layerDimensions')?.checked) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '600 11px JetBrains Mono, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${maxX - minX} mm`, toScreenX((minX + maxX)/2), toScreenY(minY) + 24);
+        ctx.save();
+        ctx.translate(toScreenX(minX) - 24, toScreenY((minY + maxY)/2));
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText(`${maxY - minY} mm`, 0, 0);
+        ctx.restore();
+      }
+
+      // 4. Draw Egress Corridor
+      if (document.getElementById('layerCorridor')?.checked) {
+        const egress = currentData.room.egress;
+        const door = currentData.room.doors.find(d => d.door_id === egress.from_door_id);
+        if (door) {
+          let dx = door.wall === 'south' ? door.offset_mm + door.width_mm/2 : (door.wall === 'north' ? door.offset_mm + door.width_mm/2 : (door.wall === 'west' ? minX : maxX));
+          let dy = door.wall === 'south' ? minY : (door.wall === 'north' ? maxY : door.offset_mm + door.width_mm/2);
+
+          let sx1 = toScreenX(dx), sy1 = toScreenY(dy);
+          let sx2 = toScreenX(egress.to_point_mm[0]), sy2 = toScreenY(egress.to_point_mm[1]);
+
+          // Corridor clearance buffer
+          ctx.strokeStyle = 'rgba(52, 211, 153, 0.14)';
+          ctx.lineWidth = (egress.min_width_mm || 1100) * zoom;
+          ctx.lineCap = 'round';
+          ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
+
+          // Egress centerline
+          ctx.strokeStyle = '#34d399';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([8, 6]);
+          ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Waypoint Pin
+          ctx.fillStyle = '#34d399';
+          ctx.beginPath(); ctx.arc(sx2, sy2, 5, 0, Math.PI * 2); ctx.fill();
+        }
+      }
+
+      // 5. Draw Door Openings & Clearance Swing Arcs
+      if (document.getElementById('layerDoors')?.checked) {
+        currentData.room.doors.forEach(d => {
+          let hx = d.wall === 'south' ? d.offset_mm : (d.wall === 'north' ? d.offset_mm : (d.wall === 'west' ? minX : maxX));
+          let hy = d.wall === 'south' ? minY : (d.wall === 'north' ? maxY : d.offset_mm);
+          let sx = toScreenX(hx), sy = toScreenY(hy);
+          let r = 850 * zoom;
+
+          // Swing Arc
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+          ctx.strokeStyle = '#fbbf24';
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(sx, sy, r, 0, Math.PI / 2);
+          ctx.lineTo(sx, sy);
+          ctx.closePath();
+          ctx.fill(); ctx.stroke();
+
+          // Door Leaf
+          ctx.strokeStyle = '#f59e0b';
+          ctx.lineWidth = 2.5;
+          ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx, sy - r); ctx.stroke();
+        });
+      }
+
+      // 6. Draw Furniture Placements (Correct Bottom-Left -> Center Transformation)
+      const familyStyles = {
+        'desk': { fill: 'rgba(52, 211, 153, 0.85)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
+        'chair': { fill: 'rgba(251, 191, 36, 0.85)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
+        'storage': { fill: 'rgba(244, 114, 182, 0.85)', stroke: '#f472b6', inner: '#ec4899', text: '#500724' },
+        'collaboration': { fill: 'rgba(34, 211, 238, 0.85)', stroke: '#22d3ee', inner: '#06b6d4', text: '#083344' },
+        'accessory': { fill: 'rgba(167, 139, 250, 0.85)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
+      };
+
+      (currentData.layout?.placements || []).forEach(p => {
+        const item = currentData.catalog[p.sku] || { width: 1200, depth: 600, family: 'desk' };
+        
+        // Exact center coordinates in Cartesian space
+        const cx = p.x_mm + item.width / 2.0;
+        const cy = p.y_mm + item.depth / 2.0;
+
+        const scx = toScreenX(cx);
+        const scy = toScreenY(cy);
+        const sw = item.width * zoom;
+        const sd = item.depth * zoom;
+
+        const isHovered = hoveredPlacement && hoveredPlacement.placement_id === p.placement_id;
+
+        ctx.save();
+        ctx.translate(scx, scy);
+        ctx.rotate(-p.rotation_deg * Math.PI / 180);
+
+        const style = familyStyles[item.family] || familyStyles['desk'];
+
+        // Hover Glow
+        if (isHovered) {
+          ctx.shadowColor = '#22d3ee';
+          ctx.shadowBlur = 16;
+        }
+
+        // Furniture Bounding Box
+        ctx.fillStyle = style.fill;
+        ctx.strokeStyle = isHovered ? '#ffffff' : style.stroke;
+        ctx.lineWidth = isHovered ? 2.5 : 1.5;
+
+        ctx.beginPath();
+        ctx.roundRect(-sw/2, -sd/2, sw, sd, Math.min(4, sw/8));
+        ctx.fill();
+        ctx.stroke();
+
+        // Architectural Details
+        if (item.family === 'desk') {
+          // Monitor notch
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+          ctx.fillRect(-sw/4, -sd/2 + 2, sw/2, Math.max(2, sd/8));
+        } else if (item.family === 'chair') {
+          // Swivel chair notch
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+          ctx.beginPath(); ctx.arc(0, 0, Math.min(sw, sd)/4, 0, Math.PI * 2); ctx.fill();
+        } else if (item.family === 'collaboration') {
+          // Conference table grommet
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+          ctx.fillRect(-sw/6, -sd/6, sw/3, sd/3);
+        }
+
+        // Placement Label
+        if (document.getElementById('layerLabels')?.checked) {
+          ctx.fillStyle = isHovered ? '#ffffff' : style.text;
+          ctx.font = 'bold 9px JetBrains Mono, monospace';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(p.placement_id, 0, 0);
+        }
+
+        ctx.restore();
+      });
+
+      ctx.restore();
+    }
+
+    function updateQuoteUI(q) {
+      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase() + ' (INR)';
+      document.getElementById('quoteStatusBadge').className = q.status === 'priced'
+        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
+        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-bold border border-red-500/30';
+
+      const container = document.getElementById('quoteLinesContainer');
+      container.innerHTML = (q.lines || []).map(line => `
+        <div class="p-2.5 rounded-lg bg-dark-850 border border-white/5 hover:border-cyan-400/40 transition-colors">
+          <div class="flex justify-between items-start">
+            <span class="text-white font-bold">${line.sku} <span class="text-gray-400 font-normal text-[10px]">(${line.finish_id})</span></span>
+            <span class="text-emerald-400 font-bold font-mono">${money(line.net_goods_inr)}</span>
+          </div>
+          <div class="flex justify-between text-[10px] text-gray-400 mt-1">
+            <span>Qty: ${line.quantity} × ${money(line.unit_list_price_inr)}</span>
+            <span>Uplift: +${money(line.finish_uplift_inr)}</span>
+          </div>
+          <div class="text-[9px] text-cyan-300/80 mt-1">
+            Trace: QTY_DISC -${money(line.quantity_discount_inr)} (RB-PRC-009)
+          </div>
+        </div>
+      `).join('') || '<div class="text-gray-500 text-center py-4">No quote line items.</div>';
+
+      document.getElementById('summaryGoods').innerText = money(q.summary?.goods_after_adjustments_inr || 0);
+      document.getElementById('summaryLabour').innerText = money(q.summary?.labour_inr || 0);
+      document.getElementById('summaryFreight').innerText = money(q.summary?.freight_inr || 0);
+      document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
+    }
+
+    function updateViolationsUI(vList) {
+      const feed = document.getElementById('violationFeed');
+      const tag = document.getElementById('violationCountTag');
+      const energyTag = document.getElementById('energyMetricTag');
+
+      if (!vList || vList.length === 0) {
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30';
+        tag.innerText = '0 VIOLATIONS';
+        energyTag.innerText = 'Energy: 0.0';
+        feed.innerHTML = `
+          <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
+            <span class="material-symbols-outlined text-base">check_circle</span>
+            All 8 spatial constraints satisfied (RB-GEO-001 through RB-GEO-008).
+          </div>
+        `;
+      } else {
+        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold border border-red-500/30';
+        tag.innerText = `${vList.length} VIOLATIONS`;
+        feed.innerHTML = vList.map(v => `
+          <div class="p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 space-y-1">
+            <div class="flex justify-between items-center">
+              <span class="text-red-400 font-bold text-[11px] font-mono">${v.rule_id}</span>
+              <span class="px-1.5 py-0.2 bg-red-500 text-black font-bold text-[9px] rounded">VIOLATION</span>
+            </div>
+            <div class="text-xs text-white">${v.message}</div>
+            <div class="grid grid-cols-2 gap-2 text-[10px] pt-1 border-t border-red-500/20 text-gray-300">
+              <div>MEASURED: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
+              <div>REQUIRED: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    async function synthesize() {
+      if (!currentData) return;
+      try {
+        showToast('Synthesizing ergonomic layout...', 'auto_awesome');
+        const res = await fetch('/api/v1/layout/synthesize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ room_spec: currentData.room })
+        });
+        currentData.layout = await res.json();
+        await calculateQuote();
+        updateViolationsUI(currentData.layout.violations);
+        draw();
+        showToast('Candidate layout synthesized successfully!', 'check_circle');
+      } catch (err) {
+        showToast('Synthesis failed: ' + err.message, 'error');
+      }
+    }
+
+    async function verify() {
+      if (!currentData) return;
+      try {
+        showToast('Running deterministic verification...', 'verified');
+        const res = await fetch('/api/v1/layout/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ room_spec: currentData.room, placements: currentData.layout.placements })
+        });
+        const verifyRes = await res.json();
+        currentData.layout.violations = verifyRes.violations;
+        document.getElementById('energyMetricTag').innerText = `Energy: ${verifyRes.energy_score}`;
+        updateViolationsUI(verifyRes.violations);
+        draw();
+        showToast(verifyRes.is_valid ? '100% Constraints Verified!' : `${verifyRes.violation_count} Violations Found`, verifyRes.is_valid ? 'check_circle' : 'warning');
+      } catch (err) {
+        showToast('Verification error: ' + err.message, 'error');
+      }
+    }
+
+    async function calculateQuote() {
+      if (!currentData) return;
+      try {
+        const res = await fetch('/api/v1/quote/calculate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ room_id: currentData.room.room_id, placements: currentData.layout.placements })
+        });
+        currentData.quote = await res.json();
+        updateQuoteUI(currentData.quote);
+      } catch (err) {
+        showToast('Quote calculation error: ' + err.message, 'error');
+      }
+    }
+
+    // Canvas Interactive Handlers (Drag, Zoom, Tooltips)
+    canvas.addEventListener('mousedown', e => {
+      isDragging = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+    window.addEventListener('mouseup', () => isDragging = false);
+    
+    canvas.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+
+      // Update Cursor coordinates in mm
+      const wx = Math.round(toWorldX(mx));
+      const wy = Math.round(toWorldY(my));
+      document.getElementById('cursorX').innerText = wx;
+      document.getElementById('cursorY').innerText = wy;
+
+      if (isDragging) {
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        draw();
+        return;
+      }
+
+      // Hit testing for hover tooltip
+      if (!currentData) return;
+      let found = null;
+      (currentData.layout?.placements || []).forEach(p => {
+        const item = currentData.catalog[p.sku] || { width: 1200, depth: 600 };
+        const cx = p.x_mm + item.width / 2;
+        const cy = p.y_mm + item.depth / 2;
+        const scx = toScreenX(cx);
+        const scy = toScreenY(cy);
+        const sw = item.width * zoom;
+        const sd = item.depth * zoom;
+
+        if (Math.abs(mx - scx) <= sw/2 && Math.abs(my - scy) <= sd/2) {
+          found = { p, item };
+        }
+      });
+
+      const tt = document.getElementById('hoverTooltip');
+      if (found) {
+        hoveredPlacement = found.p;
+        tt.style.left = (mx + 20) + 'px';
+        tt.style.top = (my + 20) + 'px';
+        tt.classList.remove('hidden');
+
+        document.getElementById('ttSku').innerText = `${found.p.placement_id} · ${found.item.sku}`;
+        document.getElementById('ttFamily').innerText = found.item.family;
+        document.getElementById('ttName').innerText = found.item.name;
+        document.getElementById('ttDim').innerText = `${found.item.width} x ${found.item.depth} mm`;
+        document.getElementById('ttPos').innerText = `${Math.round(found.p.x_mm)}, ${Math.round(found.p.y_mm)}`;
+        document.getElementById('ttRot').innerText = `${found.p.rotation_deg}°`;
+        document.getElementById('ttPrice').innerText = money(found.item.price);
+        draw();
+      } else {
+        if (hoveredPlacement) {
+          hoveredPlacement = null;
+          draw();
+        }
+        tt.classList.add('hidden');
+      }
+    });
+
+    canvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      zoomCanvas(e.deltaY < 0 ? 1.12 : 0.88);
+    }, { passive: false });
+
+    document.getElementById('roomSelect').addEventListener('change', loadSelectedRoom);
+
+    window.onload = () => {
+      resizeCanvas();
+      loadSelectedRoom();
+    };
+  </script>
+</body>
+</html>
