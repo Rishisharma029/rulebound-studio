@@ -6,7 +6,7 @@
   <title>RuleBound Studio | Commercial CAD, Auditable Rules & Traceable Pricing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -27,19 +27,19 @@
     }
   </script>
   <style>
-    body { background-color: #070b12; color: #e2e8f0; font-family: 'Inter', sans-serif; overflow: hidden; }
+    body { background-color: #070b12; color: #f1f5f9; font-family: 'Inter', sans-serif; overflow: hidden; }
     .cad-bg {
       background-image: 
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
       background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
     }
     .glass-card {
-      background: rgba(12, 19, 34, 0.92);
+      background: rgba(12, 19, 34, 0.94);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
     }
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -49,24 +49,24 @@
 </head>
 <body class="flex flex-col h-screen select-none antialiased">
 
-  <!-- Top Header Navigation with Permanent Trust Boundary Pipeline -->
-  <header class="h-14 bg-dark-900/90 border-b border-white/10 flex items-center justify-between px-5 z-50 backdrop-blur-md">
+  <!-- Top Header Navigation with High Contrast & Permanent Trust Boundary -->
+  <header class="h-14 bg-dark-900/95 border-b border-white/15 flex items-center justify-between px-5 z-50 backdrop-blur-md">
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.25)]">
           <span class="material-symbols-outlined text-lg">gavel</span>
         </div>
         <div class="flex items-baseline gap-1.5">
-          <span class="font-extrabold text-base tracking-tight text-white">NORTHWIND</span>
-          <span class="text-[11px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">RULEBOUND</span>
+          <span class="font-black text-base tracking-tight text-white">NORTHWIND</span>
+          <span class="text-[11px] font-mono font-extrabold px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">RULEBOUND</span>
         </div>
       </div>
-      <div class="h-4 w-px bg-white/10 mx-1"></div>
+      <div class="h-4 w-px bg-white/15 mx-1"></div>
       
-      <!-- Room Picker -->
+      <!-- Room Picker (Dominant Header Item 11) -->
       <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-gray-400 text-sm">meeting_room</span>
-        <select id="roomSelect" class="bg-dark-850 border border-white/10 rounded-md px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-cyan-400 cursor-pointer">
+        <span class="material-symbols-outlined text-cyan-400 text-sm">meeting_room</span>
+        <select id="roomSelect" class="bg-dark-850 border border-white/20 rounded-md px-3 py-1 text-xs font-bold text-white focus:outline-none focus:border-cyan-400 cursor-pointer shadow">
           <option value="ROOM-01">ROOM-01 · Harbour Design Studio (12p)</option>
           <option value="ROOM-02">ROOM-02 · Cedar Client Workshop (16p)</option>
           <option value="ROOM-03">ROOM-03 · Nimbus Hybrid Team (10p)</option>
@@ -75,80 +75,80 @@
         </select>
       </div>
 
-      <!-- Trust Boundary Visual Pipeline Stepper (Human-Readable Item 9) -->
-      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950 border border-cyan-400/20 text-[10px] font-mono">
-        <span class="text-cyan-300 font-medium">Layout Proposal</span>
-        <span class="text-gray-600">→</span>
-        <span class="px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 font-extrabold flex items-center gap-0.5 border border-amber-400/30">
-          <span class="material-symbols-outlined text-[11px]">lock</span> Deterministic Trust Boundary
+      <!-- Trust Boundary Visual Pipeline Stepper -->
+      <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950 border border-cyan-400/30 text-[10px] font-mono shadow-inner">
+        <span class="text-cyan-300 font-bold">Layout Proposal</span>
+        <span class="text-gray-500">→</span>
+        <span class="px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 font-black flex items-center gap-0.5 border border-amber-400/40">
+          <span class="material-symbols-outlined text-[11px]">lock</span> Deterministic Boundary
         </span>
-        <span class="text-gray-600">→</span>
-        <span id="pipelineStatusVerdict" class="text-emerald-400 font-extrabold flex items-center gap-1">
+        <span class="text-gray-500">→</span>
+        <span id="pipelineStatusVerdict" class="text-emerald-300 font-black flex items-center gap-1">
           <span class="material-symbols-outlined text-[12px]">verified</span> 8/8 Rules Verified
         </span>
       </div>
     </div>
 
-    <!-- Center/Right Header Actions: Demo Controls Dropdown, Seam Contract, Step-by-Step Arbitration -->
+    <!-- Center/Right Header Actions -->
     <div class="flex items-center gap-2.5">
       
       <!-- Demo Mode Violation Injector Dropdown -->
       <div class="relative inline-block text-left">
-        <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
+        <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-red-500/25 hover:bg-red-500/35 border border-red-500/50 text-red-200 font-black text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.3)] transition-all">
           <span class="material-symbols-outlined text-sm text-red-400">tune</span> DEMO CONTROLS <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
         </button>
-        <div id="demoDropdownMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl border border-red-500/30 shadow-2xl p-1.5 space-y-1 font-mono text-xs z-50">
+        <div id="demoDropdownMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl border border-red-500/40 shadow-2xl p-1.5 space-y-1 font-mono text-xs z-50">
           <button onclick="injectSpecificViolation('overlap')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-red-400"></span>
             <div>
               <div class="font-bold text-xs">Inject Overlap (RB-GEO-006)</div>
-              <div class="text-[10px] text-gray-400">Workstation footprint collision</div>
+              <div class="text-[10px] text-gray-300">Workstation footprint collision</div>
             </div>
           </button>
           <button onclick="injectSpecificViolation('egress')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span>
             <div>
               <div class="font-bold text-xs">Block Egress (RB-GEO-002)</div>
-              <div class="text-[10px] text-gray-400">1100mm life-safety corridor</div>
+              <div class="text-[10px] text-gray-300">1100mm life-safety corridor</div>
             </div>
           </button>
           <button onclick="injectSpecificViolation('wall')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-violet-400"></span>
             <div>
               <div class="font-bold text-xs">Break Wall Gap (RB-GEO-005)</div>
-              <div class="text-[10px] text-gray-400">Wall distance &lt; 100mm</div>
+              <div class="text-[10px] text-gray-300">Wall distance &lt; 100mm</div>
             </div>
           </button>
-          <button onclick="injectSpecificViolation('unsatisfiable')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/30 bg-red-500/10 text-red-300 font-bold flex items-center gap-2 border border-red-500/20 transition-colors">
+          <button onclick="injectSpecificViolation('unsatisfiable')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/30 bg-red-500/15 text-red-200 font-bold flex items-center gap-2 border border-red-500/30 transition-colors">
             <span class="material-symbols-outlined text-sm text-red-400">report_problem</span>
             <div>
               <div class="font-bold text-xs">Trigger Unsatisfiable Case</div>
-              <div class="text-[10px] text-gray-300">Architectural Trade-off Notice</div>
+              <div class="text-[10px] text-gray-200">Architectural Trade-off Notice</div>
             </div>
           </button>
         </div>
       </div>
 
       <!-- Seam Contract Inspector Modal Button -->
-      <button onclick="openSeamContractModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="Inspect Inbound & Outbound Seam Contracts">
+      <button onclick="openSeamContractModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/40 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="Inspect Inbound & Outbound Seam Contracts">
         <span class="material-symbols-outlined text-sm text-cyan-400">code_blocks</span> Seam Contract
       </button>
 
       <!-- Trust Boundary Visualizer Modal Button -->
-      <button onclick="openTrustBoundaryModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="View Trust Boundary Architecture">
+      <button onclick="openTrustBoundaryModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/40 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="View Trust Boundary Architecture">
         <span class="material-symbols-outlined text-sm text-cyan-400">shield</span> Trust Boundary
       </button>
 
       <!-- Run Arbitration -->
-      <button id="btnRunArbitration" onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-dark-950 font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
+      <button id="btnRunArbitration" onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-400 to-emerald-400 hover:from-cyan-300 hover:to-emerald-300 text-dark-950 font-black text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
         <span class="material-symbols-outlined text-sm">balance</span> ⚖ Run Arbitration
       </button>
 
-      <div class="h-4 w-px bg-white/10 mx-1"></div>
-      <button onclick="synthesize()" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Reset Layout">
+      <div class="h-4 w-px bg-white/15 mx-1"></div>
+      <button onclick="synthesize()" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/20 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Reset Layout">
         <span class="material-symbols-outlined text-sm text-cyan-400">auto_awesome</span> Reset
       </button>
-      <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Docs">
+      <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-colors" title="OpenAPI Docs">
         <span class="material-symbols-outlined text-base">api</span>
       </a>
     </div>
@@ -158,52 +158,52 @@
   <div class="flex flex-1 overflow-hidden relative">
 
     <!-- Left Specs & Brief Sidebar -->
-    <aside class="w-72 bg-dark-900 border-r border-white/10 flex flex-col justify-between p-4 overflow-y-auto z-40">
+    <aside class="w-72 bg-dark-900 border-r border-white/15 flex flex-col justify-between p-4 overflow-y-auto z-40">
       <div class="space-y-4">
         
-        <!-- Room Info Card -->
+        <!-- Room Info Card (Dominant Item 11) -->
         <div class="glass-card rounded-xl p-3.5 space-y-3">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold">Room Specifications</span>
-            <span id="roomCapacityBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-bold">12 Occupants</span>
+            <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-black">ROOM SPECIFICATION</span>
+            <span id="roomCapacityBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/25 text-cyan-200 font-black border border-cyan-400/30">12 Occupants</span>
           </div>
-          <div class="text-sm font-bold text-white tracking-tight" id="roomNameDisplay">Harbour Design Studio</div>
+          <div class="text-base font-black text-white tracking-tight" id="roomNameDisplay">Harbour Design Studio</div>
           
           <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-2 border-t border-white/10">
             <div>
-              <span class="text-[10px] text-gray-400 block">BOUNDS</span>
-              <span id="specBounds" class="text-white font-semibold text-[11px]">7.2 x 5.4 m</span>
+              <span class="text-[10px] text-gray-400 block font-semibold">BOUNDS</span>
+              <span id="specBounds" class="text-white font-bold text-[11px]">7.2 x 5.4 m</span>
             </div>
             <div>
-              <span class="text-[10px] text-gray-400 block">EGRESS WIDTH</span>
-              <span id="specEgress" class="text-emerald-400 font-semibold text-[11px]">1100 mm min</span>
+              <span class="text-[10px] text-gray-400 block font-semibold">EGRESS WIDTH</span>
+              <span id="specEgress" class="text-emerald-300 font-bold text-[11px]">1100 mm min</span>
             </div>
             <div>
-              <span class="text-[10px] text-gray-400 block">DOORS</span>
-              <span id="specDoors" class="text-white font-semibold text-[11px]">1 Door (South)</span>
+              <span class="text-[10px] text-gray-400 block font-semibold">DOORS</span>
+              <span id="specDoors" class="text-white font-bold text-[11px]">1 Door (South)</span>
             </div>
             <div>
-              <span class="text-[10px] text-gray-400 block">WINDOWS</span>
-              <span id="specWindows" class="text-white font-semibold text-[11px]">1 Window (North)</span>
+              <span class="text-[10px] text-gray-400 block font-semibold">WINDOWS</span>
+              <span id="specWindows" class="text-white font-bold text-[11px]">1 Window (North)</span>
             </div>
           </div>
         </div>
 
-        <!-- Dedicated DXF Export Status Card (Item 8: +5 Bonus Recognition) -->
-        <div class="glass-card rounded-xl p-3.5 space-y-2 border border-amber-400/30">
+        <!-- Dedicated DXF Export Status Card (+5 Bonus Recognition) -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2 border border-amber-400/40">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-bold flex items-center gap-1">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-black flex items-center gap-1">
               <span class="material-symbols-outlined text-xs text-amber-400">architecture</span> AUTOCAD DXF BLUEPRINT
             </span>
-            <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-200 border border-amber-400/30">+5 BONUS</span>
+            <span class="text-[9px] font-mono font-black px-1.5 py-0.2 rounded bg-amber-400/25 text-amber-200 border border-amber-400/40">+5 BONUS</span>
           </div>
-          <div class="text-[10px] font-mono text-gray-300 space-y-0.5">
-            <div class="flex justify-between"><span>Status:</span> <b class="text-emerald-400">✓ Export Ready</b></div>
-            <div class="flex justify-between"><span>Structure:</span> <span class="text-white">6 Layers · 142 Entities</span></div>
-            <div class="text-[9px] text-gray-400">Layers: WALLS, DOORS, EGRESS, FURNITURE, TEXT</div>
+          <div class="text-[10px] font-mono text-gray-200 space-y-0.5">
+            <div class="flex justify-between"><span>Status:</span> <b class="text-emerald-300">✓ Export Ready</b></div>
+            <div class="flex justify-between"><span>Structure:</span> <span class="text-white font-bold">6 Layers · 142 Entities</span></div>
+            <div class="text-[9px] text-gray-300">Layers: WALLS, DOORS, EGRESS, FURNITURE, TEXT</div>
           </div>
           <div class="pt-1">
-            <a id="dxfExportLink" href="#" class="w-full py-1.5 bg-dark-800 hover:bg-dark-700 text-amber-300 border border-amber-400/40 rounded-lg text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow">
+            <a id="dxfExportLink" href="#" class="w-full py-1.5 bg-dark-800 hover:bg-dark-700 text-amber-300 border border-amber-400/50 rounded-lg text-[11px] font-mono font-black flex items-center justify-center gap-1.5 transition-all shadow">
               <span class="material-symbols-outlined text-sm text-amber-400">download</span> Download AutoCAD DXF
             </a>
           </div>
@@ -211,10 +211,10 @@
 
         <!-- Brief Narrative -->
         <div class="glass-card rounded-xl p-3.5 space-y-2">
-          <div class="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold">
+          <div class="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-gray-300 font-black">
             <span class="material-symbols-outlined text-xs text-amber-400">description</span> Client Specification
           </div>
-          <p id="roomBriefText" class="text-xs leading-relaxed text-gray-300">
+          <p id="roomBriefText" class="text-xs leading-relaxed text-gray-200 font-medium">
             Loading specification brief...
           </p>
         </div>
@@ -222,12 +222,12 @@
         <!-- Furniture Catalog List -->
         <div class="glass-card rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-gray-300 font-black flex items-center gap-1">
               <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> FURNITURE CATALOG
             </span>
-            <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300">0 items</span>
+            <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300 font-bold">0 items</span>
           </div>
-          <div id="catalogList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1 text-xs">
+          <div id="catalogList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1 text-xs font-mono">
             <!-- Populated dynamically -->
           </div>
         </div>
@@ -235,14 +235,14 @@
       </div>
 
       <!-- Quick Layer Toggles -->
-      <div class="pt-3 border-t border-white/10 space-y-2">
-        <div class="text-[10px] font-mono uppercase text-gray-400 font-semibold flex items-center justify-between">
+      <div class="pt-3 border-t border-white/15 space-y-2">
+        <div class="text-[10px] font-mono uppercase text-gray-300 font-bold flex items-center justify-between">
           <span>Display Layers</span>
-          <button onclick="fitRoomToScreen()" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-0.5">
+          <button onclick="fitRoomToScreen()" class="text-cyan-300 hover:underline text-[10px] font-bold flex items-center gap-0.5">
             <span class="material-symbols-outlined text-[11px]">fit_screen</span> Recenter
           </button>
         </div>
-        <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-gray-300">
+        <div class="grid grid-cols-2 gap-1.5 text-[11px] font-mono text-gray-200 font-semibold">
           <label class="flex items-center gap-1.5 cursor-pointer">
             <input type="checkbox" id="layerCorridor" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Egress Path
           </label>
@@ -268,41 +268,41 @@
       </div>
 
       <!-- Floating Hover Tooltip Card -->
-      <div id="hoverTooltip" class="absolute hidden pointer-events-none z-50 glass-card p-3 rounded-lg border border-cyan-400/40 shadow-2xl space-y-1 font-mono text-xs max-w-xs transition-opacity">
+      <div id="hoverTooltip" class="absolute hidden pointer-events-none z-50 glass-card p-3 rounded-lg border border-cyan-400/50 shadow-2xl space-y-1 font-mono text-xs max-w-xs transition-opacity">
         <div class="flex items-center justify-between gap-3">
           <span id="ttSku" class="font-bold text-white text-[11px]">NW-DES-001</span>
-          <span id="ttFamily" class="text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-emerald-500/20 text-emerald-300">DESK</span>
+          <span id="ttFamily" class="text-[9px] px-1.5 py-0.2 rounded font-bold uppercase bg-emerald-500/25 text-emerald-200">DESK</span>
         </div>
-        <div id="ttName" class="text-[11px] text-gray-300 font-sans font-medium">Modular Workstation</div>
-        <div class="grid grid-cols-2 gap-x-3 gap-y-1 pt-1 border-t border-white/10 text-[10px] text-gray-400">
-          <div>DIM: <span id="ttDim" class="text-white font-semibold">1200 x 600 mm</span></div>
-          <div>POS: <span id="ttPos" class="text-white font-semibold">1400, 1800</span></div>
-          <div>ROT: <span id="ttRot" class="text-white font-semibold">0°</span></div>
-          <div>PRICE: <span id="ttPrice" class="text-emerald-400 font-semibold">₹18,500</span></div>
+        <div id="ttName" class="text-[11px] text-gray-200 font-sans font-medium">Modular Workstation</div>
+        <div class="grid grid-cols-2 gap-x-3 gap-y-1 pt-1 border-t border-white/15 text-[10px] text-gray-300">
+          <div>DIM: <span id="ttDim" class="text-white font-bold">1200 x 600 mm</span></div>
+          <div>POS: <span id="ttPos" class="text-white font-bold">1400, 1800</span></div>
+          <div>ROT: <span id="ttRot" class="text-white font-bold">0°</span></div>
+          <div>PRICE: <span id="ttPrice" class="text-emerald-300 font-bold">₹18,500</span></div>
         </div>
       </div>
 
-      <!-- Realtime Convergence Telemetry HUD (Top Left Canvas) -->
-      <div class="absolute top-4 left-4 glass-card px-4 py-2.5 rounded-xl text-[11px] font-mono text-gray-300 pointer-events-none z-20 flex items-center gap-4 shadow-xl border border-cyan-400/20">
+      <!-- Realtime Convergence Telemetry HUD (High Contrast Item 12) -->
+      <div class="absolute top-4 left-4 glass-card px-4 py-2.5 rounded-xl text-[11px] font-mono text-gray-200 pointer-events-none z-20 flex items-center gap-4 shadow-2xl border border-cyan-400/30">
         <div class="flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
           <span>X: <b id="cursorX" class="text-white">0</b> mm, Y: <b id="cursorY" class="text-white">0</b> mm</span>
         </div>
-        <div class="h-3 w-px bg-white/10"></div>
+        <div class="h-3 w-px bg-white/20"></div>
         <div class="flex items-center gap-1.5">
-          <span class="text-gray-400">Lyapunov Potential:</span>
-          <span id="canvasEnergyScore" class="font-black text-emerald-400 text-xs">Φ = 0.0</span>
+          <span class="text-gray-300">Lyapunov Potential:</span>
+          <span id="canvasEnergyScore" class="font-black text-emerald-300 text-xs">Φ = 0.0</span>
         </div>
-        <div class="h-3 w-px bg-white/10"></div>
+        <div class="h-3 w-px bg-white/20"></div>
         <div class="flex items-center gap-1.5">
-          <span class="text-gray-400">Collision State:</span>
-          <span id="satStatusBadge" class="font-bold text-emerald-300 text-[10px]">COLLISION-FREE</span>
+          <span class="text-gray-300">Collision State:</span>
+          <span id="satStatusBadge" class="font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30">COLLISION-FREE</span>
         </div>
       </div>
 
       <!-- Floating Canvas Bottom Controls -->
-      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2.5 flex items-center gap-4 shadow-2xl z-30">
-        <div class="flex items-center gap-1.5 text-xs font-mono text-gray-300 pr-2 border-r border-white/10">
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2.5 flex items-center gap-4 shadow-2xl z-30 border border-white/20">
+        <div class="flex items-center gap-1.5 text-xs font-mono text-gray-200 pr-2 border-r border-white/15">
           <span class="w-2.5 h-2.5 rounded-sm bg-emerald-400"></span> Desks
           <span class="w-2.5 h-2.5 rounded-sm bg-amber-400 ml-2"></span> Chairs
           <span class="w-2.5 h-2.5 rounded-sm bg-cyan-400 ml-2"></span> Collab
@@ -311,18 +311,18 @@
         </div>
         
         <div class="flex items-center gap-1">
-          <button onclick="zoomCanvas(1.2)" class="px-2 py-1 text-gray-300 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom In">
+          <button onclick="zoomCanvas(1.2)" class="px-2 py-1 text-gray-200 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom In">
             <span class="material-symbols-outlined text-sm">zoom_in</span> Zoom +
           </button>
-          <button onclick="zoomCanvas(0.8)" class="px-2 py-1 text-gray-300 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom Out">
+          <button onclick="zoomCanvas(0.8)" class="px-2 py-1 text-gray-200 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom Out">
             <span class="material-symbols-outlined text-sm">zoom_out</span> Zoom -
           </button>
-          <button onclick="fitRoomToScreen()" class="px-2 py-1 text-cyan-400 hover:text-cyan-300 rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Reset Zoom">
+          <button onclick="fitRoomToScreen()" class="px-2 py-1 text-cyan-300 hover:text-cyan-200 rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Reset Zoom">
             <span class="material-symbols-outlined text-sm">fit_screen</span> Fit
           </button>
         </div>
 
-        <div class="text-[11px] font-mono text-cyan-400 pl-2 border-l border-white/10 font-bold" id="zoomLevelDisplay">
+        <div class="text-[11px] font-mono text-cyan-300 pl-2 border-l border-white/15 font-black" id="zoomLevelDisplay">
           100%
         </div>
       </div>
@@ -330,35 +330,35 @@
     </main>
 
     <!-- Right Structured Inspector Sidebar -->
-    <aside class="w-[450px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
+    <aside class="w-[450px] bg-dark-900 border-l border-white/15 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- TOP: Unambiguous Layout Status Card -->
-      <div id="unambiguousStatusCard" class="p-3.5 bg-dark-850 border-b border-white/10 space-y-2">
+      <!-- TOP: Unambiguous Layout Status Card (Dominant Item 11) -->
+      <div id="unambiguousStatusCard" class="p-3.5 bg-dark-850 border-b border-white/15 space-y-2">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-extrabold flex items-center gap-1.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-black flex items-center gap-1.5">
             <span class="material-symbols-outlined text-sm">verified_user</span> UNAMBIGUOUS VERDICT
           </span>
-          <span id="verdictBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black border border-emerald-500/30">✓ 100% VALID</span>
+          <span id="verdictBadge" class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/25 text-emerald-300 font-black border border-emerald-500/40">✓ 100% VALID</span>
         </div>
         
-        <div id="verdictDetailsList" class="text-[11px] font-mono space-y-1 text-gray-300">
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> 8/8 HARD SPATIAL RULES PASSED</div>
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> LYAPUNOV ARBITRATION CONVERGED (Φ: 0.0)</div>
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
+        <div id="verdictDetailsList" class="text-[11px] font-mono space-y-1 text-gray-200">
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> 8/8 HARD SPATIAL RULES PASSED</div>
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> LYAPUNOV ARBITRATION CONVERGED (Φ: 0.0)</div>
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
         </div>
       </div>
 
-      <!-- Executive Quote Summary Card with Stale State Warning (Item 6 & 7) -->
-      <div id="executiveQuoteCard" class="p-3.5 bg-dark-900 border-b border-white/10 space-y-2.5 transition-all">
+      <!-- Executive Quote Summary Card with Dominant Grand Total (Item 11) -->
+      <div id="executiveQuoteCard" class="p-3.5 bg-dark-900 border-b border-white/15 space-y-2.5 transition-all">
         <div class="flex items-center justify-between">
-          <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-extrabold flex items-center gap-1.5">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-gray-300 font-black flex items-center gap-1.5">
             <span class="material-symbols-outlined text-sm text-cyan-400">receipt_long</span> Executive Quote Summary (INR)
           </span>
-          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">PRICED</span>
+          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/25 text-emerald-300 font-black border border-emerald-500/40">PRICED</span>
         </div>
 
-        <!-- Stale State Warning Banner (Item 7) -->
-        <div id="staleStateBanner" class="hidden p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center justify-between animate-pulse">
+        <!-- Stale State Warning Banner -->
+        <div id="staleStateBanner" class="hidden p-2.5 rounded-lg bg-amber-500/15 border border-amber-500/50 text-amber-200 text-xs font-mono flex items-center justify-between animate-pulse">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-base text-amber-400">warning</span>
             <span><b>LAYOUT MODIFIED:</b> Quote Stale</span>
@@ -369,9 +369,9 @@
         </div>
 
         <!-- Dedicated First-Class UNSATISFIABLE Banner -->
-        <div id="unsatisfiableBanner" class="hidden p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 space-y-2 font-mono text-xs">
+        <div id="unsatisfiableBanner" class="hidden p-3 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 space-y-2 font-mono text-xs">
           <div class="flex justify-between items-center">
-            <span class="font-extrabold text-red-400 flex items-center gap-1">
+            <span class="font-black text-red-300 flex items-center gap-1">
               <span class="material-symbols-outlined text-base">error</span> ⚠ UNSATISFIABLE (BOUND EXHAUSTED)
             </span>
             <span class="px-1.5 py-0.2 bg-red-500 text-dark-950 text-[9px] font-black rounded">QUOTE BLOCKED</span>
@@ -379,8 +379,8 @@
           <p class="text-[11px] text-gray-200 leading-tight" id="unsatReasonText">
             No valid collision-free layout exists within the 50-pass deterministic repair space.
           </p>
-          <div class="pt-1.5 border-t border-red-500/20 space-y-1">
-            <div class="text-[10px] font-bold text-gray-300 uppercase">Suggested Architectural Trade-Offs:</div>
+          <div class="pt-1.5 border-t border-red-500/30 space-y-1">
+            <div class="text-[10px] font-bold text-gray-200 uppercase">Suggested Architectural Trade-Offs:</div>
             <div id="tradeOffButtonsContainer" class="flex flex-wrap gap-1.5">
               <!-- Populated dynamically -->
             </div>
@@ -388,58 +388,58 @@
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-xs font-mono">
-          <div onclick="openProvenanceSummary('goods')" class="bg-dark-850 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
-            <span class="text-[10px] text-gray-400 block">NET GOODS</span>
+          <div onclick="openProvenanceSummary('goods')" class="bg-dark-850 p-2.5 rounded-lg border border-white/10 hover:border-cyan-400/50 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block font-semibold">NET GOODS</span>
             <span id="summaryGoods" class="text-sm font-bold text-white">₹0</span>
           </div>
-          <div onclick="openProvenanceSummary('labour')" class="bg-dark-850 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
-            <span class="text-[10px] text-gray-400 block">LABOUR</span>
+          <div onclick="openProvenanceSummary('labour')" class="bg-dark-850 p-2.5 rounded-lg border border-white/10 hover:border-cyan-400/50 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block font-semibold">LABOUR</span>
             <span id="summaryLabour" class="text-sm font-bold text-white">₹0</span>
           </div>
-          <div onclick="openProvenanceSummary('freight')" class="bg-dark-850 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
-            <span class="text-[10px] text-gray-400 block">FREIGHT</span>
+          <div onclick="openProvenanceSummary('freight')" class="bg-dark-850 p-2.5 rounded-lg border border-white/10 hover:border-cyan-400/50 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block font-semibold">FREIGHT</span>
             <span id="summaryFreight" class="text-sm font-bold text-white">₹0</span>
           </div>
         </div>
 
-        <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
-          <span class="text-xs font-bold text-gray-300 uppercase font-mono">GRAND TOTAL:</span>
-          <span id="summaryGrandTotal" class="text-xl font-black text-emerald-400 font-mono tracking-tight">₹0</span>
+        <div class="pt-2 border-t border-white/15 flex justify-between items-baseline">
+          <span class="text-xs font-black text-gray-300 uppercase font-mono">GRAND TOTAL:</span>
+          <span id="summaryGrandTotal" class="text-2xl font-black text-emerald-400 font-mono tracking-tight">₹0</span>
         </div>
       </div>
 
       <!-- MIDDLE: 3 Navigation Segment Tabs -->
-      <div class="flex bg-dark-950 border-b border-white/10 p-1.5 gap-1 text-[11px] font-mono">
-        <button id="tabBtnAudit" onclick="switchMainTab('audit')" class="flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 font-bold flex items-center justify-center gap-1 shadow transition-all">
+      <div class="flex bg-dark-950 border-b border-white/15 p-1.5 gap-1 text-[11px] font-mono">
+        <button id="tabBtnAudit" onclick="switchMainTab('audit')" class="flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-bold flex items-center justify-center gap-1 shadow transition-all">
           <span class="material-symbols-outlined text-xs">verified</span> 8/8 Rules & Margin
         </button>
-        <button id="tabBtnLines" onclick="switchMainTab('lines')" class="flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
+        <button id="tabBtnLines" onclick="switchMainTab('lines')" class="flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
           <span class="material-symbols-outlined text-xs">format_list_bulleted</span> Line Trace
         </button>
-        <button id="tabBtnArbitration" onclick="switchMainTab('arbitration')" class="flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
+        <button id="tabBtnArbitration" onclick="switchMainTab('arbitration')" class="flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
           <span class="material-symbols-outlined text-xs">balance</span> Arbitration (35pt)
         </button>
       </div>
 
       <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER WITH "WHY" & MARGIN -->
       <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
-        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
-          <span class="text-gray-300 font-bold flex items-center gap-1.5">
+        <div class="p-3 bg-dark-850/70 border-b border-white/15 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-200 font-bold flex items-center gap-1.5">
             <span class="material-symbols-outlined text-sm text-emerald-400">check_circle</span> Auditable Constraint Engine
           </span>
           <span class="text-[10px] text-cyan-300 font-bold">Explicit Safety Margins</span>
         </div>
 
         <div id="ruleAuditTable" class="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs font-mono">
-          <!-- Populated dynamically with Rule ID, Measured, Required, Margin, and Why -->
+          <!-- Populated dynamically -->
         </div>
       </div>
 
       <!-- TAB 2: LINE ITEM PROVENANCE TABLE -->
       <div id="tabContentLines" class="flex-1 hidden flex-col overflow-hidden">
-        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
-          <span class="text-gray-300 font-bold">Click any line for full mathematical derivation</span>
-          <span class="text-[10px] text-amber-400 font-bold">Integer INR</span>
+        <div class="p-3 bg-dark-850/70 border-b border-white/15 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-200 font-bold">Click any line for full mathematical derivation</span>
+          <span class="text-[10px] text-amber-300 font-bold">Integer INR</span>
         </div>
         <div id="quoteLinesContainer" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
           <!-- Populated dynamically -->
@@ -450,30 +450,30 @@
       <div id="tabContentArbitration" class="flex-1 hidden flex-col overflow-hidden">
         
         <!-- Convergence Telemetry Header Banner -->
-        <div id="arbitrationTelemetryBanner" class="p-3 bg-dark-850 border-b border-white/10 space-y-1.5 text-[11px] font-mono">
+        <div id="arbitrationTelemetryBanner" class="p-3 bg-dark-850 border-b border-white/15 space-y-1.5 text-[11px] font-mono">
           <div class="flex justify-between items-center">
-            <span class="text-cyan-300 font-extrabold flex items-center gap-1">
+            <span class="text-cyan-300 font-black flex items-center gap-1">
               <span class="material-symbols-outlined text-xs text-cyan-400">timeline</span> ARBITRATION CONVERGENCE
             </span>
-            <span id="traceIterationBadge" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-black text-[10px]">ITERATION 3 / 50</span>
+            <span id="traceIterationBadge" class="px-2 py-0.5 rounded bg-cyan-500/25 text-cyan-200 font-black text-[10px]">ITERATION 3 / 50</span>
           </div>
-          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300 pt-1 border-t border-white/5">
-            <div>Initial Potential: <b id="telemetryInitialPhi" class="text-red-400">Φ = 4,080.0</b></div>
-            <div>Final Potential: <b id="telemetryFinalPhi" class="text-emerald-400">Φ = 0.0</b></div>
+          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-200 pt-1 border-t border-white/10">
+            <div>Initial Potential: <b id="telemetryInitialPhi" class="text-red-400 font-bold">Φ = 4,080.0</b></div>
+            <div>Final Potential: <b id="telemetryFinalPhi" class="text-emerald-300 font-bold">Φ = 0.0</b></div>
           </div>
-          <div class="text-[10px] text-emerald-300 flex items-center gap-1">
+          <div class="text-[10px] text-emerald-300 flex items-center gap-1 font-semibold">
             <span class="material-symbols-outlined text-[12px]">trending_down</span> Strict Monotonicity Verified (ΔΦ &lt; 0)
           </div>
         </div>
 
         <!-- Step-by-Step Interactive Player Bar -->
-        <div class="p-2 bg-dark-950 border-b border-white/10 flex items-center justify-between text-xs font-mono">
+        <div class="p-2 bg-dark-950 border-b border-white/15 flex items-center justify-between text-xs font-mono">
           <div class="flex items-center gap-1.5">
-            <span class="text-gray-400 text-[10px]">Step:</span>
-            <span id="traceStepCounter" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-extrabold text-[10px]">0 / 0</span>
+            <span class="text-gray-300 text-[10px]">Step:</span>
+            <span id="traceStepCounter" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-black text-[10px]">0 / 0</span>
           </div>
           <div class="flex items-center gap-1">
-            <button onclick="stepArbitration(-1)" class="px-2 py-1 rounded bg-dark-800 hover:bg-dark-700 border border-white/10 text-gray-300 hover:text-white font-bold text-[10px]" title="Previous step">
+            <button onclick="stepArbitration(-1)" class="px-2 py-1 rounded bg-dark-800 hover:bg-dark-700 border border-white/15 text-gray-200 hover:text-white font-bold text-[10px]" title="Previous step">
               ◀ Step Back
             </button>
             <button onclick="stepArbitration(1)" class="px-2 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-bold text-[10px]" title="Next repair candidate">
@@ -493,25 +493,25 @@
     </aside>
   </div>
 
-  <!-- ACTIONABLE ERROR MODAL (Item 10) -->
+  <!-- ACTIONABLE ERROR MODAL -->
   <div id="actionableErrorModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-md w-full rounded-2xl border border-red-500/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between border-b border-white/15 pb-3">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-red-400 text-lg">error</span>
           <span class="font-extrabold text-white text-sm" id="errorModalTitle">INPUT VALIDATION ERROR</span>
         </div>
-        <button onclick="closeActionableErrorModal()" class="text-gray-400 hover:text-white p-1">
+        <button onclick="closeActionableErrorModal()" class="text-gray-300 hover:text-white p-1">
           <span class="material-symbols-outlined text-base">close</span>
         </button>
       </div>
 
-      <div id="errorModalContent" class="space-y-2 text-gray-300 leading-relaxed text-xs">
+      <div id="errorModalContent" class="space-y-2 text-gray-200 leading-relaxed text-xs">
         <!-- Populated on error -->
       </div>
 
       <div class="pt-2 flex justify-between items-center">
-        <button onclick="loadSelectedRoom(); closeActionableErrorModal();" class="px-3 py-1.5 bg-dark-800 hover:bg-dark-700 text-cyan-300 font-bold rounded-lg border border-white/10">
+        <button onclick="loadSelectedRoom(); closeActionableErrorModal();" class="px-3 py-1.5 bg-dark-800 hover:bg-dark-700 text-cyan-300 font-bold rounded-lg border border-white/15">
           🔄 Reload Room Specification
         </button>
         <button onclick="closeActionableErrorModal()" class="px-3 py-1.5 bg-red-500 text-white font-bold rounded-lg hover:bg-red-400">
@@ -524,12 +524,12 @@
   <!-- SEAM CONTRACT INSPECTOR MODAL -->
   <div id="seamContractModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-4xl w-full rounded-2xl border border-cyan-400/40 p-6 space-y-4 shadow-2xl font-mono text-xs max-h-[85vh] flex flex-col">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between border-b border-white/15 pb-3">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-cyan-400 text-lg">code_blocks</span>
           <span class="font-extrabold text-white text-sm">SEAM CONTRACT INSPECTOR (CandidateProposal ➔ VerificationFeedback)</span>
         </div>
-        <button onclick="closeSeamContractModal()" class="text-gray-400 hover:text-white p-1">
+        <button onclick="closeSeamContractModal()" class="text-gray-300 hover:text-white p-1">
           <span class="material-symbols-outlined text-base">close</span>
         </button>
       </div>
@@ -541,7 +541,7 @@
             <span>INBOUND: CandidateProposal (JSON)</span>
             <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-200">Generative / Advisory</span>
           </div>
-          <pre id="seamInboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-300 leading-tight select-text"></pre>
+          <pre id="seamInboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-200 leading-tight select-text"></pre>
         </div>
 
         <!-- Outbound Verdict -->
@@ -550,11 +550,11 @@
             <span>OUTBOUND: VerificationFeedback (JSON)</span>
             <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200">Deterministic Verdict</span>
           </div>
-          <pre id="seamOutboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-300 leading-tight select-text"></pre>
+          <pre id="seamOutboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-200 leading-tight select-text"></pre>
         </div>
       </div>
 
-      <div class="pt-2 flex justify-between items-center text-[11px] text-gray-400">
+      <div class="pt-2 flex justify-between items-center text-[11px] text-gray-300">
         <span>Deterministic Guarantee: Strict JSON schema conformance. No floating point drift.</span>
         <button onclick="closeSeamContractModal()" class="px-4 py-1.5 bg-dark-800 text-white font-bold rounded-lg hover:bg-dark-700">
           Close Inspector
@@ -566,12 +566,12 @@
   <!-- TRUST BOUNDARY ARCHITECTURAL MODAL -->
   <div id="trustBoundaryModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-xl w-full rounded-2xl border border-cyan-400/40 p-6 space-y-5 shadow-2xl font-mono text-xs">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between border-b border-white/15 pb-3">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-cyan-400 text-lg">shield</span>
           <span class="font-extrabold text-white text-sm">AI / DETERMINISTIC TRUST BOUNDARY</span>
         </div>
-        <button onclick="closeTrustBoundaryModal()" class="text-gray-400 hover:text-white p-1">
+        <button onclick="closeTrustBoundaryModal()" class="text-gray-300 hover:text-white p-1">
           <span class="material-symbols-outlined text-base">close</span>
         </button>
       </div>
@@ -582,9 +582,9 @@
         <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-400/30 space-y-1">
           <div class="flex justify-between items-center text-cyan-300 font-extrabold text-xs">
             <span>PROBABILISTIC / GENERATIVE LAYER</span>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-400/20 text-cyan-200">Advisory Only</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-400/20 text-cyan-200 font-bold">Advisory Only</span>
           </div>
-          <p class="text-[11px] text-gray-300">
+          <p class="text-[11px] text-gray-200 font-medium">
             • Natural Language Brief Parser<br />
             • Catalog SKU & Finish Intent Proposal<br />
             • Initial Candidate Placement Coordinates
@@ -594,7 +594,7 @@
         <!-- The Seam Contract Boundary -->
         <div class="relative py-2 text-center">
           <div class="absolute inset-0 flex items-center"><div class="w-full border-t-2 border-dashed border-amber-400/60"></div></div>
-          <span class="relative px-3 py-1 bg-dark-900 border border-amber-400 text-amber-300 font-extrabold text-[10px] rounded-full uppercase tracking-wider shadow-lg">
+          <span class="relative px-3 py-1 bg-dark-900 border border-amber-400 text-amber-300 font-black text-[10px] rounded-full uppercase tracking-wider shadow-lg">
             ⚡ IRREVERSIBLE TRUST BOUNDARY (CandidateProposal ➔ VerificationFeedback)
           </span>
         </div>
@@ -603,9 +603,9 @@
         <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
           <div class="flex justify-between items-center text-emerald-300 font-extrabold text-xs">
             <span>DETERMINISTIC VERIFICATION & ARBITRATION CORE</span>
-            <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-400/20 text-emerald-200">Zero LLM / Exact Math</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-400/20 text-emerald-200 font-bold">Zero LLM / Exact Math</span>
           </div>
-          <p class="text-[11px] text-gray-300">
+          <p class="text-[11px] text-gray-200 font-medium">
             • <b>Continuous Spatial Verifier</b>: RB-GEO-001 through RB-GEO-008 (SAT collision)<br />
             • <b>Bounded Arbitration State Machine</b>: Monotonic Lyapunov energy reduction Φ(L)<br />
             • <b>Deterministic Pricing Engine</b>: Integer INR arithmetic, basis point uplifts, labor bands
@@ -613,12 +613,12 @@
         </div>
       </div>
 
-      <div class="p-3 rounded-lg bg-dark-850 border border-white/10 text-[10px] text-gray-300 leading-relaxed">
+      <div class="p-3 rounded-lg bg-dark-850 border border-white/10 text-[10px] text-gray-200 leading-relaxed">
         <b>Core Architecture Invariant:</b> No probabilistic model, neural network, or LLM has authority to override geometry rules, soften clearance constraints, or participate in the pricing calculation path.
       </div>
 
       <div class="pt-2 flex justify-end">
-        <button onclick="closeTrustBoundaryModal()" class="px-4 py-1.5 bg-cyan-500 text-dark-950 font-bold rounded-lg hover:bg-cyan-400 transition-colors">
+        <button onclick="closeTrustBoundaryModal()" class="px-4 py-1.5 bg-cyan-500 text-dark-950 font-black rounded-lg hover:bg-cyan-400 transition-colors">
           Understood
         </button>
       </div>
@@ -628,12 +628,12 @@
   <!-- MATHEMATICAL PROVENANCE MODAL -->
   <div id="provenanceModal" class="fixed inset-0 bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-lg w-full rounded-2xl border border-cyan-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
-      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+      <div class="flex items-center justify-between border-b border-white/15 pb-3">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-cyan-400 text-base">functions</span>
           <span class="font-extrabold text-white text-sm" id="modalTitle">PRICE PROVENANCE TRACE</span>
         </div>
-        <button onclick="closeProvenanceModal()" class="text-gray-400 hover:text-white p-1">
+        <button onclick="closeProvenanceModal()" class="text-gray-300 hover:text-white p-1">
           <span class="material-symbols-outlined text-base">close</span>
         </button>
       </div>
@@ -642,16 +642,16 @@
         <!-- Populated on click -->
       </div>
 
-      <div class="pt-3 border-t border-white/10 flex justify-between items-center text-[11px] text-gray-400">
+      <div class="pt-3 border-t border-white/15 flex justify-between items-center text-[11px] text-gray-300">
         <span>Rule Citations: <b class="text-cyan-300">RB-PRC-009, RB-PRC-010, RB-PRC-014</b></span>
-        <button onclick="closeProvenanceModal()" class="px-3 py-1 bg-dark-800 hover:bg-dark-700 text-white rounded-lg border border-white/10 font-bold">
+        <button onclick="closeProvenanceModal()" class="px-3 py-1 bg-dark-800 hover:bg-dark-700 text-white rounded-lg border border-white/15 font-bold">
           Close
         </button>
       </div>
     </div>
   </div>
 
-  <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 rounded-xl bg-dark-850 border border-cyan-400/40 text-white font-medium text-xs shadow-2xl opacity-0 transform translate-y-3 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2">
+  <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 rounded-xl bg-dark-850 border border-cyan-400/50 text-white font-bold text-xs shadow-2xl opacity-0 transform translate-y-3 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2">
     <span class="material-symbols-outlined text-cyan-400 text-base" id="toastIcon">info</span>
     <span id="toastMsg">Action notification</span>
   </div>
@@ -694,10 +694,10 @@
     function showActionableError(title, msg, expected, source) {
       document.getElementById('errorModalTitle').innerText = title;
       document.getElementById('errorModalContent').innerHTML = `
-        <div class="p-2.5 rounded bg-dark-900 border border-red-500/20 space-y-1">
+        <div class="p-2.5 rounded bg-dark-900 border border-red-500/30 space-y-1">
           <div class="text-red-300 font-bold">${msg}</div>
-          <div class="text-gray-400 text-[10px]">Expected: <b class="text-white">${expected}</b></div>
-          <div class="text-gray-400 text-[10px]">Source: <b class="text-cyan-300 font-mono">${source}</b></div>
+          <div class="text-gray-300 text-[10px]">Expected: <b class="text-white">${expected}</b></div>
+          <div class="text-gray-300 text-[10px]">Source: <b class="text-cyan-300 font-mono">${source}</b></div>
         </div>
       `;
       const m = document.getElementById('actionableErrorModal');
@@ -742,7 +742,6 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
-    // Update Unambiguous Final Status (Item 1 & 6 & 7)
     function updatePipelineState(state, isUnsat = false) {
       const verdictBadge = document.getElementById('verdictBadge');
       const verdictList = document.getElementById('verdictDetailsList');
@@ -753,16 +752,16 @@
 
       if (isUnsat) {
         verdictBadge.innerText = '⚠ UNSATISFIABLE';
-        verdictBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-black border border-red-500/40 animate-pulse';
+        verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50 animate-pulse';
         verdictList.innerHTML = `
-          <div class="flex items-center gap-1.5 text-red-400 font-bold"><span class="material-symbols-outlined text-xs">error</span> 3 HARD SPATIAL CONSTRAINTS UNRESOLVED</div>
-          <div class="flex items-center gap-1.5 text-amber-400 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION EXHAUSTED (50/50 BOUND)</div>
-          <div class="flex items-center gap-1.5 text-red-400 font-bold"><span class="material-symbols-outlined text-xs">block</span> QUOTE ISSUANCE BLOCKED (RB-PRC-013)</div>
+          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> 3 HARD SPATIAL CONSTRAINTS UNRESOLVED</div>
+          <div class="flex items-center gap-1.5 text-amber-300 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION EXHAUSTED (50/50 BOUND)</div>
+          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">block</span> QUOTE ISSUANCE BLOCKED (RB-PRC-013)</div>
         `;
-        pipelineVerdict.className = 'text-red-400 font-extrabold flex items-center gap-1 animate-pulse';
+        pipelineVerdict.className = 'text-red-300 font-black flex items-center gap-1 animate-pulse';
         pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">error</span> UNSATISFIABLE';
         satBadge.innerText = 'UNSATISFIABLE (RB-PRC-013)';
-        satBadge.className = 'font-bold text-red-400 text-[10px]';
+        satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30';
         banner.classList.add('hidden');
         unsatBanner.classList.remove('hidden');
         return;
@@ -773,30 +772,30 @@
       if (state === 'valid') {
         isStale = false;
         verdictBadge.innerText = '✓ 100% VALID';
-        verdictBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-black border border-emerald-500/30';
+        verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/25 text-emerald-300 font-black border border-emerald-500/40';
         verdictList.innerHTML = `
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> 8/8 HARD SPATIAL RULES PASSED</div>
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> LYAPUNOV ARBITRATION CONVERGED (Φ: 0.0)</div>
-          <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> 8/8 HARD SPATIAL RULES PASSED</div>
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> LYAPUNOV ARBITRATION CONVERGED (Φ: 0.0)</div>
+          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
         `;
-        pipelineVerdict.className = 'text-emerald-400 font-extrabold flex items-center gap-1';
+        pipelineVerdict.className = 'text-emerald-300 font-black flex items-center gap-1';
         pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">verified</span> 8/8 Rules Verified';
         satBadge.innerText = 'COLLISION-FREE';
-        satBadge.className = 'font-bold text-emerald-300 text-[10px]';
+        satBadge.className = 'font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30';
         banner.classList.add('hidden');
       } else if (state === 'stale') {
         isStale = true;
         verdictBadge.innerText = '⚠ VIOLATIONS ACTIVE';
-        verdictBadge.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-black border border-red-500/40 animate-pulse';
+        verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50 animate-pulse';
         verdictList.innerHTML = `
-          <div class="flex items-center gap-1.5 text-red-400 font-bold"><span class="material-symbols-outlined text-xs">error</span> SPATIAL CONSTRAINTS VIOLATED</div>
-          <div class="flex items-center gap-1.5 text-amber-400 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION REPAIR REQUIRED</div>
+          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> SPATIAL CONSTRAINTS VIOLATED</div>
+          <div class="flex items-center gap-1.5 text-amber-300 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION REPAIR REQUIRED</div>
           <div class="flex items-center gap-1.5 text-gray-400 line-through"><span class="material-symbols-outlined text-xs">block</span> QUOTE INVALIDATED (STALE)</div>
         `;
-        pipelineVerdict.className = 'text-amber-400 font-extrabold flex items-center gap-1 animate-pulse';
+        pipelineVerdict.className = 'text-amber-300 font-black flex items-center gap-1 animate-pulse';
         pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> Verification Stale';
         satBadge.innerText = 'SAT PENETRATION DETECTED';
-        satBadge.className = 'font-bold text-red-400 text-[10px]';
+        satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30';
         banner.classList.remove('hidden');
       }
     }
@@ -809,11 +808,11 @@
         if (key === tab) {
           content.classList.remove('hidden');
           content.classList.add('flex');
-          btn.className = 'flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 font-bold flex items-center justify-center gap-1 shadow transition-all';
+          btn.className = 'flex-1 py-1.5 rounded-lg bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-black flex items-center justify-center gap-1 shadow transition-all';
         } else {
           content.classList.add('hidden');
           content.classList.remove('flex');
-          btn.className = 'flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all';
+          btn.className = 'flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all';
         }
       });
     }
@@ -886,12 +885,12 @@
       const entries = Object.values(catalog || {});
       document.getElementById('catalogCountBadge').innerText = `${entries.length} Items`;
       document.getElementById('catalogList').innerHTML = entries.map(item => `
-        <div class="p-2 rounded bg-dark-850 border border-white/5 flex justify-between items-center hover:border-cyan-400/40 transition-colors">
+        <div class="p-2 rounded bg-dark-850 border border-white/10 flex justify-between items-center hover:border-cyan-400/50 transition-colors">
           <div>
             <div class="font-bold text-white font-mono text-[11px]">${item.sku}</div>
-            <div class="text-[10px] text-gray-400">${item.name}</div>
+            <div class="text-[10px] text-gray-300">${item.name}</div>
           </div>
-          <div class="text-right font-mono text-[11px] font-bold text-emerald-400">
+          <div class="text-right font-mono text-[11px] font-bold text-emerald-300">
             ${money(item.price)}
           </div>
         </div>
@@ -901,8 +900,8 @@
     function updateExecutiveSummary(q) {
       document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase();
       document.getElementById('quoteStatusBadge').className = q.status === 'priced'
-        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30'
-        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-extrabold border border-red-500/30';
+        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/25 text-emerald-300 font-black border border-emerald-500/40'
+        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/40';
 
       document.getElementById('summaryGoods').innerText = money(q.summary?.goods_after_adjustments_inr || 0);
       document.getElementById('summaryLabour').innerText = money(q.summary?.labour_inr || 0);
@@ -913,31 +912,31 @@
     function renderRuleAuditTable(rules) {
       const table = document.getElementById('ruleAuditTable');
       if (!rules || rules.length === 0) {
-        table.innerHTML = '<div class="text-gray-400 text-center py-4">No audit data available.</div>';
+        table.innerHTML = '<div class="text-gray-300 text-center py-4">No audit data available.</div>';
         return;
       }
       table.innerHTML = rules.map(r => `
-        <div class="p-3 rounded-xl bg-dark-850 border ${r.status === 'PASS' ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/40 bg-red-500/10'} space-y-2 transition-all">
+        <div class="p-3 rounded-xl bg-dark-850 border ${r.status === 'PASS' ? 'border-emerald-500/40 bg-emerald-500/5' : 'border-red-500/50 bg-red-500/10'} space-y-2 transition-all">
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-2">
-              <span class="font-bold text-white text-[11px] font-mono">${r.rule_id}</span>
-              <span class="text-[10px] text-gray-300 font-semibold">${r.name}</span>
+              <span class="font-black text-white text-[11px] font-mono">${r.rule_id}</span>
+              <span class="text-[10px] text-gray-200 font-bold">${r.name}</span>
             </div>
-            <span class="px-2 py-0.5 rounded text-[9px] font-black font-mono ${r.status === 'PASS' ? 'bg-emerald-500 text-dark-950' : 'bg-red-500 text-white'}">${r.status}</span>
+            <span class="px-2 py-0.5 rounded text-[9px] font-black font-mono ${r.status === 'PASS' ? 'bg-emerald-400 text-dark-950' : 'bg-red-500 text-white'}">${r.status}</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300 pt-1.5 border-t border-white/5">
+          <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-200 pt-1.5 border-t border-white/10">
             <div>Measured: <b class="${r.status === 'PASS' ? 'text-emerald-300' : 'text-red-300'} font-bold">${r.measured}</b></div>
             <div>Required: <b class="text-cyan-300 font-bold">${r.required}</b></div>
           </div>
 
-          <div class="p-2 rounded bg-dark-900/80 border border-white/5 text-[10px] space-y-1">
+          <div class="p-2 rounded bg-dark-900/90 border border-white/10 text-[10px] space-y-1">
             <div class="flex justify-between items-center">
-              <span class="text-gray-400 font-semibold">Safety Margin:</span>
-              <span class="font-extrabold ${r.status === 'PASS' ? 'text-emerald-300' : 'text-red-300'} font-mono">${r.margin || 'Verified'}</span>
+              <span class="text-gray-300 font-semibold">Safety Margin:</span>
+              <span class="font-black ${r.status === 'PASS' ? 'text-emerald-300' : 'text-red-300'} font-mono">${r.margin || 'Verified'}</span>
             </div>
-            <div class="text-gray-300 leading-tight">
-              <span class="text-cyan-400 font-bold">Why:</span> ${r.why || r.description}
+            <div class="text-gray-200 leading-tight">
+              <span class="text-cyan-300 font-bold">Why:</span> ${r.why || r.description}
             </div>
           </div>
         </div>
@@ -947,24 +946,24 @@
     function renderQuoteLines(q) {
       const container = document.getElementById('quoteLinesContainer');
       container.innerHTML = (q.lines || []).map((line, idx) => `
-        <div onclick="openLineProvenance(${idx})" class="p-3 rounded-xl bg-dark-850 border border-white/5 hover:border-cyan-400/50 hover:bg-dark-800/80 cursor-pointer transition-all space-y-1.5">
+        <div onclick="openLineProvenance(${idx})" class="p-3 rounded-xl bg-dark-850 border border-white/10 hover:border-cyan-400/60 hover:bg-dark-800 cursor-pointer transition-all space-y-1.5">
           <div class="flex justify-between items-start">
             <div>
               <span class="text-white font-bold">${line.sku}</span>
-              <span class="text-cyan-400 text-[10px] font-normal ml-1">(${line.finish_id})</span>
+              <span class="text-cyan-300 text-[10px] font-semibold ml-1">(${line.finish_id})</span>
             </div>
-            <span class="text-emerald-400 font-bold font-mono text-xs">${money(line.net_goods_inr)}</span>
+            <span class="text-emerald-300 font-black font-mono text-xs">${money(line.net_goods_inr)}</span>
           </div>
-          <div class="flex justify-between text-[10px] text-gray-400">
+          <div class="flex justify-between text-[10px] text-gray-300">
             <span>Qty: ${line.quantity} × ${money(line.unit_list_price_inr)}</span>
-            <span class="text-cyan-300 font-semibold">🔍 Click for Trace</span>
+            <span class="text-cyan-300 font-bold">🔍 Click for Trace</span>
           </div>
-          <div class="flex justify-between text-[9px] text-gray-400 pt-1 border-t border-white/5">
+          <div class="flex justify-between text-[9px] text-gray-300 pt-1 border-t border-white/10">
             <span>Uplift: +${money(line.finish_uplift_inr)}</span>
             <span>Disc: -${money(line.quantity_discount_inr)}</span>
           </div>
         </div>
-      `).join('') || '<div class="text-gray-500 text-center py-4">No quote line items.</div>';
+      `).join('') || '<div class="text-gray-300 text-center py-4">No quote line items.</div>';
     }
 
     function openLineProvenance(idx) {
@@ -976,39 +975,39 @@
 
       document.getElementById('modalTitle').innerText = `PRICE TRACE: ${line.sku} (${line.finish_id})`;
       document.getElementById('modalContent').innerHTML = `
-        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
-          <div class="flex justify-between"><span class="text-gray-400">SKU Identifier:</span> <b class="text-white">${line.sku}</b></div>
-          <div class="flex justify-between"><span class="text-gray-400">Quantity:</span> <b class="text-white">${line.quantity} units</b></div>
-          <div class="flex justify-between"><span class="text-gray-400">Unit List Price:</span> <b class="text-white">${money(line.unit_list_price_inr)}</b></div>
-          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Base List Amount:</span> <b class="text-cyan-300">${money(base)}</b></div>
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/15 space-y-2">
+          <div class="flex justify-between"><span class="text-gray-300">SKU Identifier:</span> <b class="text-white">${line.sku}</b></div>
+          <div class="flex justify-between"><span class="text-gray-300">Quantity:</span> <b class="text-white">${line.quantity} units</b></div>
+          <div class="flex justify-between"><span class="text-gray-300">Unit List Price:</span> <b class="text-white">${money(line.unit_list_price_inr)}</b></div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-200 font-bold">Base List Amount:</span> <b class="text-cyan-300">${money(base)}</b></div>
         </div>
 
-        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/15 space-y-2">
           <div class="flex justify-between items-center">
-            <span class="text-gray-400">Finish Compatibility (RB-PRC-010):</span>
-            <span class="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">${line.finish_id}</span>
+            <span class="text-gray-300">Finish Compatibility (RB-PRC-010):</span>
+            <span class="px-1.5 py-0.2 rounded bg-cyan-500/25 text-cyan-200 text-[10px] font-bold">${line.finish_id}</span>
           </div>
-          <div class="flex justify-between"><span class="text-gray-400">Finish Uplift Rate:</span> <b class="text-white">${upliftBps} bps (${(upliftBps/100).toFixed(1)}%)</b></div>
-          <div class="text-[10px] text-gray-400">Formula: round_half_up(${base} × ${upliftBps} / 10000)</div>
-          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Finish Uplift Amount:</span> <b class="text-emerald-400">+${money(line.finish_uplift_inr)}</b></div>
+          <div class="flex justify-between"><span class="text-gray-300">Finish Uplift Rate:</span> <b class="text-white">${upliftBps} bps (${(upliftBps/100).toFixed(1)}%)</b></div>
+          <div class="text-[10px] text-gray-300">Formula: round_half_up(${base} × ${upliftBps} / 10000)</div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-200 font-bold">Finish Uplift Amount:</span> <b class="text-emerald-300">+${money(line.finish_uplift_inr)}</b></div>
         </div>
 
-        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/15 space-y-2">
           <div class="flex justify-between items-center">
-            <span class="text-gray-400">Quantity Break (RB-PRC-009):</span>
-            <span class="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">${line.quantity >= 20 ? '20+ units' : (line.quantity >= 10 ? '10–19 units' : (line.quantity >= 5 ? '5–9 units' : '1–4 units'))}</span>
+            <span class="text-gray-300">Quantity Break (RB-PRC-009):</span>
+            <span class="px-1.5 py-0.2 rounded bg-amber-500/25 text-amber-200 text-[10px] font-bold">${line.quantity >= 20 ? '20+ units' : (line.quantity >= 10 ? '10–19 units' : (line.quantity >= 5 ? '5–9 units' : '1–4 units'))}</span>
           </div>
-          <div class="flex justify-between"><span class="text-gray-400">Discount Rate:</span> <b class="text-white">${discBps} bps (${(discBps/100).toFixed(1)}%)</b></div>
-          <div class="text-[10px] text-gray-400">Formula: round_half_up(${base} × ${discBps} / 10000)</div>
-          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Quantity Discount:</span> <b class="text-red-400">-${money(line.quantity_discount_inr)}</b></div>
+          <div class="flex justify-between"><span class="text-gray-300">Discount Rate:</span> <b class="text-white">${discBps} bps (${(discBps/100).toFixed(1)}%)</b></div>
+          <div class="text-[10px] text-gray-300">Formula: round_half_up(${base} × ${discBps} / 10000)</div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-200 font-bold">Quantity Discount:</span> <b class="text-red-300">-${money(line.quantity_discount_inr)}</b></div>
         </div>
 
-        <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex justify-between items-baseline">
+        <div class="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 flex justify-between items-baseline">
           <div>
-            <span class="text-xs font-bold text-emerald-300 block">NET LINE GOODS (INR):</span>
-            <span class="text-[10px] text-gray-400">${money(base)} + ${money(line.finish_uplift_inr)} - ${money(line.quantity_discount_inr)}</span>
+            <span class="text-xs font-black text-emerald-300 block">NET LINE GOODS (INR):</span>
+            <span class="text-[10px] text-gray-300">${money(base)} + ${money(line.finish_uplift_inr)} - ${money(line.quantity_discount_inr)}</span>
           </div>
-          <span class="text-lg font-bold text-emerald-400 font-mono">${money(line.net_goods_inr)}</span>
+          <span class="text-lg font-black text-emerald-300 font-mono">${money(line.net_goods_inr)}</span>
         </div>
       `;
 
@@ -1024,14 +1023,14 @@
       if (type === 'goods') {
         document.getElementById('modalTitle').innerText = 'PROVENANCE: NET GOODS (INR)';
         document.getElementById('modalContent').innerHTML = `
-          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
-            <div class="text-gray-300 font-bold">Net Goods Aggregation:</div>
-            <div class="text-xs text-gray-400 leading-relaxed">
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/15 space-y-2">
+            <div class="text-gray-200 font-bold">Net Goods Aggregation:</div>
+            <div class="text-xs text-gray-300 leading-relaxed">
               Sum of all line-item net goods after individual finish uplifts (RB-PRC-010) and quantity break adjustments (RB-PRC-009).
             </div>
             <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
-              <span class="text-gray-300 font-bold">Total Net Goods:</span>
-              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.goods_after_adjustments_inr)}</span>
+              <span class="text-gray-200 font-bold">Total Net Goods:</span>
+              <span class="text-base font-black text-emerald-300 font-mono">${money(q.goods_after_adjustments_inr)}</span>
             </div>
           </div>
         `;
@@ -1040,13 +1039,13 @@
         const rate = mins > 480 ? 750 : (mins > 240 ? 800 : 900);
         document.getElementById('modalTitle').innerText = 'PROVENANCE: LABOUR CALCULATION (RB-PRC-011)';
         document.getElementById('modalContent').innerHTML = `
-          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
-            <div class="flex justify-between"><span class="text-gray-400">Total Assembly Minutes:</span> <b class="text-white">${mins} mins (${(mins/60).toFixed(1)} hrs)</b></div>
-            <div class="flex justify-between"><span class="text-gray-400">Labour Rate Band:</span> <b class="text-cyan-300">${mins > 480 ? '>480m (₹750/hr)' : (mins > 240 ? '241–480m (₹800/hr)' : '0–240m (₹900/hr)')}</b></div>
-            <div class="text-[10px] text-gray-400 pt-1">Formula: round_half_up(${mins} × ${rate} / 60)</div>
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/15 space-y-2">
+            <div class="flex justify-between"><span class="text-gray-300">Total Assembly Minutes:</span> <b class="text-white">${mins} mins (${(mins/60).toFixed(1)} hrs)</b></div>
+            <div class="flex justify-between"><span class="text-gray-300">Labour Rate Band:</span> <b class="text-cyan-300">${mins > 480 ? '>480m (₹750/hr)' : (mins > 240 ? '241–480m (₹800/hr)' : '0–240m (₹900/hr)')}</b></div>
+            <div class="text-[10px] text-gray-300 pt-1">Formula: round_half_up(${mins} × ${rate} / 60)</div>
             <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
-              <span class="text-gray-300 font-bold">Labour Cost (INR):</span>
-              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.labour_inr)}</span>
+              <span class="text-gray-200 font-bold">Labour Cost (INR):</span>
+              <span class="text-base font-black text-emerald-300 font-mono">${money(q.labour_inr)}</span>
             </div>
           </div>
         `;
@@ -1054,13 +1053,13 @@
         const goods = q.goods_after_adjustments_inr;
         document.getElementById('modalTitle').innerText = 'PROVENANCE: FREIGHT CALCULATION (RB-PRC-012)';
         document.getElementById('modalContent').innerHTML = `
-          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
-            <div class="flex justify-between"><span class="text-gray-400">Net Goods Value:</span> <b class="text-white">${money(goods)}</b></div>
-            <div class="flex justify-between"><span class="text-gray-400">Freight Tier Bracket:</span> <b class="text-amber-300">${goods > 250000 ? '>₹250k (400 bps / 4%)' : (goods > 100000 ? '₹100k–₹250k (Flat ₹9,000)' : '≤₹100k (Flat ₹5,000)')}</b></div>
-            <div class="text-[10px] text-gray-400 pt-1">${goods > 250000 ? `Formula: round_half_up(${goods} × 400 / 10000)` : 'Tiered flat rate schedule.'}</div>
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/15 space-y-2">
+            <div class="flex justify-between"><span class="text-gray-300">Net Goods Value:</span> <b class="text-white">${money(goods)}</b></div>
+            <div class="flex justify-between"><span class="text-gray-300">Freight Tier Bracket:</span> <b class="text-amber-300">${goods > 250000 ? '>₹250k (400 bps / 4%)' : (goods > 100000 ? '₹100k–₹250k (Flat ₹9,000)' : '≤₹100k (Flat ₹5,000)')}</b></div>
+            <div class="text-[10px] text-gray-300 pt-1">${goods > 250000 ? `Formula: round_half_up(${goods} × 400 / 10000)` : 'Tiered flat rate schedule.'}</div>
             <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
-              <span class="text-gray-300 font-bold">Freight Cost (INR):</span>
-              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.freight_inr)}</span>
+              <span class="text-gray-200 font-bold">Freight Cost (INR):</span>
+              <span class="text-base font-black text-emerald-300 font-mono">${money(q.freight_inr)}</span>
             </div>
           </div>
         `;
@@ -1095,7 +1094,7 @@
 
       if (!activeViolations || activeViolations.length === 0) {
         canvasPhi.innerText = 'Φ = 0.0';
-        canvasPhi.className = 'font-black text-emerald-400 text-xs';
+        canvasPhi.className = 'font-black text-emerald-300 text-xs';
         const count = traceSteps.length || 3;
         stepCounter.innerText = `${traceSteps.length} / ${currentTraceSteps.length || traceSteps.length || 3}`;
         iterBadge.innerText = `ITERATION ${count} / 50`;
@@ -1108,7 +1107,7 @@
           if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
         });
         canvasPhi.innerText = `Φ = ${curEnergy.toFixed(1)}`;
-        canvasPhi.className = 'font-black text-red-400 text-xs';
+        canvasPhi.className = 'font-black text-red-300 text-xs';
         stepCounter.innerText = `0 / 50`;
         iterBadge.innerText = `ITERATION 0 / 50`;
         initPhi.innerText = `Φ = ${curEnergy.toFixed(1)}`;
@@ -1117,22 +1116,22 @@
 
       if (activeViolations && activeViolations.length > 0) {
         feed.innerHTML = activeViolations.map((v, i) => `
-          <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 space-y-1.5">
+          <div class="p-3 rounded-xl bg-red-500/15 border border-red-500/40 space-y-1.5">
             <div class="flex justify-between items-center">
-              <span class="text-red-400 font-bold font-mono text-[11px]">VIOLATION: ${v.rule_id}</span>
-              <span class="px-2 py-0.5 rounded bg-red-500 text-dark-950 font-extrabold text-[9px]">ACTIVE</span>
+              <span class="text-red-300 font-black font-mono text-[11px]">VIOLATION: ${v.rule_id}</span>
+              <span class="px-2 py-0.5 rounded bg-red-500 text-dark-950 font-black text-[9px]">ACTIVE</span>
             </div>
-            <div class="text-white text-xs font-semibold">${v.message}</div>
-            <div class="p-2 rounded bg-dark-950/70 border border-red-500/20 text-[10px] space-y-0.5">
+            <div class="text-white text-xs font-bold">${v.message}</div>
+            <div class="p-2 rounded bg-dark-950/90 border border-red-500/30 text-[10px] space-y-0.5">
               <div>Affected: <b class="text-white font-mono">${v.affected_placement_ids?.join(', ')}</b></div>
-              <div>Measured: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
-              <div>Required: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
+              <div>Measured: <b class="text-red-300 font-bold">${JSON.stringify(v.measured)}</b></div>
+              <div>Required: <b class="text-emerald-300 font-bold">${JSON.stringify(v.required)}</b></div>
             </div>
           </div>
         `).join('') + `
-          <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-400/30 space-y-1">
-            <div class="text-cyan-300 font-bold text-xs">Ready for Arbitration</div>
-            <p class="text-[11px] text-gray-300">Click <b>"▶ Next Candidate"</b> to step through micro-nudges or <b>"⚡ Auto-Resolve"</b> to converge.</p>
+          <div class="p-3 rounded-xl bg-cyan-500/15 border border-cyan-400/40 space-y-1">
+            <div class="text-cyan-200 font-black text-xs">Ready for Arbitration</div>
+            <p class="text-[11px] text-gray-200">Click <b>"▶ Next Candidate"</b> to step through micro-nudges or <b>"⚡ Auto-Resolve"</b> to converge.</p>
           </div>
         `;
         return;
@@ -1140,41 +1139,41 @@
 
       if (traceSteps.length > 0) {
         feed.innerHTML = traceSteps.map(step => `
-          <div class="p-3 rounded-xl bg-dark-850 border border-white/10 space-y-2.5">
+          <div class="p-3 rounded-xl bg-dark-850 border border-white/15 space-y-2.5">
             <div class="flex justify-between items-center border-b border-white/10 pb-1.5">
               <div class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-[10px] flex items-center justify-center">${step.iteration}</span>
-                <span class="font-bold text-white text-[11px]">${step.violation_rule_id}</span>
+                <span class="w-5 h-5 rounded-full bg-cyan-500/25 text-cyan-300 font-black text-[10px] flex items-center justify-center">${step.iteration}</span>
+                <span class="font-black text-white text-[11px]">${step.violation_rule_id}</span>
               </div>
-              <span class="text-[10px] px-2 py-0.5 rounded font-bold ${step.status === 'REPAIRED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${step.status}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded font-black ${step.status === 'REPAIRED' ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40' : 'bg-amber-500/25 text-amber-300 border border-amber-400/40'}">${step.status}</span>
             </div>
 
-            <div class="text-[11px] text-gray-300">${step.violation_summary}</div>
+            <div class="text-[11px] text-gray-200 font-medium">${step.violation_summary}</div>
 
             <!-- Exact Transformation Matrix Card -->
-            <div class="p-2.5 rounded-lg bg-dark-900 border border-white/10 space-y-1 text-[10px] font-mono">
-              <div class="text-cyan-300 font-bold uppercase">Geometric Transformation Matrix:</div>
-              <div class="flex justify-between text-gray-400"><span>Before Position:</span> <b class="text-white">P001 = (50.0, 1800.0, 0°)</b></div>
-              <div class="flex justify-between text-gray-400"><span>Displacement Vector:</span> <b class="text-emerald-400">Δx = +1,350.0 mm, Δy = 0.0 mm</b></div>
-              <div class="flex justify-between text-gray-400 border-t border-white/5 pt-1"><span>After Position:</span> <b class="text-cyan-300 font-bold">P001 = (1400.0, 1800.0, 0°)</b></div>
+            <div class="p-2.5 rounded-lg bg-dark-900 border border-white/15 space-y-1 text-[10px] font-mono">
+              <div class="text-cyan-300 font-black uppercase">Geometric Transformation Matrix:</div>
+              <div class="flex justify-between text-gray-300"><span>Before Position:</span> <b class="text-white">P001 = (50.0, 1800.0, 0°)</b></div>
+              <div class="flex justify-between text-gray-300"><span>Displacement Vector:</span> <b class="text-emerald-300 font-bold">Δx = +1,350.0 mm, Δy = 0.0 mm</b></div>
+              <div class="flex justify-between text-gray-300 border-t border-white/10 pt-1"><span>After Position:</span> <b class="text-cyan-300 font-black">P001 = (1400.0, 1800.0, 0°)</b></div>
             </div>
 
-            <div class="flex justify-between text-[10px] bg-dark-950 p-2 rounded border border-white/5">
-              <span>Φ Before: <b class="text-red-400 font-mono">${step.phi_before}</b></span>
-              <span>Φ After: <b class="text-emerald-400 font-mono">${step.phi_after}</b></span>
+            <div class="flex justify-between text-[10px] bg-dark-950 p-2 rounded border border-white/10 font-mono">
+              <span>Φ Before: <b class="text-red-400 font-bold">${step.phi_before}</b></span>
+              <span>Φ After: <b class="text-emerald-300 font-bold">${step.phi_after}</b></span>
             </div>
 
             <div class="space-y-1.5 pt-1">
-              <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Candidate Operator Evaluations:</div>
+              <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Evaluations:</div>
               ${step.candidates_evaluated.map(c => `
-                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-red-500/10 border border-red-500/30'} space-y-1">
+                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/15 border border-emerald-500/40' : 'bg-red-500/15 border border-red-500/40'} space-y-1">
                   <div class="flex justify-between items-center text-[10px]">
-                    <span class="font-bold text-white">${c.candidate_id}: ${c.action}</span>
-                    <span class="px-1.5 py-0.2 rounded font-extrabold text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
+                    <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
+                    <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
                   </div>
-                  <div class="flex justify-between text-[9px] text-gray-300">
+                  <div class="flex justify-between text-[9px] text-gray-200">
                     <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
-                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300' : 'text-red-300'}">${c.reason}</span>
+                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300 font-bold' : 'text-red-300 font-bold'}">${c.reason}</span>
                   </div>
                 </div>
               `).join('')}
@@ -1183,11 +1182,11 @@
         `).join('');
       } else {
         feed.innerHTML = `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
-            <div class="flex items-center gap-2 text-emerald-300 font-bold text-xs">
+          <div class="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/40 space-y-2">
+            <div class="flex items-center gap-2 text-emerald-300 font-black text-xs">
               <span class="material-symbols-outlined text-base">verified</span> Global Lyapunov Minimum Verified
             </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
+            <p class="text-xs text-gray-200 leading-relaxed">
               All 8 spatial constraints satisfied with 0 violations. Energy metric Φ(L) = 0.0.
             </p>
           </div>
@@ -1255,7 +1254,7 @@
       ctx.fill();
 
       // Floor Grid
-      ctx.strokeStyle = 'rgba(34, 211, 238, 0.05)';
+      ctx.strokeStyle = 'rgba(34, 211, 238, 0.06)';
       ctx.lineWidth = 1;
       for (let x = minX + 600; x < maxX; x += 600) {
         ctx.beginPath(); ctx.moveTo(toScreenX(x), toScreenY(minY)); ctx.lineTo(toScreenX(x), toScreenY(maxY)); ctx.stroke();
@@ -1280,10 +1279,10 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 3. Dimension Callouts
+      // 3. Dimension Callouts (Bold High Contrast Item 12)
       if (document.getElementById('layerDimensions')?.checked) {
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = 'bold 13px JetBrains Mono, monospace';
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = '800 13px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
         ctx.fillText(`${maxX - minX} mm`, toScreenX((minX + maxX)/2), toScreenY(minY) + 26);
         ctx.save();
@@ -1304,7 +1303,7 @@
           let sx1 = toScreenX(dx), sy1 = toScreenY(dy);
           let sx2 = toScreenX(egress.to_point_mm[0]), sy2 = toScreenY(egress.to_point_mm[1]);
 
-          ctx.strokeStyle = 'rgba(52, 211, 153, 0.14)';
+          ctx.strokeStyle = 'rgba(52, 211, 153, 0.16)';
           ctx.lineWidth = (egress.min_width_mm || 1100) * zoom;
           ctx.lineCap = 'round';
           ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
@@ -1328,7 +1327,7 @@
           let sx = toScreenX(hx), sy = toScreenY(hy);
           let r = 850 * zoom;
 
-          ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
+          ctx.fillStyle = 'rgba(251, 191, 36, 0.14)';
           ctx.strokeStyle = '#fbbf24';
           ctx.lineWidth = 1.5;
           ctx.beginPath();
@@ -1343,13 +1342,13 @@
         });
       }
 
-      // 6. Furniture Placements
+      // 6. Furniture Placements (High Contrast Badges Item 12)
       const familyStyles = {
-        'desk': { fill: 'rgba(52, 211, 153, 0.88)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
-        'chair': { fill: 'rgba(251, 191, 36, 0.88)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
-        'storage': { fill: 'rgba(244, 114, 182, 0.88)', stroke: '#f472b6', inner: '#ec4899', text: '#500724' },
-        'collaboration': { fill: 'rgba(34, 211, 238, 0.88)', stroke: '#22d3ee', inner: '#06b6d4', text: '#083344' },
-        'accessory': { fill: 'rgba(167, 139, 250, 0.88)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
+        'desk': { fill: 'rgba(52, 211, 153, 0.90)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
+        'chair': { fill: 'rgba(251, 191, 36, 0.90)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
+        'storage': { fill: 'rgba(244, 114, 182, 0.90)', stroke: '#f472b6', inner: '#ec4899', text: '#500724' },
+        'collaboration': { fill: 'rgba(34, 211, 238, 0.90)', stroke: '#22d3ee', inner: '#06b6d4', text: '#083344' },
+        'accessory': { fill: 'rgba(167, 139, 250, 0.90)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
       };
 
       const violatedPids = new Set();
@@ -1379,12 +1378,12 @@
 
         if (isViolated) {
           ctx.shadowColor = '#ef4444';
-          ctx.shadowBlur = 20;
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.92)';
+          ctx.shadowBlur = 22;
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.95)';
           ctx.strokeStyle = '#f87171';
         } else if (isHovered) {
           ctx.shadowColor = '#22d3ee';
-          ctx.shadowBlur = 18;
+          ctx.shadowBlur = 20;
           ctx.fillStyle = style.fill;
           ctx.strokeStyle = '#ffffff';
         } else {
@@ -1401,13 +1400,13 @@
 
         if (isViolated) {
           ctx.fillStyle = '#ffffff';
-          ctx.font = '800 12px JetBrains Mono, monospace';
+          ctx.font = '900 12px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(`⚠ ${p.placement_id}`, 0, 0);
         } else if (document.getElementById('layerLabels')?.checked) {
           ctx.fillStyle = style.text;
-          ctx.font = '800 11px JetBrains Mono, monospace';
+          ctx.font = '900 11px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(p.placement_id, 0, 0);
@@ -1442,7 +1441,7 @@
           document.getElementById('unsatReasonText').innerText = simRes.violations[0]?.message || 'No valid collision-free layout exists.';
           const btnContainer = document.getElementById('tradeOffButtonsContainer');
           btnContainer.innerHTML = (simRes.trade_offs || []).map(t => `
-            <button onclick="applyTradeOff('${t.action}')" class="px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-white text-[10px] font-bold transition-all">
+            <button onclick="applyTradeOff('${t.action}')" class="px-2.5 py-1 rounded bg-red-500/25 hover:bg-red-500/35 border border-red-500/40 text-white text-[10px] font-black transition-all">
               ⚡ ${t.title}
             </button>
           `).join('');
