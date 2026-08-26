@@ -300,8 +300,8 @@
         </div>
         <div class="h-3 w-px bg-white/20"></div>
         <div class="flex items-center gap-1.5">
-          <span class="text-gray-300">Collision State:</span>
-          <span id="satStatusBadge" class="font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30">COLLISION-FREE</span>
+          <span class="text-gray-300">Constraint State:</span>
+          <span id="satStatusBadge" class="font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30">ALL RULES PASSED</span>
         </div>
       </div>
 
@@ -806,7 +806,7 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
-    function updatePipelineState(state, isUnsat = false) {
+    function updatePipelineState(state, isUnsat = false, activeRuleId = '') {
       const verdictBadge = document.getElementById('verdictBadge');
       const verdictList = document.getElementById('verdictDetailsList');
       const banner = document.getElementById('staleStateBanner');
@@ -818,7 +818,7 @@
         verdictBadge.innerText = '⚠ UNSATISFIABLE';
         verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50 animate-pulse';
         verdictList.innerHTML = `
-          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> 3 HARD SPATIAL CONSTRAINTS UNRESOLVED</div>
+          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> HARD SPATIAL CONSTRAINTS UNRESOLVED</div>
           <div class="flex items-center gap-1.5 text-amber-300 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION EXHAUSTED (50/50 BOUND)</div>
           <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">block</span> QUOTE ISSUANCE BLOCKED (RB-PRC-013)</div>
         `;
@@ -844,22 +844,23 @@
         `;
         pipelineVerdict.className = 'text-emerald-300 font-black flex items-center gap-1';
         pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">verified</span> 8/8 Rules Verified';
-        satBadge.innerText = 'COLLISION-FREE';
+        satBadge.innerText = 'ALL RULES PASSED';
         satBadge.className = 'font-black text-emerald-300 text-[10px] px-1.5 py-0.2 rounded bg-emerald-500/20 border border-emerald-400/30';
         banner.classList.add('hidden');
       } else if (state === 'stale') {
         isStale = true;
+        const ruleLabel = activeRuleId || 'RB-GEO';
         verdictBadge.innerText = '⚠ VIOLATIONS ACTIVE';
         verdictBadge.className = 'text-[11px] font-mono px-2.5 py-0.5 rounded bg-red-500/25 text-red-200 font-black border border-red-500/50 animate-pulse';
         verdictList.innerHTML = `
-          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> SPATIAL CONSTRAINTS VIOLATED</div>
+          <div class="flex items-center gap-1.5 text-red-300 font-bold"><span class="material-symbols-outlined text-xs">error</span> SPATIAL CONSTRAINTS VIOLATED (${ruleLabel})</div>
           <div class="flex items-center gap-1.5 text-amber-300 font-bold"><span class="material-symbols-outlined text-xs">pending</span> ARBITRATION REPAIR REQUIRED</div>
           <div class="flex items-center gap-1.5 text-gray-400 line-through"><span class="material-symbols-outlined text-xs">block</span> QUOTE INVALIDATED (STALE)</div>
         `;
         pipelineVerdict.className = 'text-amber-300 font-black flex items-center gap-1 animate-pulse';
         pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> Verification Stale';
-        satBadge.innerText = 'SAT PENETRATION DETECTED';
-        satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30';
+        satBadge.innerText = `VIOLATION: ${ruleLabel}`;
+        satBadge.className = 'font-black text-red-300 text-[10px] px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30 animate-pulse';
         banner.classList.remove('hidden');
       }
     }
@@ -938,7 +939,9 @@
         renderRuleAuditTable(currentData.rule_audit || []);
         renderQuoteLines(currentData.quote);
         renderArbitrationTrace(currentTraceSteps, currentData.layout.violations);
-        updatePipelineState(currentData.layout.violations?.length ? 'stale' : 'valid');
+        
+        const hasViols = currentData.layout.violations && currentData.layout.violations.length > 0;
+        updatePipelineState(hasViols ? 'stale' : 'valid', false, hasViols ? currentData.layout.violations[0]?.rule_id : '');
         fitRoomToScreen();
       } catch (err) {
         showActionableError('NETWORK ERROR', err.message, 'Active FastAPI server on port 8080', 'rulebound/api.py');
@@ -1445,7 +1448,7 @@
         const sd = item.depth * zoom;
 
         const isHovered = hoveredPlacement && hoveredPlacement.placement_id === p.placement_id;
-        const isViolated = violatedPids.has(p.placement_id);
+        const isViolated = violatedPids.has(p.placement_id) || p.x_mm < minX || p.x_mm + item.width > maxX || p.y_mm < minY || p.y_mm + item.depth > maxY;
 
         ctx.save();
         ctx.translate(scx, scy);
@@ -1455,7 +1458,7 @@
 
         if (isViolated) {
           ctx.shadowColor = '#ef4444';
-          ctx.shadowBlur = 22;
+          ctx.shadowBlur = 24;
           ctx.fillStyle = 'rgba(239, 68, 68, 0.95)';
           ctx.strokeStyle = '#f87171';
         } else if (isHovered) {
@@ -1531,7 +1534,7 @@
 
         switchMainTab('arbitration');
         renderArbitrationTrace([], simRes.violations);
-        updatePipelineState('stale');
+        updatePipelineState('stale', false, simRes.violations[0]?.rule_id || '');
         draw();
         showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
       } catch (err) {
@@ -1569,9 +1572,18 @@
         renderRuleAuditTable(result.rule_audit || []);
         renderQuoteLines(result.quote);
         updateExecutiveSummary(result.quote);
-        updatePipelineState('valid');
+
+        if (result.is_valid && (!result.layout.violations || result.layout.violations.length === 0)) {
+          updatePipelineState('valid');
+          showToast('Arbitration Success: 100% Constraints Repaired!', 'check_circle');
+        } else if (result.layout.status === 'unsatisfiable') {
+          updatePipelineState('stale', true);
+          showToast('⚠ Arbitration Exhausted: Unsatisfiable Configuration', 'error');
+        } else {
+          updatePipelineState('stale', false, result.layout.violations[0]?.rule_id || '');
+          showToast(`Arbitration in progress (${result.layout.violations.length} violations remain)`, 'warning');
+        }
         draw();
-        showToast(result.is_valid ? 'Arbitration Success: 100% Constraints Repaired!' : 'Arbitration in progress', 'check_circle');
       } catch (err) {
         showActionableError('ARBITRATION ERROR', err.message, 'Valid collision-free geometry resolution', 'rulebound/arbitration.py');
       }

@@ -94,13 +94,17 @@ def compute_energy_metric(violations: list[Violation]) -> float:
             score += max(0.0, float(v.required["min_half_width_mm"]) - float(v.measured["corridor_distance_mm"]))
         if "swing_encroachment_mm" in v.measured:
             score += float(v.measured["swing_encroachment_mm"])
+        if "measured_rear_clearance_mm" in v.measured and "min_rear_clearance_mm" in v.required:
+            score += max(0.0, float(v.required["min_rear_clearance_mm"]) - float(v.measured["measured_rear_clearance_mm"]))
+        if "measured_pull_depth_mm" in v.measured and "min_pull_depth_mm" in v.required:
+            score += max(0.0, float(v.required["min_pull_depth_mm"]) - float(v.measured["measured_pull_depth_mm"]))
     return round(score, 2)
 
 
 class ArbitrationEngine:
     """
     Deterministic arbitration state machine enforcing bounded, terminating repair loops
-    with full line-level decision tracing.
+    with full line-level decision tracing across all 8 spatial rules.
     """
 
     def __init__(self, max_passes: int = 50):
@@ -172,7 +176,14 @@ class ArbitrationEngine:
                         c_canon[p_idx].rotation_deg = crot
                         candidates_list.append(("C2", c_canon, f"Snap {pid} to collision-free anchor ({round(cx)}, {round(cy)})"))
 
-                    # 3. Candidate 3: Wall offset snapping
+                    # 3. Candidate 3: Boundary Containment Clamping (RB-GEO-007)
+                    if primary_v.rule_id == "RB-GEO-007" or placements[p_idx].x_mm < min_x or placements[p_idx].x_mm + w > max_x or placements[p_idx].y_mm < min_y or placements[p_idx].y_mm + d > max_y:
+                        c_bound = copy.deepcopy(placements)
+                        c_bound[p_idx].x_mm = min(max(min_x + 150.0, c_bound[p_idx].x_mm), max_x - w - 150.0)
+                        c_bound[p_idx].y_mm = min(max(min_y + 150.0, c_bound[p_idx].y_mm), max_y - d - 150.0)
+                        candidates_list.append(("C_BOUND", c_bound, f"Clamp {pid} inside room boundary envelope"))
+
+                    # 4. Candidate 4: Wall offset snapping (RB-GEO-005)
                     if primary_v.rule_id == "RB-GEO-005":
                         c_wall = copy.deepcopy(placements)
                         if c_wall[p_idx].x_mm < min_x + 100.0:
@@ -183,26 +194,63 @@ class ArbitrationEngine:
                             c_wall[p_idx].y_mm = min_y + 150.0
                         if c_wall[p_idx].y_mm + d > max_y - 100.0:
                             c_wall[p_idx].y_mm = max_y - 150.0 - d
-                        candidates_list.append(("C3", c_wall, f"Snap {pid} to interior wall envelope (150mm gap)"))
+                        candidates_list.append(("C_WALL", c_wall, f"Snap {pid} to interior wall envelope (150mm gap)"))
 
-                    # 4. Candidate 4: Egress corridor clearance
+                    # 5. Candidate 5: Egress corridor clearance (RB-GEO-002)
                     if primary_v.rule_id == "RB-GEO-002":
                         c_egress = copy.deepcopy(placements)
                         c_egress[p_idx].y_mm = max(min_y + 150.0, c_egress[p_idx].y_mm - 600.0)
-                        candidates_list.append(("C4", c_egress, f"Shift {pid} outside egress clearance zone"))
+                        candidates_list.append(("C_EGRESS", c_egress, f"Shift {pid} outside egress clearance zone"))
 
-                    # 5. Candidate 5..8: Directional shifts
+                    # 6. Candidate 6: SAT Overlap Normal Separations (RB-GEO-006)
+                    if primary_v.rule_id == "RB-GEO-006" and len(primary_v.affected_placement_ids) >= 2:
+                        pid2 = primary_v.affected_placement_ids[1]
+                        p2_idx = next((i for i, p in enumerate(placements) if p.placement_id == pid2), None)
+                        if p2_idx is not None:
+                            c_sat = copy.deepcopy(placements)
+                            shift = 700.0
+                            if abs(c_sat[p_idx].x_mm - c_sat[p2_idx].x_mm) > abs(c_sat[p_idx].y_mm - c_sat[p2_idx].y_mm):
+                                c_sat[p_idx].x_mm += shift if c_sat[p_idx].x_mm >= c_sat[p2_idx].x_mm else -shift
+                            else:
+                                c_sat[p_idx].y_mm += shift if c_sat[p_idx].y_mm >= c_sat[p2_idx].y_mm else -shift
+                            c_sat[p_idx].x_mm = min(max(min_x + 150.0, c_sat[p_idx].x_mm), max_x - w - 150.0)
+                            c_sat[p_idx].y_mm = min(max(min_y + 150.0, c_sat[p_idx].y_mm), max_y - d - 150.0)
+                            candidates_list.append(("C_SAT", c_sat, f"SAT Separation vector between {pid} and {pid2}"))
+
+                    # 7. Directional clearance explorations
                     directions = [
                         (400.0, 0.0, "East clearance shift +400mm"),
                         (-400.0, 0.0, "West clearance shift -400mm"),
                         (0.0, 400.0, "North clearance shift +400mm"),
                         (0.0, -400.0, "South clearance shift -400mm"),
+                        (800.0, 0.0, "Longitudinal clearance shift +800mm"),
+                        (-800.0, 0.0, "Longitudinal clearance shift -800mm"),
                     ]
-                    for idx, (dx, dy, desc) in enumerate(directions, start=5):
+                    for idx, (dx, dy, desc) in enumerate(directions, start=7):
                         c_dir = copy.deepcopy(placements)
-                        c_dir[p_idx].x_mm += dx
-                        c_dir[p_idx].y_mm += dy
+                        c_dir[p_idx].x_mm = min(max(min_x + 150.0, c_dir[p_idx].x_mm + dx), max_x - w - 150.0)
+                        c_dir[p_idx].y_mm = min(max(min_y + 150.0, c_dir[p_idx].y_mm + dy), max_y - d - 150.0)
                         candidates_list.append((f"C{idx}", c_dir, f"{pid}: {desc}"))
+
+                    # 8. Fine Grid Clearance Scanner
+                    best_grid_pls = None
+                    best_grid_phi = phi_before
+                    for gx in range(int(min_x + 150), int(max_x - w - 150), 300):
+                        for gy in range(int(min_y + 150), int(max_y - d - 150), 300):
+                            c_grid = copy.deepcopy(placements)
+                            c_grid[p_idx].x_mm = float(gx)
+                            c_grid[p_idx].y_mm = float(gy)
+                            g_viols = verify_spatial_constraints(room, c_grid, pack)
+                            g_phi = compute_energy_metric(g_viols)
+                            if g_phi < best_grid_phi:
+                                best_grid_phi = g_phi
+                                best_grid_pls = c_grid
+                                if g_phi == 0.0:
+                                    break
+                        if best_grid_phi == 0.0:
+                            break
+                    if best_grid_pls is not None:
+                        candidates_list.append(("C_GRID", best_grid_pls, f"Relocate {pid} to collision-free open cell"))
 
             # Evaluate all candidates
             evaluated_evals = []
