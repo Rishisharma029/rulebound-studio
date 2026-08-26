@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RuleBound Studio | Commercial CAD, Arbitration & Pricing Platform</title>
+  <title>RuleBound Studio | Commercial CAD, Auditable Rules & Traceable Pricing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -37,7 +37,7 @@
       background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
     }
     .glass-card {
-      background: rgba(12, 19, 34, 0.88);
+      background: rgba(12, 19, 34, 0.90);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -63,7 +63,7 @@
       </div>
       <div class="h-4 w-px bg-white/10 mx-1"></div>
       
-      <!-- Room Quick Picker -->
+      <!-- Room Picker -->
       <div class="flex items-center gap-2">
         <span class="material-symbols-outlined text-gray-400 text-sm">meeting_room</span>
         <select id="roomSelect" class="bg-dark-850 border border-white/10 rounded-md px-2.5 py-1 text-xs font-semibold text-white focus:outline-none focus:border-cyan-400 cursor-pointer">
@@ -78,11 +78,11 @@
       <!-- Engine Status Badge -->
       <div id="engineStatusBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-semibold">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="engineStatusText">ARBITRATION ENGINE ONLINE</span>
+        <span id="engineStatusText">DETERMINISTIC VERIFIER ONLINE</span>
       </div>
     </div>
 
-    <!-- Center/Right Header Actions: Injected Violation & Run Arbitration -->
+    <!-- Center/Right Header Actions -->
     <div class="flex items-center gap-2.5">
       <button onclick="injectViolation()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
         <span class="material-symbols-outlined text-sm text-red-400">bolt</span> ⚡ Inject Violation
@@ -253,95 +253,115 @@
 
     </main>
 
-    <!-- Right Inspector Sidebar: Dedicated ARBITRATION & PRICING Panels -->
-    <aside class="w-[430px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
+    <!-- Right Structured Inspector Sidebar -->
+    <aside class="w-[450px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- Tab Header Buttons -->
-      <div class="flex bg-dark-850 border-b border-white/10 p-1.5 gap-1.5">
-        <button id="tabBtnArbitration" onclick="switchTab('arbitration')" class="flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all">
-          <span class="material-symbols-outlined text-sm">gavel</span> ARBITRATION TRACE (35pt)
-        </button>
-        <button id="tabBtnPricing" onclick="switchTab('pricing')" class="flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all">
-          <span class="material-symbols-outlined text-sm">payments</span> PRICING (25pt)
-        </button>
-      </div>
-
-      <!-- TAB 1: ARBITRATION & DECISION TRACE (THE 35-POINT HERO PANEL) -->
-      <div id="tabContentArbitration" class="flex-1 flex flex-col overflow-hidden">
-        
-        <!-- Energy Metric Header Card -->
-        <div class="p-3.5 bg-dark-850 border-b border-white/10 space-y-2">
-          <div class="flex items-center justify-between">
-            <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold">Lyapunov State Function</span>
-            <span id="arbitrationStatusBadge" class="text-[10px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">CONVERGED (0 VIOLATIONS)</span>
-          </div>
-          
-          <div class="grid grid-cols-3 gap-2 text-xs font-mono pt-1">
-            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
-              <span class="text-[10px] text-gray-400 block">ENERGY Φ(L)</span>
-              <span id="tracePhiScore" class="text-base font-bold text-emerald-400">0.0</span>
-            </div>
-            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
-              <span class="text-[10px] text-gray-400 block">ACTIVE VIOLATIONS</span>
-              <span id="traceViolationCount" class="text-base font-bold text-emerald-400">0</span>
-            </div>
-            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
-              <span class="text-[10px] text-gray-400 block">PASS BOUND</span>
-              <span id="tracePassCount" class="text-base font-bold text-cyan-300">0 / 50</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Scrollable Arbitration Decision Stream -->
-        <div id="arbitrationTraceFeed" class="flex-1 overflow-y-auto p-3.5 space-y-3 font-mono text-xs">
-          <!-- Populated by JS with rich Candidate 1, Candidate 2, Accept/Reject cards -->
-        </div>
-
-        <!-- Bottom Action Explainer -->
-        <div class="p-3 bg-dark-850 border-t border-white/10 flex items-center justify-between text-[11px] font-mono">
-          <span class="text-gray-400 flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-emerald-400">check_circle</span> Monotonic convergence: Φ(t+1) &lt; Φ(t)
+      <!-- TOP: Crisp Quote Executive Summary Card -->
+      <div class="p-4 bg-dark-850 border-b border-white/10 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-extrabold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">receipt_long</span> Executive Quote Summary (INR)
           </span>
-          <button onclick="runArbitrationTrace()" class="text-cyan-400 hover:underline font-bold text-[11px]">
-            Re-Arbitrate
-          </button>
+          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">PRICED</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2 text-xs font-mono">
+          <div onclick="openProvenanceSummary('goods')" class="bg-dark-900 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block">NET GOODS</span>
+            <span id="summaryGoods" class="text-sm font-bold text-white">₹0</span>
+          </div>
+          <div onclick="openProvenanceSummary('labour')" class="bg-dark-900 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block">LABOUR</span>
+            <span id="summaryLabour" class="text-sm font-bold text-white">₹0</span>
+          </div>
+          <div onclick="openProvenanceSummary('freight')" class="bg-dark-900 p-2.5 rounded-lg border border-white/5 hover:border-cyan-400/40 cursor-pointer transition-colors">
+            <span class="text-[10px] text-gray-400 block">FREIGHT</span>
+            <span id="summaryFreight" class="text-sm font-bold text-white">₹0</span>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+          <span class="text-xs font-bold text-gray-300 uppercase font-mono">GRAND TOTAL:</span>
+          <span id="summaryGrandTotal" class="text-xl font-black text-emerald-400 font-mono tracking-tight">₹0</span>
         </div>
       </div>
 
-      <!-- TAB 2: DETERMINISTIC PRICING BREAKDOWN -->
-      <div id="tabContentPricing" class="flex-1 hidden flex-col overflow-hidden">
-        <div class="p-3 bg-dark-850 flex justify-between items-center border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-amber-400 text-base">payments</span>
-            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Reconciled Quote (INR)</span>
-          </div>
-          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">PRICED</span>
+      <!-- MIDDLE: 3 Navigation Segment Tabs -->
+      <div class="flex bg-dark-950 border-b border-white/10 p-1.5 gap-1 text-[11px] font-mono">
+        <button id="tabBtnAudit" onclick="switchMainTab('audit')" class="flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 font-bold flex items-center justify-center gap-1 shadow transition-all">
+          <span class="material-symbols-outlined text-xs">verified</span> 8/8 Rules
+        </button>
+        <button id="tabBtnLines" onclick="switchMainTab('lines')" class="flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
+          <span class="material-symbols-outlined text-xs">format_list_bulleted</span> Line Trace
+        </button>
+        <button id="tabBtnArbitration" onclick="switchMainTab('arbitration')" class="flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
+          <span class="material-symbols-outlined text-xs">balance</span> Arbitration
+        </button>
+      </div>
+
+      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER (Solves Issue #2) -->
+      <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-300 font-bold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-emerald-400">check_circle</span> Auditable Constraint Engine
+          </span>
+          <span class="text-[10px] text-cyan-300 font-bold">100% Deterministic</span>
         </div>
 
-        <!-- Scrollable Quote Lines Table -->
+        <div id="ruleAuditTable" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
+          <!-- Populated dynamically with all 8 rules, measured vs required -->
+        </div>
+      </div>
+
+      <!-- TAB 2: LINE ITEM PROVENANCE TABLE (Solves Issue #3) -->
+      <div id="tabContentLines" class="flex-1 hidden flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-300 font-bold">Click any line for full mathematical derivation</span>
+          <span class="text-[10px] text-amber-400 font-bold">Integer INR</span>
+        </div>
         <div id="quoteLinesContainer" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
-          <!-- Populated by JS -->
+          <!-- Populated dynamically -->
         </div>
+      </div>
 
-        <!-- Quote Summary Footer -->
-        <div class="p-3.5 bg-dark-850 border-t border-white/10 space-y-1.5 font-mono text-xs">
-          <div class="flex justify-between text-gray-400">
-            <span>Net Goods (After Disc):</span> <span id="summaryGoods" class="text-white font-semibold">₹0</span>
-          </div>
-          <div class="flex justify-between text-gray-400">
-            <span>Labour (Band Rate):</span> <span id="summaryLabour" class="text-white font-semibold">₹0</span>
-          </div>
-          <div class="flex justify-between text-gray-400">
-            <span>Freight (Tier):</span> <span id="summaryFreight" class="text-white font-semibold">₹0</span>
-          </div>
-          <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
-            <span class="text-xs font-bold text-cyan-400 uppercase">Grand Total (INR):</span>
-            <span id="summaryGrandTotal" class="text-lg font-bold text-emerald-400 font-mono">₹0</span>
-          </div>
+      <!-- TAB 3: ARBITRATION & DECISION TRACE (Solves Issue #1) -->
+      <div id="tabContentArbitration" class="flex-1 hidden flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-300 font-bold">Lyapunov State Machine Trace</span>
+          <span id="tracePassCount" class="text-[10px] text-cyan-300 font-bold">Pass: 0 / 50</span>
+        </div>
+        <div id="arbitrationTraceFeed" class="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs font-mono">
+          <!-- Populated dynamically with Candidate Evaluations -->
         </div>
       </div>
 
     </aside>
+  </div>
+
+  <!-- MATHEMATICAL PROVENANCE MODAL (Full Provenance Inspector) -->
+  <div id="provenanceModal" class="fixed inset-0 bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-lg w-full rounded-2xl border border-cyan-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-cyan-400 text-base">functions</span>
+          <span class="font-extrabold text-white text-sm" id="modalTitle">PRICE PROVENANCE TRACE</span>
+        </div>
+        <button onclick="closeProvenanceModal()" class="text-gray-400 hover:text-white p-1">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <div id="modalContent" class="space-y-3 text-xs leading-relaxed text-gray-200">
+        <!-- Populated on click -->
+      </div>
+
+      <div class="pt-3 border-t border-white/10 flex justify-between items-center text-[11px] text-gray-400">
+        <span>Rule Citations: <b class="text-cyan-300">RB-PRC-009, RB-PRC-010, RB-PRC-014</b></span>
+        <button onclick="closeProvenanceModal()" class="px-3 py-1 bg-dark-800 hover:bg-dark-700 text-white rounded-lg border border-white/10 font-bold">
+          Close
+        </button>
+      </div>
+    </div>
   </div>
 
   <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 rounded-xl bg-dark-850 border border-cyan-400/40 text-white font-medium text-xs shadow-2xl opacity-0 transform translate-y-3 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2">
@@ -359,22 +379,21 @@
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
 
-    function switchTab(tab) {
-      if (tab === 'arbitration') {
-        document.getElementById('tabContentArbitration').classList.remove('hidden');
-        document.getElementById('tabContentArbitration').classList.add('flex');
-        document.getElementById('tabContentPricing').classList.add('hidden');
-        document.getElementById('tabContentPricing').classList.remove('flex');
-        document.getElementById('tabBtnArbitration').className = 'flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all';
-        document.getElementById('tabBtnPricing').className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all';
-      } else {
-        document.getElementById('tabContentPricing').classList.remove('hidden');
-        document.getElementById('tabContentPricing').classList.add('flex');
-        document.getElementById('tabContentArbitration').classList.add('hidden');
-        document.getElementById('tabContentArbitration').classList.remove('flex');
-        document.getElementById('tabBtnPricing').className = 'flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all';
-        document.getElementById('tabBtnArbitration').className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all';
-      }
+    function switchMainTab(tab) {
+      ['Audit', 'Lines', 'Arbitration'].forEach(t => {
+        const key = t.toLowerCase();
+        const content = document.getElementById(`tabContent${t}`);
+        const btn = document.getElementById(`tabBtn${t}`);
+        if (key === tab) {
+          content.classList.remove('hidden');
+          content.classList.add('flex');
+          btn.className = 'flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 font-bold flex items-center justify-center gap-1 shadow transition-all';
+        } else {
+          content.classList.add('hidden');
+          content.classList.remove('flex');
+          btn.className = 'flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all';
+        }
+      });
     }
 
     function showToast(msg, icon = 'info') {
@@ -422,7 +441,9 @@
         document.getElementById('dxfExportLink').href = `/api/v1/room/${roomId}/dxf`;
 
         renderCatalogList(currentData.catalog);
-        updateQuoteUI(currentData.quote);
+        updateExecutiveSummary(currentData.quote);
+        renderRuleAuditTable(currentData.rule_audit || []);
+        renderQuoteLines(currentData.quote);
         renderArbitrationTrace(currentData.arbitration_trace || [], currentData.layout.violations);
         fitRoomToScreen();
       } catch (err) {
@@ -444,6 +465,273 @@
           </div>
         </div>
       `).join('');
+    }
+
+    function updateExecutiveSummary(q) {
+      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase();
+      document.getElementById('quoteStatusBadge').className = q.status === 'priced'
+        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30'
+        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-extrabold border border-red-500/30';
+
+      document.getElementById('summaryGoods').innerText = money(q.summary?.goods_after_adjustments_inr || 0);
+      document.getElementById('summaryLabour').innerText = money(q.summary?.labour_inr || 0);
+      document.getElementById('summaryFreight').innerText = money(q.summary?.freight_inr || 0);
+      document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
+    }
+
+    // Render 8-Rule Auditable Constraint Table (Solves Issue #2)
+    function renderRuleAuditTable(rules) {
+      const table = document.getElementById('ruleAuditTable');
+      if (!rules || rules.length === 0) {
+        table.innerHTML = '<div class="text-gray-400 text-center py-4">No audit data available.</div>';
+        return;
+      }
+      table.innerHTML = rules.map(r => `
+        <div class="p-2.5 rounded-xl bg-dark-850 border ${r.status === 'PASS' ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/40 bg-red-500/10'} space-y-1.5 transition-all">
+          <div class="flex justify-between items-center">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-[11px] font-mono">${r.rule_id}</span>
+              <span class="text-[10px] text-gray-300 font-semibold">${r.name}</span>
+            </div>
+            <span class="px-2 py-0.2 rounded text-[9px] font-extrabold font-mono ${r.status === 'PASS' ? 'bg-emerald-500 text-dark-950' : 'bg-red-500 text-white'}">${r.status}</span>
+          </div>
+          <div class="flex justify-between items-center text-[10px] text-gray-400 pt-1 border-t border-white/5">
+            <span>Measured: <b class="${r.status === 'PASS' ? 'text-emerald-300' : 'text-red-300'}">${r.measured}</b></span>
+            <span>Required: <b class="text-cyan-300">${r.required}</b></span>
+          </div>
+          <div class="text-[9px] text-gray-400/80 leading-tight">
+            ${r.description}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Line Items Table with Click-to-Inspect Provenance (Solves Issue #3)
+    function renderQuoteLines(q) {
+      const container = document.getElementById('quoteLinesContainer');
+      container.innerHTML = (q.lines || []).map((line, idx) => `
+        <div onclick="openLineProvenance(${idx})" class="p-3 rounded-xl bg-dark-850 border border-white/5 hover:border-cyan-400/50 hover:bg-dark-800/80 cursor-pointer transition-all space-y-1.5">
+          <div class="flex justify-between items-start">
+            <div>
+              <span class="text-white font-bold">${line.sku}</span>
+              <span class="text-cyan-400 text-[10px] font-normal ml-1">(${line.finish_id})</span>
+            </div>
+            <span class="text-emerald-400 font-bold font-mono text-xs">${money(line.net_goods_inr)}</span>
+          </div>
+          <div class="flex justify-between text-[10px] text-gray-400">
+            <span>Qty: ${line.quantity} × ${money(line.unit_list_price_inr)}</span>
+            <span class="text-cyan-300 font-semibold">🔍 Click for Trace</span>
+          </div>
+          <div class="flex justify-between text-[9px] text-gray-400 pt-1 border-t border-white/5">
+            <span>Uplift: +${money(line.finish_uplift_inr)}</span>
+            <span>Disc: -${money(line.quantity_discount_inr)}</span>
+          </div>
+        </div>
+      `).join('') || '<div class="text-gray-500 text-center py-4">No quote line items.</div>';
+    }
+
+    // Full Mathematical Provenance Modal
+    function openLineProvenance(idx) {
+      if (!currentData?.quote?.lines) return;
+      const line = currentData.quote.lines[idx];
+      const base = line.quantity * line.unit_list_price_inr;
+      const discBps = line.quantity >= 20 ? 1000 : (line.quantity >= 10 ? 700 : (line.quantity >= 5 ? 300 : 0));
+      const upliftBps = Math.round((line.finish_uplift_inr / base) * 10000);
+
+      document.getElementById('modalTitle').innerText = `PRICE TRACE: ${line.sku} (${line.finish_id})`;
+      document.getElementById('modalContent').innerHTML = `
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+          <div class="flex justify-between"><span class="text-gray-400">SKU Identifier:</span> <b class="text-white">${line.sku}</b></div>
+          <div class="flex justify-between"><span class="text-gray-400">Quantity:</span> <b class="text-white">${line.quantity} units</b></div>
+          <div class="flex justify-between"><span class="text-gray-400">Unit List Price:</span> <b class="text-white">${money(line.unit_list_price_inr)}</b></div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Base List Amount:</span> <b class="text-cyan-300">${money(base)}</b></div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400">Finish Compatibility (RB-PRC-010):</span>
+            <span class="px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 text-[10px] font-bold">${line.finish_id}</span>
+          </div>
+          <div class="flex justify-between"><span class="text-gray-400">Finish Uplift Rate:</span> <b class="text-white">${upliftBps} bps (${(upliftBps/100).toFixed(1)}%)</b></div>
+          <div class="text-[10px] text-gray-400">Formula: round_half_up(${base} × ${upliftBps} / 10000)</div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Finish Uplift Amount:</span> <b class="text-emerald-400">+${money(line.finish_uplift_inr)}</b></div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400">Quantity Break (RB-PRC-009):</span>
+            <span class="px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-300 text-[10px] font-bold">${line.quantity >= 20 ? '20+ units' : (line.quantity >= 10 ? '10–19 units' : (line.quantity >= 5 ? '5–9 units' : '1–4 units'))}</span>
+          </div>
+          <div class="flex justify-between"><span class="text-gray-400">Discount Rate:</span> <b class="text-white">${discBps} bps (${(discBps/100).toFixed(1)}%)</b></div>
+          <div class="text-[10px] text-gray-400">Formula: round_half_up(${base} × ${discBps} / 10000)</div>
+          <div class="flex justify-between pt-1 border-t border-white/10"><span class="text-gray-300 font-bold">Quantity Discount:</span> <b class="text-red-400">-${money(line.quantity_discount_inr)}</b></div>
+        </div>
+
+        <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex justify-between items-baseline">
+          <div>
+            <span class="text-xs font-bold text-emerald-300 block">NET LINE GOODS (INR):</span>
+            <span class="text-[10px] text-gray-400">${money(base)} + ${money(line.finish_uplift_inr)} - ${money(line.quantity_discount_inr)}</span>
+          </div>
+          <span class="text-lg font-bold text-emerald-400 font-mono">${money(line.net_goods_inr)}</span>
+        </div>
+      `;
+
+      const m = document.getElementById('provenanceModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+
+    function openProvenanceSummary(type) {
+      const q = currentData?.quote?.summary;
+      if (!q) return;
+
+      if (type === 'goods') {
+        document.getElementById('modalTitle').innerText = 'PROVENANCE: NET GOODS (INR)';
+        document.getElementById('modalContent').innerHTML = `
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+            <div class="text-gray-300 font-bold">Net Goods Aggregation:</div>
+            <div class="text-xs text-gray-400 leading-relaxed">
+              Sum of all line-item net goods after individual finish uplifts (RB-PRC-010) and quantity break adjustments (RB-PRC-009).
+            </div>
+            <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+              <span class="text-gray-300 font-bold">Total Net Goods:</span>
+              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.goods_after_adjustments_inr)}</span>
+            </div>
+          </div>
+        `;
+      } else if (type === 'labour') {
+        const mins = q.labour_minutes;
+        const rate = mins > 480 ? 750 : (mins > 240 ? 800 : 900);
+        document.getElementById('modalTitle').innerText = 'PROVENANCE: LABOUR CALCULATION (RB-PRC-011)';
+        document.getElementById('modalContent').innerHTML = `
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+            <div class="flex justify-between"><span class="text-gray-400">Total Assembly Minutes:</span> <b class="text-white">${mins} mins (${(mins/60).toFixed(1)} hrs)</b></div>
+            <div class="flex justify-between"><span class="text-gray-400">Labour Rate Band:</span> <b class="text-cyan-300">${mins > 480 ? '>480m (₹750/hr)' : (mins > 240 ? '241–480m (₹800/hr)' : '0–240m (₹900/hr)')}</b></div>
+            <div class="text-[10px] text-gray-400 pt-1">Formula: round_half_up(${mins} × ${rate} / 60)</div>
+            <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+              <span class="text-gray-300 font-bold">Labour Cost (INR):</span>
+              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.labour_inr)}</span>
+            </div>
+          </div>
+        `;
+      } else if (type === 'freight') {
+        const goods = q.goods_after_adjustments_inr;
+        document.getElementById('modalTitle').innerText = 'PROVENANCE: FREIGHT CALCULATION (RB-PRC-012)';
+        document.getElementById('modalContent').innerHTML = `
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/10 space-y-2">
+            <div class="flex justify-between"><span class="text-gray-400">Net Goods Value:</span> <b class="text-white">${money(goods)}</b></div>
+            <div class="flex justify-between"><span class="text-gray-400">Freight Tier Bracket:</span> <b class="text-amber-300">${goods > 250000 ? '>₹250k (400 bps / 4%)' : (goods > 100000 ? '₹100k–₹250k (Flat ₹9,000)' : '≤₹100k (Flat ₹5,000)')}</b></div>
+            <div class="text-[10px] text-gray-400 pt-1">${goods > 250000 ? `Formula: round_half_up(${goods} × 400 / 10000)` : 'Tiered flat rate schedule.'}</div>
+            <div class="pt-2 border-t border-white/10 flex justify-between items-baseline">
+              <span class="text-gray-300 font-bold">Freight Cost (INR):</span>
+              <span class="text-base font-bold text-emerald-400 font-mono">${money(q.freight_inr)}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      const m = document.getElementById('provenanceModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+
+    function closeProvenanceModal() {
+      const m = document.getElementById('provenanceModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
+    // Render Arbitration Decision Stream
+    function renderArbitrationTrace(traceSteps, activeViolations) {
+      const feed = document.getElementById('arbitrationTraceFeed');
+      const passTag = document.getElementById('tracePassCount');
+      const canvasPhi = document.getElementById('canvasEnergyScore');
+
+      if (!activeViolations || activeViolations.length === 0) {
+        canvasPhi.innerText = '0.0';
+        canvasPhi.className = 'font-bold text-emerald-400';
+        passTag.innerText = `Pass: ${traceSteps.length || 1} / 50`;
+      } else {
+        let curEnergy = activeViolations.length * 1000;
+        activeViolations.forEach(v => {
+          if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
+          if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
+        });
+        canvasPhi.innerText = curEnergy.toFixed(1);
+        canvasPhi.className = 'font-bold text-red-400';
+        passTag.innerText = `Pass: 1 / 50`;
+      }
+
+      if (activeViolations && activeViolations.length > 0) {
+        feed.innerHTML = activeViolations.map((v, i) => `
+          <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="text-red-400 font-bold font-mono text-[11px]">VIOLATION: ${v.rule_id}</span>
+              <span class="px-2 py-0.5 rounded bg-red-500 text-dark-950 font-extrabold text-[9px]">ACTIVE</span>
+            </div>
+            <div class="text-white text-xs font-semibold">${v.message}</div>
+            <div class="p-2 rounded bg-dark-950/70 border border-red-500/20 text-[10px] space-y-0.5">
+              <div>Affected: <b class="text-white font-mono">${v.affected_placement_ids?.join(', ')}</b></div>
+              <div>Measured: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
+              <div>Required: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
+            </div>
+          </div>
+        `).join('') + `
+          <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-400/30 space-y-1">
+            <div class="text-cyan-300 font-bold text-xs">Ready for Arbitration</div>
+            <p class="text-[11px] text-gray-300">Click <b>"⚖ Run Arbitration"</b> in the top bar to trigger the bounded Lyapunov state machine.</p>
+          </div>
+        `;
+        return;
+      }
+
+      if (traceSteps.length > 0) {
+        feed.innerHTML = traceSteps.map(step => `
+          <div class="p-3 rounded-xl bg-dark-850 border border-white/10 space-y-2.5">
+            <div class="flex justify-between items-center border-b border-white/10 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-[10px] flex items-center justify-center">${step.iteration}</span>
+                <span class="font-bold text-white text-[11px]">${step.violation_rule_id}</span>
+              </div>
+              <span class="text-[10px] px-2 py-0.5 rounded font-bold ${step.status === 'REPAIRED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${step.status}</span>
+            </div>
+
+            <div class="text-[11px] text-gray-300">${step.violation_summary}</div>
+
+            <div class="flex justify-between text-[10px] bg-dark-900 p-2 rounded border border-white/5">
+              <span>Φ Before: <b class="text-red-400 font-mono">${step.phi_before}</b></span>
+              <span>Φ After: <b class="text-emerald-400 font-mono">${step.phi_after}</b></span>
+            </div>
+
+            <div class="space-y-1.5 pt-1">
+              <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Candidate Operator Evaluations:</div>
+              ${step.candidates_evaluated.map(c => `
+                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-red-500/10 border border-red-500/30'} space-y-1">
+                  <div class="flex justify-between items-center text-[10px]">
+                    <span class="font-bold text-white">${c.candidate_id}: ${c.action}</span>
+                    <span class="px-1.5 py-0.2 rounded font-extrabold text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-300">
+                    <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
+                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300' : 'text-red-300'}">${c.reason}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        feed.innerHTML = `
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+            <div class="flex items-center gap-2 text-emerald-300 font-bold text-xs">
+              <span class="material-symbols-outlined text-base">verified</span> Global Lyapunov Minimum Verified
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              All 8 spatial constraints satisfied with 0 violations. Energy metric Φ(L) = 0.0.
+            </p>
+          </div>
+        `;
+      }
     }
 
     function fitRoomToScreen() {
@@ -494,7 +782,7 @@
       const minX = Math.min(...xs), maxX = Math.max(...xs);
       const minY = Math.min(...ys), maxY = Math.max(...ys);
 
-      // 1. Draw Architectural Room Floor
+      // 1. Floor
       ctx.save();
       ctx.fillStyle = '#0c1626';
       ctx.beginPath();
@@ -505,7 +793,7 @@
       ctx.closePath();
       ctx.fill();
 
-      // Subtle Room Floor Grid
+      // Floor Grid
       ctx.strokeStyle = 'rgba(34, 211, 238, 0.05)';
       ctx.lineWidth = 1;
       for (let x = minX + 600; x < maxX; x += 600) {
@@ -515,7 +803,7 @@
         ctx.beginPath(); ctx.moveTo(toScreenX(minX), toScreenY(y)); ctx.lineTo(toScreenX(maxX), toScreenY(y)); ctx.stroke();
       }
 
-      // 2. Draw Room Exterior Walls (Double-line CAD Profile)
+      // 2. Exterior Walls
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = Math.max(3, 150 * zoom);
       ctx.lineJoin = 'miter';
@@ -531,7 +819,7 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 3. Draw Dimension Callouts
+      // 3. Dimension Callouts
       if (document.getElementById('layerDimensions')?.checked) {
         ctx.fillStyle = '#94a3b8';
         ctx.font = '600 11px JetBrains Mono, monospace';
@@ -544,7 +832,7 @@
         ctx.restore();
       }
 
-      // 4. Draw Egress Corridor
+      // 4. Egress Corridor
       if (document.getElementById('layerCorridor')?.checked) {
         const egress = currentData.room.egress;
         const door = currentData.room.doors.find(d => d.door_id === egress.from_door_id);
@@ -571,7 +859,7 @@
         }
       }
 
-      // 5. Draw Door Openings & Clearance Swing Arcs
+      // 5. Door Swings
       if (document.getElementById('layerDoors')?.checked) {
         currentData.room.doors.forEach(d => {
           let hx = d.wall === 'south' ? d.offset_mm : (d.wall === 'north' ? d.offset_mm : (d.wall === 'west' ? minX : maxX));
@@ -594,7 +882,7 @@
         });
       }
 
-      // 6. Draw Furniture Placements
+      // 6. Furniture Placements
       const familyStyles = {
         'desk': { fill: 'rgba(52, 211, 153, 0.85)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
         'chair': { fill: 'rgba(251, 191, 36, 0.85)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
@@ -603,7 +891,6 @@
         'accessory': { fill: 'rgba(167, 139, 250, 0.85)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
       };
 
-      const hasViolations = (currentData.layout?.violations || []).length > 0;
       const violatedPids = new Set();
       (currentData.layout?.violations || []).forEach(v => {
         (v.affected_placement_ids || []).forEach(id => violatedPids.add(id));
@@ -671,152 +958,6 @@
       ctx.restore();
     }
 
-    function renderArbitrationTrace(traceSteps, activeViolations) {
-      const feed = document.getElementById('arbitrationTraceFeed');
-      const badge = document.getElementById('arbitrationStatusBadge');
-      const phiTag = document.getElementById('tracePhiScore');
-      const vTag = document.getElementById('traceViolationCount');
-      const passTag = document.getElementById('tracePassCount');
-      const canvasPhi = document.getElementById('canvasEnergyScore');
-
-      if (!activeViolations || activeViolations.length === 0) {
-        badge.className = 'text-[10px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30';
-        badge.innerText = 'CONVERGED (0 VIOLATIONS)';
-        phiTag.innerText = '0.0';
-        phiTag.className = 'text-base font-bold text-emerald-400';
-        canvasPhi.innerText = '0.0';
-        canvasPhi.className = 'font-bold text-emerald-400';
-        vTag.innerText = '0';
-        vTag.className = 'text-base font-bold text-emerald-400';
-        passTag.innerText = `${traceSteps.length || 1} / 50`;
-      } else {
-        badge.className = 'text-[10px] font-mono px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 font-extrabold border border-red-500/30 animate-pulse';
-        badge.innerText = `${activeViolations.length} ACTIVE VIOLATIONS`;
-        
-        let curEnergy = activeViolations.length * 1000;
-        activeViolations.forEach(v => {
-          if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
-          if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
-        });
-
-        phiTag.innerText = curEnergy.toFixed(1);
-        phiTag.className = 'text-base font-bold text-red-400';
-        canvasPhi.innerText = curEnergy.toFixed(1);
-        canvasPhi.className = 'font-bold text-red-400';
-        vTag.innerText = `${activeViolations.length}`;
-        vTag.className = 'text-base font-bold text-red-400';
-        passTag.innerText = `1 / 50`;
-      }
-
-      // Render Decision Trace Stream
-      if (activeViolations && activeViolations.length > 0) {
-        feed.innerHTML = activeViolations.map((v, i) => `
-          <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="text-red-400 font-bold font-mono text-[11px]">VIOLATION: ${v.rule_id}</span>
-              <span class="px-2 py-0.5 rounded bg-red-500 text-dark-950 font-extrabold text-[9px]">ACTIVE HAZARD</span>
-            </div>
-            <div class="text-white text-xs font-semibold">${v.message}</div>
-            <div class="p-2 rounded bg-dark-950/70 border border-red-500/20 text-[10px] space-y-1">
-              <div>Affected: <b class="text-white font-mono">${v.affected_placement_ids?.join(', ')}</b></div>
-              <div>Measured: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
-              <div>Required: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
-            </div>
-          </div>
-        `).join('') + `
-          <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 space-y-2">
-            <div class="text-cyan-300 font-bold text-xs flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm">psychology</span> Ready for Arbitration
-            </div>
-            <p class="text-[11px] text-gray-300">Click <b>"⚖ Run Arbitration"</b> in the top bar to evaluate candidate repair operators, enforce Lyapunov monotonicity, and repair the layout.</p>
-          </div>
-        `;
-        return;
-      }
-
-      // If trace history exists
-      if (traceSteps.length > 0) {
-        feed.innerHTML = traceSteps.map((step, idx) => `
-          <div class="p-3.5 rounded-xl bg-dark-850 border border-white/10 space-y-3">
-            <div class="flex justify-between items-center border-b border-white/10 pb-2">
-              <div class="flex items-center gap-1.5">
-                <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-[10px] flex items-center justify-center">${step.iteration}</span>
-                <span class="font-bold text-white text-[11px]">${step.violation_rule_id}</span>
-              </div>
-              <span class="text-[10px] px-2 py-0.5 rounded font-bold ${step.status === 'REPAIRED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${step.status}</span>
-            </div>
-
-            <div class="text-[11px] text-gray-300">${step.violation_summary}</div>
-
-            <div class="flex justify-between text-[10px] bg-dark-900 p-2 rounded border border-white/5">
-              <span>Φ Before: <b class="text-red-400 font-mono">${step.phi_before}</b></span>
-              <span>Φ After: <b class="text-emerald-400 font-mono">${step.phi_after}</b></span>
-            </div>
-
-            <!-- Candidate Evaluations -->
-            <div class="space-y-1.5 pt-1">
-              <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Candidate Operator Evaluations:</div>
-              ${step.candidates_evaluated.map(c => `
-                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-red-500/10 border border-red-500/30'} space-y-1">
-                  <div class="flex justify-between items-center text-[10px]">
-                    <span class="font-bold text-white">${c.candidate_id}: ${c.action}</span>
-                    <span class="px-1.5 py-0.2 rounded font-extrabold text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
-                  </div>
-                  <div class="flex justify-between text-[9px] text-gray-300">
-                    <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
-                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300' : 'text-red-300'}">${c.reason}</span>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `).join('');
-      } else {
-        feed.innerHTML = `
-          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
-            <div class="flex items-center gap-2 text-emerald-300 font-bold text-xs">
-              <span class="material-symbols-outlined text-base">verified</span> Global Lyapunov Minimum Verified
-            </div>
-            <p class="text-xs text-gray-300 leading-relaxed">
-              All 8 spatial constraints (RB-GEO-001 through RB-GEO-008) are satisfied. Energy metric Φ(L) = 0.0.
-            </p>
-            <div class="pt-2 border-t border-emerald-500/20 text-[11px] text-emerald-400 font-mono">
-              Deterministic state machine ready. Click "⚡ Inject Violation" to test live arbitration.
-            </div>
-          </div>
-        `;
-      }
-    }
-
-    function updateQuoteUI(q) {
-      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase();
-      document.getElementById('quoteStatusBadge').className = q.status === 'priced'
-        ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
-        : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-bold border border-red-500/30';
-
-      const container = document.getElementById('quoteLinesContainer');
-      container.innerHTML = (q.lines || []).map(line => `
-        <div class="p-2.5 rounded-lg bg-dark-850 border border-white/5 hover:border-cyan-400/40 transition-colors">
-          <div class="flex justify-between items-start">
-            <span class="text-white font-bold">${line.sku} <span class="text-gray-400 font-normal text-[10px]">(${line.finish_id})</span></span>
-            <span class="text-emerald-400 font-bold font-mono">${money(line.net_goods_inr)}</span>
-          </div>
-          <div class="flex justify-between text-[10px] text-gray-400 mt-1">
-            <span>Qty: ${line.quantity} × ${money(line.unit_list_price_inr)}</span>
-            <span>Uplift: +${money(line.finish_uplift_inr)}</span>
-          </div>
-          <div class="text-[9px] text-cyan-300/80 mt-1">
-            Trace: QTY_DISC -${money(line.quantity_discount_inr)} (RB-PRC-009)
-          </div>
-        </div>
-      `).join('') || '<div class="text-gray-500 text-center py-4">No quote line items.</div>';
-
-      document.getElementById('summaryGoods').innerText = money(q.summary?.goods_after_adjustments_inr || 0);
-      document.getElementById('summaryLabour').innerText = money(q.summary?.labour_inr || 0);
-      document.getElementById('summaryFreight').innerText = money(q.summary?.freight_inr || 0);
-      document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
-    }
-
     async function injectViolation() {
       if (!currentData) return;
       try {
@@ -833,7 +974,7 @@
         currentData.layout.placements = simRes.placements;
         currentData.layout.violations = simRes.violations;
         
-        switchTab('arbitration');
+        switchMainTab('arbitration');
         renderArbitrationTrace([], simRes.violations);
         draw();
         showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
@@ -857,10 +998,13 @@
         const result = await res.json();
         currentData.layout = result.layout;
         currentData.quote = result.quote;
+        currentData.rule_audit = result.rule_audit;
 
-        switchTab('arbitration');
+        switchMainTab('arbitration');
         renderArbitrationTrace(result.trace || [], result.layout.violations || []);
-        updateQuoteUI(result.quote);
+        renderRuleAuditTable(result.rule_audit || []);
+        renderQuoteLines(result.quote);
+        updateExecutiveSummary(result.quote);
         draw();
         showToast(result.is_valid ? 'Arbitration Success: 100% Constraints Repaired!' : 'Arbitration in progress', 'check_circle');
       } catch (err) {

@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, HTMLResponse
 from pydantic import BaseModel
 
 from rulebound.arbitration import ArbitrationEngine, compute_energy_metric
-from rulebound.constraints import verify_spatial_constraints
+from rulebound.constraints import audit_spatial_constraints, verify_spatial_constraints
 from rulebound.dxf import export_layout_to_dxf
 from rulebound.generator import LayoutGenerator
 from rulebound.loader import load_asset_pack
@@ -152,6 +152,7 @@ def get_room_full_data(room_id: str):
         },
         "layout": layout_res.to_dict(),
         "arbitration_trace": [t.to_dict() for t in arbitrator.last_trace],
+        "rule_audit": audit_spatial_constraints(room, layout_res.placements, pack),
         "quote": quote_res.to_dict(),
         "catalog": catalog_dict,
     }
@@ -217,6 +218,7 @@ def arbitrate_with_trace(req: VerifyRequest):
     return {
         "layout": layout_res.to_dict(),
         "trace": [t.to_dict() for t in arbitrator.last_trace],
+        "rule_audit": audit_spatial_constraints(room, layout_res.placements, pack),
         "quote": quote_res.to_dict(),
         "is_valid": layout_res.status == "valid",
     }
