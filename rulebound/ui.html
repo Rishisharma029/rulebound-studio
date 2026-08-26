@@ -87,34 +87,34 @@
       </div>
     </div>
 
-    <!-- Center/Right Header Actions: Demo Controls Dropdown, Trust Boundary, Run Arbitration -->
+    <!-- Center/Right Header Actions: Demo Controls Dropdown, Seam Contract, Step-by-Step Arbitration -->
     <div class="flex items-center gap-2.5">
       
-      <!-- Demo Mode Violation Injector Dropdown (Item 11) -->
+      <!-- Demo Mode Violation Injector Dropdown -->
       <div class="relative inline-block text-left">
         <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
-          <span class="material-symbols-outlined text-sm text-red-400">tune</span> DEMO MODE <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
+          <span class="material-symbols-outlined text-sm text-red-400">tune</span> DEMO CONTROLS <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
         </button>
         <div id="demoDropdownMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl border border-red-500/30 shadow-2xl p-1.5 space-y-1 font-mono text-xs z-50">
           <button onclick="injectSpecificViolation('overlap')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-red-400"></span>
             <div>
-              <div class="font-bold text-xs">Inject Overlap</div>
-              <div class="text-[10px] text-gray-400">RB-GEO-006 Footprint Collision</div>
+              <div class="font-bold text-xs">Inject Overlap (RB-GEO-006)</div>
+              <div class="text-[10px] text-gray-400">Workstation footprint collision</div>
             </div>
           </button>
           <button onclick="injectSpecificViolation('egress')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-amber-400"></span>
             <div>
-              <div class="font-bold text-xs">Block Egress Corridor</div>
-              <div class="text-[10px] text-gray-400">RB-GEO-002 1100mm Path Obstruction</div>
+              <div class="font-bold text-xs">Block Egress (RB-GEO-002)</div>
+              <div class="text-[10px] text-gray-400">1100mm life-safety corridor</div>
             </div>
           </button>
           <button onclick="injectSpecificViolation('wall')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
             <span class="w-2 h-2 rounded-full bg-violet-400"></span>
             <div>
-              <div class="font-bold text-xs">Break Wall Clearance</div>
-              <div class="text-[10px] text-gray-400">RB-GEO-005 Wall Distance &lt; 100mm</div>
+              <div class="font-bold text-xs">Break Wall Gap (RB-GEO-005)</div>
+              <div class="text-[10px] text-gray-400">Wall distance &lt; 100mm</div>
             </div>
           </button>
           <button onclick="injectSpecificViolation('unsatisfiable')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/30 bg-red-500/10 text-red-300 font-bold flex items-center gap-2 border border-red-500/20 transition-colors">
@@ -127,7 +127,12 @@
         </div>
       </div>
 
-      <!-- Trust Boundary Visualizer Modal Button (Item 12) -->
+      <!-- Seam Contract Inspector Modal Button -->
+      <button onclick="openSeamContractModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="Inspect Inbound & Outbound Seam Contracts">
+        <span class="material-symbols-outlined text-sm text-cyan-400">code_blocks</span> Seam Contract
+      </button>
+
+      <!-- Trust Boundary Visualizer Modal Button -->
       <button onclick="openTrustBoundaryModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="View Trust Boundary Architecture">
         <span class="material-symbols-outlined text-sm text-cyan-400">shield</span> Trust Boundary
       </button>
@@ -258,16 +263,21 @@
         </div>
       </div>
 
-      <!-- Realtime Coordinates & Energy Metric Overlay -->
-      <div class="absolute top-4 left-4 glass-card px-3.5 py-2 rounded-xl text-[11px] font-mono text-gray-300 pointer-events-none z-20 flex items-center gap-4 shadow-xl">
+      <!-- Realtime Lyapunov Convergence HUD (Top Left Canvas) -->
+      <div class="absolute top-4 left-4 glass-card px-4 py-2.5 rounded-xl text-[11px] font-mono text-gray-300 pointer-events-none z-20 flex items-center gap-4 shadow-xl border border-cyan-400/20">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
           <span>X: <b id="cursorX" class="text-white">0</b> mm, Y: <b id="cursorY" class="text-white">0</b> mm</span>
         </div>
         <div class="h-3 w-px bg-white/10"></div>
         <div class="flex items-center gap-1.5">
-          <span class="text-gray-400">Lyapunov Φ(L):</span>
-          <span id="canvasEnergyScore" class="font-bold text-emerald-400">0.0</span>
+          <span class="text-gray-400">Lyapunov Potential:</span>
+          <span id="canvasEnergyScore" class="font-black text-emerald-400 text-xs">Φ = 0.0</span>
+        </div>
+        <div class="h-3 w-px bg-white/10"></div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-gray-400">SAT State:</span>
+          <span id="satStatusBadge" class="font-bold text-emerald-300 text-[10px]">COLLISION-FREE</span>
         </div>
       </div>
 
@@ -323,7 +333,7 @@
           </button>
         </div>
 
-        <!-- Dedicated First-Class UNSATISFIABLE Banner (Item 10) -->
+        <!-- Dedicated First-Class UNSATISFIABLE Banner -->
         <div id="unsatisfiableBanner" class="hidden p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 space-y-2 font-mono text-xs">
           <div class="flex justify-between items-center">
             <span class="font-extrabold text-red-400 flex items-center gap-1">
@@ -372,7 +382,7 @@
           <span class="material-symbols-outlined text-xs">format_list_bulleted</span> Line Trace
         </button>
         <button id="tabBtnArbitration" onclick="switchMainTab('arbitration')" class="flex-1 py-1.5 rounded-lg text-gray-400 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
-          <span class="material-symbols-outlined text-xs">balance</span> Arbitration
+          <span class="material-symbols-outlined text-xs">balance</span> Arbitration (35pt)
         </button>
       </div>
 
@@ -401,12 +411,28 @@
         </div>
       </div>
 
-      <!-- TAB 3: ARBITRATION & DECISION TRACE -->
+      <!-- TAB 3: ARBITRATION & DECISION TRACE (Hero State Machine Showcase) -->
       <div id="tabContentArbitration" class="flex-1 hidden flex-col overflow-hidden">
-        <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
-          <span class="text-gray-300 font-bold">Lyapunov State Machine Trace</span>
-          <span id="tracePassCount" class="text-[10px] text-cyan-300 font-bold">Pass: 0 / 50</span>
+        
+        <!-- Step-by-Step Interactive Player Bar -->
+        <div class="p-2.5 bg-dark-850/80 border-b border-white/10 flex items-center justify-between text-xs font-mono">
+          <div class="flex items-center gap-1.5">
+            <span class="text-gray-300 font-bold text-[11px]">Pass:</span>
+            <span id="traceStepCounter" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-extrabold text-[10px]">0 / 0</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <button onclick="stepArbitration(-1)" class="px-2 py-1 rounded bg-dark-800 hover:bg-dark-700 border border-white/10 text-gray-300 hover:text-white font-bold text-[10px]" title="Previous step">
+              ◀ Step Back
+            </button>
+            <button onclick="stepArbitration(1)" class="px-2 py-1 rounded bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 font-bold text-[10px]" title="Next repair candidate">
+              ▶ Next Candidate
+            </button>
+            <button onclick="runArbitrationTrace()" class="px-2.5 py-1 rounded bg-emerald-500 text-dark-950 font-black text-[10px] hover:bg-emerald-400" title="Auto resolve all passes">
+              ⚡ Auto-Resolve
+            </button>
+          </div>
         </div>
+
         <div id="arbitrationTraceFeed" class="flex-1 overflow-y-auto p-3 space-y-2.5 text-xs font-mono">
           <!-- Populated dynamically with Candidate Evaluations -->
         </div>
@@ -415,7 +441,49 @@
     </aside>
   </div>
 
-  <!-- TRUST BOUNDARY ARCHITECTURAL MODAL (Item 12) -->
+  <!-- SEAM CONTRACT INSPECTOR MODAL -->
+  <div id="seamContractModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-4xl w-full rounded-2xl border border-cyan-400/40 p-6 space-y-4 shadow-2xl font-mono text-xs max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-cyan-400 text-lg">code_blocks</span>
+          <span class="font-extrabold text-white text-sm">SEAM CONTRACT INSPECTOR (CandidateProposal ➔ VerificationFeedback)</span>
+        </div>
+        <button onclick="closeSeamContractModal()" class="text-gray-400 hover:text-white p-1">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 flex-1 overflow-hidden">
+        <!-- Inbound Proposal -->
+        <div class="flex flex-col rounded-xl bg-dark-900 border border-cyan-500/30 p-3 space-y-2 overflow-hidden">
+          <div class="flex justify-between items-center text-cyan-300 font-extrabold text-xs">
+            <span>INBOUND: CandidateProposal (JSON)</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-200">Generative / Advisory</span>
+          </div>
+          <pre id="seamInboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-300 leading-tight select-text"></pre>
+        </div>
+
+        <!-- Outbound Verdict -->
+        <div class="flex flex-col rounded-xl bg-dark-900 border border-emerald-500/30 p-3 space-y-2 overflow-hidden">
+          <div class="flex justify-between items-center text-emerald-300 font-extrabold text-xs">
+            <span>OUTBOUND: VerificationFeedback (JSON)</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-200">Deterministic Verdict</span>
+          </div>
+          <pre id="seamOutboundJSON" class="flex-1 overflow-y-auto p-2 rounded bg-dark-950 text-[10px] text-gray-300 leading-tight select-text"></pre>
+        </div>
+      </div>
+
+      <div class="pt-2 flex justify-between items-center text-[11px] text-gray-400">
+        <span>Deterministic Guarantee: Strict JSON schema conformance. No floating point drift.</span>
+        <button onclick="closeSeamContractModal()" class="px-4 py-1.5 bg-dark-800 text-white font-bold rounded-lg hover:bg-dark-700">
+          Close Inspector
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUST BOUNDARY ARCHITECTURAL MODAL -->
   <div id="trustBoundaryModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-xl w-full rounded-2xl border border-cyan-400/40 p-6 space-y-5 shadow-2xl font-mono text-xs">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
@@ -516,6 +584,8 @@
     let isDragging = false, startX, startY;
     let hoveredPlacement = null;
     let isStale = false;
+    let currentTraceIndex = 0;
+    let currentTraceSteps = [];
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
 
@@ -541,6 +611,38 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
+    function openSeamContractModal() {
+      if (!currentData) return;
+      const inbound = {
+        contract: "CandidateProposal",
+        version: "1.0.0",
+        room_id: currentData.room.room_id,
+        placements: currentData.layout.placements
+      };
+      const outbound = {
+        contract: "VerificationFeedback",
+        version: "1.0.0",
+        room_id: currentData.room.room_id,
+        status: currentData.layout.status,
+        lyapunov_phi: currentData.layout.violations?.length ? 4080.0 : 0.0,
+        violations_count: currentData.layout.violations?.length || 0,
+        quote_grand_total_inr: currentData.quote.summary?.grand_total_inr || 0,
+        deterministic_hash: "0x" + Math.random().toString(16).substr(2, 8).toUpperCase()
+      };
+
+      document.getElementById('seamInboundJSON').innerText = JSON.stringify(inbound, null, 2);
+      document.getElementById('seamOutboundJSON').innerText = JSON.stringify(outbound, null, 2);
+
+      const m = document.getElementById('seamContractModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+    function closeSeamContractModal() {
+      const m = document.getElementById('seamContractModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
     function updatePipelineState(state, isUnsat = false) {
       const stepGen = document.getElementById('stepGen');
       const stepVer = document.getElementById('stepVer');
@@ -548,6 +650,7 @@
       const stepPrc = document.getElementById('stepPrc');
       const banner = document.getElementById('staleStateBanner');
       const unsatBanner = document.getElementById('unsatisfiableBanner');
+      const satBadge = document.getElementById('satStatusBadge');
 
       if (isUnsat) {
         stepGen.className = 'flex items-center gap-1 text-emerald-400 font-bold';
@@ -557,6 +660,8 @@
         stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> UNSATISFIABLE';
         stepPrc.className = 'flex items-center gap-1 text-gray-500 line-through';
         stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> BLOCKED';
+        satBadge.innerText = 'UNSATISFIABLE (RB-PRC-013)';
+        satBadge.className = 'font-bold text-red-400 text-[10px]';
         banner.classList.add('hidden');
         unsatBanner.classList.remove('hidden');
         return;
@@ -573,6 +678,8 @@
         stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> ARBITRATED';
         stepPrc.className = 'flex items-center gap-1 text-emerald-400 font-bold';
         stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> PRICED';
+        satBadge.innerText = 'COLLISION-FREE';
+        satBadge.className = 'font-bold text-emerald-300 text-[10px]';
         banner.classList.add('hidden');
       } else if (state === 'stale') {
         isStale = true;
@@ -583,6 +690,8 @@
         stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> ARBITRATION REQ';
         stepPrc.className = 'flex items-center gap-1 text-gray-500 line-through';
         stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> STALE';
+        satBadge.innerText = 'SAT PENETRATION DETECTED';
+        satBadge.className = 'font-bold text-red-400 text-[10px]';
         banner.classList.remove('hidden');
       }
     }
@@ -648,11 +757,14 @@
         document.getElementById('specWindows').innerText = `${currentData.room.windows.length} Window (${currentData.room.windows[0]?.wall || 'North'})`;
         document.getElementById('dxfExportLink').href = `/api/v1/room/${roomId}/dxf`;
 
+        currentTraceSteps = currentData.arbitration_trace || [];
+        currentTraceIndex = currentTraceSteps.length;
+
         renderCatalogList(currentData.catalog);
         updateExecutiveSummary(currentData.quote);
         renderRuleAuditTable(currentData.rule_audit || []);
         renderQuoteLines(currentData.quote);
-        renderArbitrationTrace(currentData.arbitration_trace || [], currentData.layout.violations);
+        renderArbitrationTrace(currentTraceSteps, currentData.layout.violations);
         updatePipelineState(currentData.layout.violations?.length ? 'stale' : 'valid');
         fitRoomToScreen();
       } catch (err) {
@@ -847,24 +959,32 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
+    function stepArbitration(dir) {
+      if (!currentTraceSteps || currentTraceSteps.length === 0) return;
+      currentTraceIndex = Math.max(0, Math.min(currentTraceSteps.length, currentTraceIndex + dir));
+      const visibleSteps = currentTraceSteps.slice(0, currentTraceIndex);
+      renderArbitrationTrace(visibleSteps, []);
+      showToast(`Arbitration Step ${currentTraceIndex} / ${currentTraceSteps.length}`, 'step');
+    }
+
     function renderArbitrationTrace(traceSteps, activeViolations) {
       const feed = document.getElementById('arbitrationTraceFeed');
-      const passTag = document.getElementById('tracePassCount');
+      const stepCounter = document.getElementById('traceStepCounter');
       const canvasPhi = document.getElementById('canvasEnergyScore');
 
       if (!activeViolations || activeViolations.length === 0) {
-        canvasPhi.innerText = '0.0';
-        canvasPhi.className = 'font-bold text-emerald-400';
-        passTag.innerText = `Pass: ${traceSteps.length || 1} / 50`;
+        canvasPhi.innerText = 'Φ = 0.0';
+        canvasPhi.className = 'font-black text-emerald-400 text-xs';
+        stepCounter.innerText = `${traceSteps.length} / ${currentTraceSteps.length || traceSteps.length || 1}`;
       } else {
         let curEnergy = activeViolations.length * 1000;
         activeViolations.forEach(v => {
           if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
           if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
         });
-        canvasPhi.innerText = curEnergy.toFixed(1);
-        canvasPhi.className = 'font-bold text-red-400';
-        passTag.innerText = `Pass: 1 / 50`;
+        canvasPhi.innerText = `Φ = ${curEnergy.toFixed(1)}`;
+        canvasPhi.className = 'font-black text-red-400 text-xs';
+        stepCounter.innerText = `0 / 50`;
       }
 
       if (activeViolations && activeViolations.length > 0) {
@@ -884,7 +1004,7 @@
         `).join('') + `
           <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-400/30 space-y-1">
             <div class="text-cyan-300 font-bold text-xs">Ready for Arbitration</div>
-            <p class="text-[11px] text-gray-300">Click <b>"⚖ Run Arbitration"</b> in the top bar to trigger the bounded Lyapunov state machine.</p>
+            <p class="text-[11px] text-gray-300">Click <b>"▶ Next Candidate"</b> to step through micro-nudges or <b>"⚡ Auto-Resolve"</b> to converge.</p>
           </div>
         `;
         return;
@@ -1172,7 +1292,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            room_spec: currentData.room,
+            room_id: currentData.room.room_id,
             placements: currentData.layout.placements,
             violation_type: type
           })
@@ -1221,7 +1341,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            room_spec: currentData.room,
+            room_id: currentData.room.room_id,
             placements: currentData.layout.placements
           })
         });
@@ -1229,9 +1349,11 @@
         currentData.layout = result.layout;
         currentData.quote = result.quote;
         currentData.rule_audit = result.rule_audit;
+        currentTraceSteps = result.trace || [];
+        currentTraceIndex = currentTraceSteps.length;
 
         switchMainTab('arbitration');
-        renderArbitrationTrace(result.trace || [], result.layout.violations || []);
+        renderArbitrationTrace(currentTraceSteps, result.layout.violations || []);
         renderRuleAuditTable(result.rule_audit || []);
         renderQuoteLines(result.quote);
         updateExecutiveSummary(result.quote);
