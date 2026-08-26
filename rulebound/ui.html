@@ -6,7 +6,7 @@
   <title>RuleBound Studio | Commercial CAD, Auditable Rules & Traceable Pricing</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -37,7 +37,7 @@
       background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
     }
     .glass-card {
-      background: rgba(12, 19, 34, 0.90);
+      background: rgba(12, 19, 34, 0.92);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -75,19 +75,24 @@
         </select>
       </div>
 
-      <!-- Engine Status Badge -->
-      <div id="engineStatusBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-semibold">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="engineStatusText">DETERMINISTIC VERIFIER ONLINE</span>
+      <!-- Pipeline State Machine Stepper (Item 7 & 8) -->
+      <div id="pipelineStepper" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950 border border-white/10 text-[10px] font-mono">
+        <span id="stepGen" class="flex items-center gap-1 text-emerald-400 font-bold"><span class="material-symbols-outlined text-[12px]">check_circle</span> GENERATED</span>
+        <span class="text-gray-600">→</span>
+        <span id="stepVer" class="flex items-center gap-1 text-emerald-400 font-bold"><span class="material-symbols-outlined text-[12px]">check_circle</span> VERIFIED</span>
+        <span class="text-gray-600">→</span>
+        <span id="stepArb" class="flex items-center gap-1 text-emerald-400 font-bold"><span class="material-symbols-outlined text-[12px]">check_circle</span> ARBITRATED</span>
+        <span class="text-gray-600">→</span>
+        <span id="stepPrc" class="flex items-center gap-1 text-emerald-400 font-bold"><span class="material-symbols-outlined text-[12px]">check_circle</span> PRICED</span>
       </div>
     </div>
 
-    <!-- Center/Right Header Actions -->
+    <!-- Center/Right Header Actions: Injected Violation, Arbitrate & Dependency-Managed Actions -->
     <div class="flex items-center gap-2.5">
       <button onclick="injectViolation()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
         <span class="material-symbols-outlined text-sm text-red-400">bolt</span> ⚡ Inject Violation
       </button>
-      <button onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-dark-950 font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
+      <button id="btnRunArbitration" onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-dark-950 font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
         <span class="material-symbols-outlined text-sm">balance</span> ⚖ Run Arbitration
       </button>
       <div class="h-4 w-px bg-white/10 mx-1"></div>
@@ -148,11 +153,11 @@
           </p>
         </div>
 
-        <!-- Catalog Filter List -->
+        <!-- Furniture Catalog List (Fixed Item 5 Labeling) -->
         <div class="glass-card rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> Catalog SKUs
+              <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> FURNITURE CATALOG
             </span>
             <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300">0 items</span>
           </div>
@@ -166,7 +171,7 @@
       <!-- Quick Layer Toggles -->
       <div class="pt-3 border-t border-white/10 space-y-2">
         <div class="text-[10px] font-mono uppercase text-gray-400 font-semibold flex items-center justify-between">
-          <span>Layer Visibility</span>
+          <span>Display Layers</span>
           <button onclick="fitRoomToScreen()" class="text-cyan-400 hover:underline text-[10px] flex items-center gap-0.5">
             <span class="material-symbols-outlined text-[11px]">fit_screen</span> Recenter
           </button>
@@ -179,7 +184,7 @@
             <input type="checkbox" id="layerDoors" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Door Arcs
           </label>
           <label class="flex items-center gap-1.5 cursor-pointer">
-            <input type="checkbox" id="layerLabels" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Labels
+            <input type="checkbox" id="layerLabels" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Furniture IDs
           </label>
           <label class="flex items-center gap-1.5 cursor-pointer">
             <input type="checkbox" id="layerDimensions" checked onchange="draw()" class="rounded bg-dark-800 text-cyan-500 focus:ring-0" /> Dimensions
@@ -224,29 +229,29 @@
         </div>
       </div>
 
-      <!-- Floating Canvas Bottom Controls -->
-      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2 flex items-center gap-4 shadow-2xl z-30">
+      <!-- Floating Canvas Bottom Controls (Item 6 Enhanced Typography & Quick View Controls) -->
+      <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2.5 flex items-center gap-4 shadow-2xl z-30">
         <div class="flex items-center gap-1.5 text-xs font-mono text-gray-300 pr-2 border-r border-white/10">
-          <span class="w-2 h-2 rounded-sm bg-emerald-400"></span> Desks
-          <span class="w-2 h-2 rounded-sm bg-amber-400 ml-2"></span> Chairs
-          <span class="w-2 h-2 rounded-sm bg-cyan-400 ml-2"></span> Collab
-          <span class="w-2 h-2 rounded-sm bg-pink-400 ml-2"></span> Storage
-          <span class="w-2 h-2 rounded-sm bg-violet-400 ml-2"></span> Acc
+          <span class="w-2.5 h-2.5 rounded-sm bg-emerald-400"></span> Desks
+          <span class="w-2.5 h-2.5 rounded-sm bg-amber-400 ml-2"></span> Chairs
+          <span class="w-2.5 h-2.5 rounded-sm bg-cyan-400 ml-2"></span> Collab
+          <span class="w-2.5 h-2.5 rounded-sm bg-pink-400 ml-2"></span> Storage
+          <span class="w-2.5 h-2.5 rounded-sm bg-violet-400 ml-2"></span> Acc
         </div>
         
         <div class="flex items-center gap-1">
-          <button onclick="zoomCanvas(1.2)" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Zoom In">
-            <span class="material-symbols-outlined text-sm">zoom_in</span>
+          <button onclick="zoomCanvas(1.2)" class="px-2 py-1 text-gray-300 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom In">
+            <span class="material-symbols-outlined text-sm">zoom_in</span> Zoom +
           </button>
-          <button onclick="zoomCanvas(0.8)" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Zoom Out">
-            <span class="material-symbols-outlined text-sm">zoom_out</span>
+          <button onclick="zoomCanvas(0.8)" class="px-2 py-1 text-gray-300 hover:text-white rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Zoom Out">
+            <span class="material-symbols-outlined text-sm">zoom_out</span> Zoom -
           </button>
-          <button onclick="fitRoomToScreen()" class="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-white/10 transition-colors" title="Reset Zoom">
-            <span class="material-symbols-outlined text-sm">fit_screen</span>
+          <button onclick="fitRoomToScreen()" class="px-2 py-1 text-cyan-400 hover:text-cyan-300 rounded-lg hover:bg-white/10 font-mono text-xs font-bold flex items-center gap-0.5" title="Reset Zoom">
+            <span class="material-symbols-outlined text-sm">fit_screen</span> Fit
           </button>
         </div>
 
-        <div class="text-[11px] font-mono text-cyan-400 pl-2 border-l border-white/10" id="zoomLevelDisplay">
+        <div class="text-[11px] font-mono text-cyan-400 pl-2 border-l border-white/10 font-bold" id="zoomLevelDisplay">
           100%
         </div>
       </div>
@@ -256,13 +261,24 @@
     <!-- Right Structured Inspector Sidebar -->
     <aside class="w-[450px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- TOP: Crisp Quote Executive Summary Card -->
-      <div class="p-4 bg-dark-850 border-b border-white/10 space-y-2.5">
+      <!-- TOP: Executive Quote Summary Card with Stale-State Warning Banner (Item 9) -->
+      <div id="executiveQuoteCard" class="p-4 bg-dark-850 border-b border-white/10 space-y-2.5 transition-all">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-extrabold flex items-center gap-1.5">
             <span class="material-symbols-outlined text-sm">receipt_long</span> Executive Quote Summary (INR)
           </span>
           <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">PRICED</span>
+        </div>
+
+        <!-- Stale / Invalidated State Warning Banner (Item 9) -->
+        <div id="staleStateBanner" class="hidden p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center justify-between animate-pulse">
+          <div class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-amber-400">warning</span>
+            <span><b>LAYOUT MODIFIED:</b> Quote Stale</span>
+          </div>
+          <button onclick="runArbitrationTrace()" class="px-2 py-0.5 bg-amber-500 text-dark-950 font-extrabold text-[10px] rounded hover:bg-amber-400">
+            Re-Price
+          </button>
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-xs font-mono">
@@ -299,7 +315,7 @@
         </button>
       </div>
 
-      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER (Solves Issue #2) -->
+      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER (8/8 PASS) -->
       <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-300 font-bold flex items-center gap-1.5">
@@ -309,11 +325,11 @@
         </div>
 
         <div id="ruleAuditTable" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
-          <!-- Populated dynamically with all 8 rules, measured vs required -->
+          <!-- Populated dynamically with all 8 rules -->
         </div>
       </div>
 
-      <!-- TAB 2: LINE ITEM PROVENANCE TABLE (Solves Issue #3) -->
+      <!-- TAB 2: LINE ITEM PROVENANCE TABLE -->
       <div id="tabContentLines" class="flex-1 hidden flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-300 font-bold">Click any line for full mathematical derivation</span>
@@ -324,7 +340,7 @@
         </div>
       </div>
 
-      <!-- TAB 3: ARBITRATION & DECISION TRACE (Solves Issue #1) -->
+      <!-- TAB 3: ARBITRATION & DECISION TRACE -->
       <div id="tabContentArbitration" class="flex-1 hidden flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-300 font-bold">Lyapunov State Machine Trace</span>
@@ -338,7 +354,7 @@
     </aside>
   </div>
 
-  <!-- MATHEMATICAL PROVENANCE MODAL (Full Provenance Inspector) -->
+  <!-- MATHEMATICAL PROVENANCE MODAL -->
   <div id="provenanceModal" class="fixed inset-0 bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-lg w-full rounded-2xl border border-cyan-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
@@ -376,8 +392,36 @@
     let panX = 0, panY = 0, zoom = 0.08;
     let isDragging = false, startX, startY;
     let hoveredPlacement = null;
+    let isStale = false;
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
+
+    function updatePipelineState(state) {
+      const stepGen = document.getElementById('stepGen');
+      const stepVer = document.getElementById('stepVer');
+      const stepArb = document.getElementById('stepArb');
+      const stepPrc = document.getElementById('stepPrc');
+      const banner = document.getElementById('staleStateBanner');
+
+      if (state === 'valid') {
+        isStale = false;
+        stepGen.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepVer.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepArb.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepPrc.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        banner.classList.add('hidden');
+      } else if (state === 'stale') {
+        isStale = true;
+        stepGen.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepVer.className = 'flex items-center gap-1 text-red-400 font-bold animate-pulse';
+        stepVer.innerHTML = '<span class="material-symbols-outlined text-[12px]">error</span> VIOLATIONS';
+        stepArb.className = 'flex items-center gap-1 text-amber-400 font-bold';
+        stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> ARBITRATION REQ';
+        stepPrc.className = 'flex items-center gap-1 text-gray-500 line-through';
+        stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> STALE';
+        banner.classList.remove('hidden');
+      }
+    }
 
     function switchMainTab(tab) {
       ['Audit', 'Lines', 'Arbitration'].forEach(t => {
@@ -445,6 +489,7 @@
         renderRuleAuditTable(currentData.rule_audit || []);
         renderQuoteLines(currentData.quote);
         renderArbitrationTrace(currentData.arbitration_trace || [], currentData.layout.violations);
+        updatePipelineState(currentData.layout.violations?.length ? 'stale' : 'valid');
         fitRoomToScreen();
       } catch (err) {
         showToast('Error loading room data: ' + err.message, 'error');
@@ -479,7 +524,6 @@
       document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
     }
 
-    // Render 8-Rule Auditable Constraint Table (Solves Issue #2)
     function renderRuleAuditTable(rules) {
       const table = document.getElementById('ruleAuditTable');
       if (!rules || rules.length === 0) {
@@ -506,7 +550,6 @@
       `).join('');
     }
 
-    // Render Line Items Table with Click-to-Inspect Provenance (Solves Issue #3)
     function renderQuoteLines(q) {
       const container = document.getElementById('quoteLinesContainer');
       container.innerHTML = (q.lines || []).map((line, idx) => `
@@ -530,7 +573,6 @@
       `).join('') || '<div class="text-gray-500 text-center py-4">No quote line items.</div>';
     }
 
-    // Full Mathematical Provenance Modal
     function openLineProvenance(idx) {
       if (!currentData?.quote?.lines) return;
       const line = currentData.quote.lines[idx];
@@ -641,7 +683,6 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
-    // Render Arbitration Decision Stream
     function renderArbitrationTrace(traceSteps, activeViolations) {
       const feed = document.getElementById('arbitrationTraceFeed');
       const passTag = document.getElementById('tracePassCount');
@@ -803,7 +844,7 @@
         ctx.beginPath(); ctx.moveTo(toScreenX(minX), toScreenY(y)); ctx.lineTo(toScreenX(maxX), toScreenY(y)); ctx.stroke();
       }
 
-      // 2. Exterior Walls
+      // 2. Exterior Walls (Double Line CAD)
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = Math.max(3, 150 * zoom);
       ctx.lineJoin = 'miter';
@@ -819,14 +860,14 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 3. Dimension Callouts
+      // 3. Dimension Callouts (Enhanced Font Item 6)
       if (document.getElementById('layerDimensions')?.checked) {
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '600 11px JetBrains Mono, monospace';
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = 'bold 13px JetBrains Mono, monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(`${maxX - minX} mm`, toScreenX((minX + maxX)/2), toScreenY(minY) + 24);
+        ctx.fillText(`${maxX - minX} mm`, toScreenX((minX + maxX)/2), toScreenY(minY) + 26);
         ctx.save();
-        ctx.translate(toScreenX(minX) - 24, toScreenY((minY + maxY)/2));
+        ctx.translate(toScreenX(minX) - 26, toScreenY((minY + maxY)/2));
         ctx.rotate(-Math.PI / 2);
         ctx.fillText(`${maxY - minY} mm`, 0, 0);
         ctx.restore();
@@ -849,13 +890,13 @@
           ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
 
           ctx.strokeStyle = '#34d399';
-          ctx.lineWidth = 2;
+          ctx.lineWidth = 2.5;
           ctx.setLineDash([8, 6]);
           ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
           ctx.setLineDash([]);
 
           ctx.fillStyle = '#34d399';
-          ctx.beginPath(); ctx.arc(sx2, sy2, 5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(sx2, sy2, 6, 0, Math.PI * 2); ctx.fill();
         }
       }
 
@@ -882,13 +923,13 @@
         });
       }
 
-      // 6. Furniture Placements
+      // 6. Furniture Placements (Enhanced Readable ID Badges Item 6)
       const familyStyles = {
-        'desk': { fill: 'rgba(52, 211, 153, 0.85)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
-        'chair': { fill: 'rgba(251, 191, 36, 0.85)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
-        'storage': { fill: 'rgba(244, 114, 182, 0.85)', stroke: '#f472b6', inner: '#ec4899', text: '#500724' },
-        'collaboration': { fill: 'rgba(34, 211, 238, 0.85)', stroke: '#22d3ee', inner: '#06b6d4', text: '#083344' },
-        'accessory': { fill: 'rgba(167, 139, 250, 0.85)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
+        'desk': { fill: 'rgba(52, 211, 153, 0.88)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
+        'chair': { fill: 'rgba(251, 191, 36, 0.88)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
+        'storage': { fill: 'rgba(244, 114, 182, 0.88)', stroke: '#f472b6', inner: '#ec4899', text: '#500724' },
+        'collaboration': { fill: 'rgba(34, 211, 238, 0.88)', stroke: '#22d3ee', inner: '#06b6d4', text: '#083344' },
+        'accessory': { fill: 'rgba(167, 139, 250, 0.88)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
       };
 
       const violatedPids = new Set();
@@ -918,12 +959,12 @@
 
         if (isViolated) {
           ctx.shadowColor = '#ef4444';
-          ctx.shadowBlur = 18;
-          ctx.fillStyle = 'rgba(239, 68, 68, 0.9)';
+          ctx.shadowBlur = 20;
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.92)';
           ctx.strokeStyle = '#f87171';
         } else if (isHovered) {
           ctx.shadowColor = '#22d3ee';
-          ctx.shadowBlur = 16;
+          ctx.shadowBlur = 18;
           ctx.fillStyle = style.fill;
           ctx.strokeStyle = '#ffffff';
         } else {
@@ -938,15 +979,16 @@
         ctx.fill();
         ctx.stroke();
 
+        // High-Contrast Large Label (Item 6)
         if (isViolated) {
           ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 10px JetBrains Mono, monospace';
+          ctx.font = '800 12px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(`⚠ ${p.placement_id}`, 0, 0);
         } else if (document.getElementById('layerLabels')?.checked) {
-          ctx.fillStyle = isHovered ? '#ffffff' : style.text;
-          ctx.font = 'bold 9px JetBrains Mono, monospace';
+          ctx.fillStyle = style.text;
+          ctx.font = '800 11px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillText(p.placement_id, 0, 0);
@@ -976,6 +1018,7 @@
         
         switchMainTab('arbitration');
         renderArbitrationTrace([], simRes.violations);
+        updatePipelineState('stale');
         draw();
         showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
       } catch (err) {
@@ -1005,6 +1048,7 @@
         renderRuleAuditTable(result.rule_audit || []);
         renderQuoteLines(result.quote);
         updateExecutiveSummary(result.quote);
+        updatePipelineState('valid');
         draw();
         showToast(result.is_valid ? 'Arbitration Success: 100% Constraints Repaired!' : 'Arbitration in progress', 'check_circle');
       } catch (err) {
