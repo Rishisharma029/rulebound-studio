@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import json
 import os
 from pathlib import Path
@@ -150,8 +151,74 @@ def get_room_full_data(room_id: str):
             "brief": pack.briefs.get(room.room_id, ""),
         },
         "layout": layout_res.to_dict(),
+        "arbitration_trace": [t.to_dict() for t in arbitrator.last_trace],
         "quote": quote_res.to_dict(),
         "catalog": catalog_dict,
+    }
+
+
+@app.post("/api/v1/arbitration/simulate_violation")
+def simulate_violation(req: VerifyRequest):
+    pack = load_asset_pack(req.pack_dir)
+    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+
+    placements = [
+        Placement(
+            placement_id=p.placement_id,
+            sku=p.sku,
+            finish_id=p.finish_id,
+            x_mm=p.x_mm,
+            y_mm=p.y_mm,
+            rotation_deg=p.rotation_deg,
+        )
+        for p in req.placements
+    ]
+    if placements:
+        # Deliberately move P001 into collision with wall and P002
+        p001 = placements[0]
+        p001.x_mm = 50.0
+        p001.y_mm = placements[1].y_mm if len(placements) > 1 else 120.0
+
+    violations = verify_spatial_constraints(room, placements, pack)
+    energy = compute_energy_metric(violations)
+    return {
+        "placements": [p.to_dict() for p in placements],
+        "violations": [v.to_dict() for v in violations],
+        "energy_score": energy,
+        "violation_count": len(violations),
+        "status": "invalid"
+    }
+
+
+@app.post("/api/v1/arbitration/arbitrate_with_trace")
+def arbitrate_with_trace(req: VerifyRequest):
+    pack = load_asset_pack(req.pack_dir)
+    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+
+    placements = [
+        Placement(
+            placement_id=p.placement_id,
+            sku=p.sku,
+            finish_id=p.finish_id,
+            x_mm=p.x_mm,
+            y_mm=p.y_mm,
+            rotation_deg=p.rotation_deg,
+        )
+        for p in req.placements
+    ]
+    arbitrator = ArbitrationEngine()
+    layout_res = arbitrator.arbitrate(room, placements, pack)
+    quote_res = price_placements(room.room_id, layout_res.placements, pack)
+
+    return {
+        "layout": layout_res.to_dict(),
+        "trace": [t.to_dict() for t in arbitrator.last_trace],
+        "quote": quote_res.to_dict(),
+        "is_valid": layout_res.status == "valid",
     }
 
 

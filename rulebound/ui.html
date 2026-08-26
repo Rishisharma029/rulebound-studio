@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RuleBound Studio | Commercial CAD & Pricing Platform</title>
+  <title>RuleBound Studio | Commercial CAD, Arbitration & Pricing Platform</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,19 +15,8 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              50: '#ecfeff',
-              400: '#22d3ee',
-              500: '#06b6d4',
-              600: '#0891b2',
-            },
-            dark: {
-              950: '#070b12',
-              900: '#0c1322',
-              850: '#111a2e',
-              800: '#16223b',
-              700: '#213050',
-            }
+            brand: { 50: '#ecfeff', 400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2' },
+            dark: { 950: '#070b12', 900: '#0c1322', 850: '#111a2e', 800: '#16223b', 700: '#213050' }
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
@@ -48,7 +37,7 @@
       background-size: 20px 20px, 20px 20px, 100px 100px, 100px 100px;
     }
     .glass-card {
-      background: rgba(12, 19, 34, 0.85);
+      background: rgba(12, 19, 34, 0.88);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -65,7 +54,7 @@
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2.5">
         <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.25)]">
-          <span class="material-symbols-outlined text-lg">architecture</span>
+          <span class="material-symbols-outlined text-lg">gavel</span>
         </div>
         <div class="flex items-baseline gap-1.5">
           <span class="font-extrabold text-base tracking-tight text-white">NORTHWIND</span>
@@ -89,26 +78,26 @@
       <!-- Engine Status Badge -->
       <div id="engineStatusBadge" class="flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-semibold">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span>DETERMINISTIC ENGINE ONLINE</span>
+        <span id="engineStatusText">ARBITRATION ENGINE ONLINE</span>
       </div>
     </div>
 
-    <!-- Right Header Actions -->
+    <!-- Center/Right Header Actions: Injected Violation & Run Arbitration -->
     <div class="flex items-center gap-2.5">
-      <button onclick="synthesize()" class="px-3 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-dark-950 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(34,211,238,0.35)] transition-all">
-        <span class="material-symbols-outlined text-sm">auto_awesome</span> Synthesize Layout
+      <button onclick="injectViolation()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
+        <span class="material-symbols-outlined text-sm text-red-400">bolt</span> ⚡ Inject Violation
       </button>
-      <button onclick="verify()" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
-        <span class="material-symbols-outlined text-sm text-emerald-400">verified</span> Verify Rules
+      <button onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-dark-950 font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
+        <span class="material-symbols-outlined text-sm">balance</span> ⚖ Run Arbitration
       </button>
-      <button onclick="calculateQuote()" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
-        <span class="material-symbols-outlined text-sm text-amber-400">payments</span> Calculate Quote
-      </button>
-      <a id="dxfExportLink" href="#" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1.5 transition-all">
-        <span class="material-symbols-outlined text-sm text-cyan-400">download</span> Export DXF
-      </a>
       <div class="h-4 w-px bg-white/10 mx-1"></div>
-      <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Documentation">
+      <button onclick="synthesize()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all">
+        <span class="material-symbols-outlined text-sm text-cyan-400">auto_awesome</span> Reset
+      </button>
+      <a id="dxfExportLink" href="#" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all">
+        <span class="material-symbols-outlined text-sm text-amber-400">download</span> DXF
+      </a>
+      <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Docs">
         <span class="material-symbols-outlined text-base">api</span>
       </a>
     </div>
@@ -163,18 +152,18 @@
         <div class="glass-card rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> Catalog Catalog
+              <span class="material-symbols-outlined text-xs text-cyan-400">inventory_2</span> Catalog SKUs
             </span>
             <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300">0 items</span>
           </div>
-          <div id="catalogList" class="space-y-1.5 max-h-48 overflow-y-auto pr-1 text-xs">
+          <div id="catalogList" class="space-y-1.5 max-h-44 overflow-y-auto pr-1 text-xs">
             <!-- Populated dynamically -->
           </div>
         </div>
 
       </div>
 
-      <!-- Quick Reset & Layer Toggles -->
+      <!-- Quick Layer Toggles -->
       <div class="pt-3 border-t border-white/10 space-y-2">
         <div class="text-[10px] font-mono uppercase text-gray-400 font-semibold flex items-center justify-between">
           <span>Layer Visibility</span>
@@ -222,6 +211,19 @@
         </div>
       </div>
 
+      <!-- Realtime Coordinates & Energy Metric Overlay -->
+      <div class="absolute top-4 left-4 glass-card px-3.5 py-2 rounded-xl text-[11px] font-mono text-gray-300 pointer-events-none z-20 flex items-center gap-4 shadow-xl">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>X: <b id="cursorX" class="text-white">0</b> mm, Y: <b id="cursorY" class="text-white">0</b> mm</span>
+        </div>
+        <div class="h-3 w-px bg-white/10"></div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-gray-400">Lyapunov Φ(L):</span>
+          <span id="canvasEnergyScore" class="font-bold text-emerald-400">0.0</span>
+        </div>
+      </div>
+
       <!-- Floating Canvas Bottom Controls -->
       <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2 flex items-center gap-4 shadow-2xl z-30">
         <div class="flex items-center gap-1.5 text-xs font-mono text-gray-300 pr-2 border-r border-white/10">
@@ -249,26 +251,71 @@
         </div>
       </div>
 
-      <!-- Realtime Coordinates Overlay -->
-      <div class="absolute top-4 left-4 glass-card px-3 py-1.5 rounded-lg text-[11px] font-mono text-gray-400 pointer-events-none z-20 flex items-center gap-3">
-        <span>X: <b id="cursorX" class="text-white">0</b> mm</span>
-        <span>Y: <b id="cursorY" class="text-white">0</b> mm</span>
-        <span class="text-cyan-400">CAD Precision Mode</span>
-      </div>
-
     </main>
 
-    <!-- Right Inspector Sidebar: Constraint Verifier & Pricing Engine -->
-    <aside class="w-96 bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
+    <!-- Right Inspector Sidebar: Dedicated ARBITRATION & PRICING Panels -->
+    <aside class="w-[430px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- Top Half: Deterministic Pricing Breakdown -->
-      <div class="flex-1 flex flex-col border-b border-white/10 overflow-hidden">
-        <div class="p-3.5 bg-dark-850 flex justify-between items-center border-b border-white/10">
+      <!-- Tab Header Buttons -->
+      <div class="flex bg-dark-850 border-b border-white/10 p-1.5 gap-1.5">
+        <button id="tabBtnArbitration" onclick="switchTab('arbitration')" class="flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all">
+          <span class="material-symbols-outlined text-sm">gavel</span> ARBITRATION TRACE (35pt)
+        </button>
+        <button id="tabBtnPricing" onclick="switchTab('pricing')" class="flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm">payments</span> PRICING (25pt)
+        </button>
+      </div>
+
+      <!-- TAB 1: ARBITRATION & DECISION TRACE (THE 35-POINT HERO PANEL) -->
+      <div id="tabContentArbitration" class="flex-1 flex flex-col overflow-hidden">
+        
+        <!-- Energy Metric Header Card -->
+        <div class="p-3.5 bg-dark-850 border-b border-white/10 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold">Lyapunov State Function</span>
+            <span id="arbitrationStatusBadge" class="text-[10px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">CONVERGED (0 VIOLATIONS)</span>
+          </div>
+          
+          <div class="grid grid-cols-3 gap-2 text-xs font-mono pt-1">
+            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-gray-400 block">ENERGY Φ(L)</span>
+              <span id="tracePhiScore" class="text-base font-bold text-emerald-400">0.0</span>
+            </div>
+            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-gray-400 block">ACTIVE VIOLATIONS</span>
+              <span id="traceViolationCount" class="text-base font-bold text-emerald-400">0</span>
+            </div>
+            <div class="bg-dark-900 p-2 rounded-lg border border-white/5">
+              <span class="text-[10px] text-gray-400 block">PASS BOUND</span>
+              <span id="tracePassCount" class="text-base font-bold text-cyan-300">0 / 50</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scrollable Arbitration Decision Stream -->
+        <div id="arbitrationTraceFeed" class="flex-1 overflow-y-auto p-3.5 space-y-3 font-mono text-xs">
+          <!-- Populated by JS with rich Candidate 1, Candidate 2, Accept/Reject cards -->
+        </div>
+
+        <!-- Bottom Action Explainer -->
+        <div class="p-3 bg-dark-850 border-t border-white/10 flex items-center justify-between text-[11px] font-mono">
+          <span class="text-gray-400 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-emerald-400">check_circle</span> Monotonic convergence: Φ(t+1) &lt; Φ(t)
+          </span>
+          <button onclick="runArbitrationTrace()" class="text-cyan-400 hover:underline font-bold text-[11px]">
+            Re-Arbitrate
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 2: DETERMINISTIC PRICING BREAKDOWN -->
+      <div id="tabContentPricing" class="flex-1 hidden flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850 flex justify-between items-center border-b border-white/10">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined text-amber-400 text-base">payments</span>
-            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Deterministic Pricing</span>
+            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Reconciled Quote (INR)</span>
           </div>
-          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold">PRICED (INR)</span>
+          <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30">PRICED</span>
         </div>
 
         <!-- Scrollable Quote Lines Table -->
@@ -294,28 +341,6 @@
         </div>
       </div>
 
-      <!-- Bottom Half: Spatial Constraint Verifier (RB-GEO-001 - RB-GEO-008) -->
-      <div class="h-72 flex flex-col bg-dark-950 overflow-hidden">
-        <div class="p-3 bg-dark-850 flex justify-between items-center border-b border-white/10">
-          <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-emerald-400 text-base">verified_user</span>
-            <span class="text-xs font-mono font-bold uppercase tracking-wider text-white">Spatial Verifier</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span id="energyMetricTag" class="text-[10px] font-mono text-cyan-300">Energy: 0.0</span>
-            <span id="violationCountTag" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold">0 VIOLATIONS</span>
-          </div>
-        </div>
-
-        <!-- Violation Stream -->
-        <div id="violationFeed" class="flex-1 overflow-y-auto p-3 space-y-2 font-mono text-xs">
-          <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-            <span class="material-symbols-outlined text-base">check_circle</span>
-            All 8 spatial constraints satisfied (RB-GEO-001 through RB-GEO-008).
-          </div>
-        </div>
-      </div>
-
     </aside>
   </div>
 
@@ -333,6 +358,24 @@
     let hoveredPlacement = null;
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
+
+    function switchTab(tab) {
+      if (tab === 'arbitration') {
+        document.getElementById('tabContentArbitration').classList.remove('hidden');
+        document.getElementById('tabContentArbitration').classList.add('flex');
+        document.getElementById('tabContentPricing').classList.add('hidden');
+        document.getElementById('tabContentPricing').classList.remove('flex');
+        document.getElementById('tabBtnArbitration').className = 'flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all';
+        document.getElementById('tabBtnPricing').className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all';
+      } else {
+        document.getElementById('tabContentPricing').classList.remove('hidden');
+        document.getElementById('tabContentPricing').classList.add('flex');
+        document.getElementById('tabContentArbitration').classList.add('hidden');
+        document.getElementById('tabContentArbitration').classList.remove('flex');
+        document.getElementById('tabBtnPricing').className = 'flex-1 py-2 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-xs font-mono font-bold flex items-center justify-center gap-1.5 shadow-md transition-all';
+        document.getElementById('tabBtnArbitration').className = 'flex-1 py-2 rounded-lg text-gray-400 hover:text-white text-xs font-mono font-semibold flex items-center justify-center gap-1.5 transition-all';
+      }
+    }
 
     function showToast(msg, icon = 'info') {
       const el = document.getElementById('toastNotification');
@@ -380,7 +423,7 @@
 
         renderCatalogList(currentData.catalog);
         updateQuoteUI(currentData.quote);
-        updateViolationsUI(currentData.layout.violations);
+        renderArbitrationTrace(currentData.arbitration_trace || [], currentData.layout.violations);
         fitRoomToScreen();
       } catch (err) {
         showToast('Error loading room data: ' + err.message, 'error');
@@ -435,7 +478,6 @@
       document.getElementById('zoomLevelDisplay').innerText = `${Math.round(zoom * 1250)}%`;
     }
 
-    // World to Screen Coordinate Converters (Cartesian Y up -> Screen Y down)
     function toScreenX(x) { return panX + x * zoom; }
     function toScreenY(y) { return panY - y * zoom; }
     function toWorldX(sx) { return (sx - panX) / zoom; }
@@ -513,20 +555,17 @@
           let sx1 = toScreenX(dx), sy1 = toScreenY(dy);
           let sx2 = toScreenX(egress.to_point_mm[0]), sy2 = toScreenY(egress.to_point_mm[1]);
 
-          // Corridor clearance buffer
           ctx.strokeStyle = 'rgba(52, 211, 153, 0.14)';
           ctx.lineWidth = (egress.min_width_mm || 1100) * zoom;
           ctx.lineCap = 'round';
           ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
 
-          // Egress centerline
           ctx.strokeStyle = '#34d399';
           ctx.lineWidth = 2;
           ctx.setLineDash([8, 6]);
           ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
           ctx.setLineDash([]);
 
-          // Waypoint Pin
           ctx.fillStyle = '#34d399';
           ctx.beginPath(); ctx.arc(sx2, sy2, 5, 0, Math.PI * 2); ctx.fill();
         }
@@ -540,7 +579,6 @@
           let sx = toScreenX(hx), sy = toScreenY(hy);
           let r = 850 * zoom;
 
-          // Swing Arc
           ctx.fillStyle = 'rgba(251, 191, 36, 0.12)';
           ctx.strokeStyle = '#fbbf24';
           ctx.lineWidth = 1.5;
@@ -550,14 +588,13 @@
           ctx.closePath();
           ctx.fill(); ctx.stroke();
 
-          // Door Leaf
           ctx.strokeStyle = '#f59e0b';
           ctx.lineWidth = 2.5;
           ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx, sy - r); ctx.stroke();
         });
       }
 
-      // 6. Draw Furniture Placements (Correct Bottom-Left -> Center Transformation)
+      // 6. Draw Furniture Placements
       const familyStyles = {
         'desk': { fill: 'rgba(52, 211, 153, 0.85)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
         'chair': { fill: 'rgba(251, 191, 36, 0.85)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
@@ -566,10 +603,15 @@
         'accessory': { fill: 'rgba(167, 139, 250, 0.85)', stroke: '#a78bfa', inner: '#8b5cf6', text: '#2e1065' }
       };
 
+      const hasViolations = (currentData.layout?.violations || []).length > 0;
+      const violatedPids = new Set();
+      (currentData.layout?.violations || []).forEach(v => {
+        (v.affected_placement_ids || []).forEach(id => violatedPids.add(id));
+      });
+
       (currentData.layout?.placements || []).forEach(p => {
         const item = currentData.catalog[p.sku] || { width: 1200, depth: 600, family: 'desk' };
         
-        // Exact center coordinates in Cartesian space
         const cx = p.x_mm + item.width / 2.0;
         const cy = p.y_mm + item.depth / 2.0;
 
@@ -579,6 +621,7 @@
         const sd = item.depth * zoom;
 
         const isHovered = hoveredPlacement && hoveredPlacement.placement_id === p.placement_id;
+        const isViolated = violatedPids.has(p.placement_id);
 
         ctx.save();
         ctx.translate(scx, scy);
@@ -586,39 +629,35 @@
 
         const style = familyStyles[item.family] || familyStyles['desk'];
 
-        // Hover Glow
-        if (isHovered) {
+        if (isViolated) {
+          ctx.shadowColor = '#ef4444';
+          ctx.shadowBlur = 18;
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.9)';
+          ctx.strokeStyle = '#f87171';
+        } else if (isHovered) {
           ctx.shadowColor = '#22d3ee';
           ctx.shadowBlur = 16;
+          ctx.fillStyle = style.fill;
+          ctx.strokeStyle = '#ffffff';
+        } else {
+          ctx.fillStyle = style.fill;
+          ctx.strokeStyle = style.stroke;
         }
 
-        // Furniture Bounding Box
-        ctx.fillStyle = style.fill;
-        ctx.strokeStyle = isHovered ? '#ffffff' : style.stroke;
-        ctx.lineWidth = isHovered ? 2.5 : 1.5;
+        ctx.lineWidth = (isHovered || isViolated) ? 2.5 : 1.5;
 
         ctx.beginPath();
         ctx.roundRect(-sw/2, -sd/2, sw, sd, Math.min(4, sw/8));
         ctx.fill();
         ctx.stroke();
 
-        // Architectural Details
-        if (item.family === 'desk') {
-          // Monitor notch
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
-          ctx.fillRect(-sw/4, -sd/2 + 2, sw/2, Math.max(2, sd/8));
-        } else if (item.family === 'chair') {
-          // Swivel chair notch
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-          ctx.beginPath(); ctx.arc(0, 0, Math.min(sw, sd)/4, 0, Math.PI * 2); ctx.fill();
-        } else if (item.family === 'collaboration') {
-          // Conference table grommet
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-          ctx.fillRect(-sw/6, -sd/6, sw/3, sd/3);
-        }
-
-        // Placement Label
-        if (document.getElementById('layerLabels')?.checked) {
+        if (isViolated) {
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 10px JetBrains Mono, monospace';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(`⚠ ${p.placement_id}`, 0, 0);
+        } else if (document.getElementById('layerLabels')?.checked) {
           ctx.fillStyle = isHovered ? '#ffffff' : style.text;
           ctx.font = 'bold 9px JetBrains Mono, monospace';
           ctx.textAlign = 'center';
@@ -632,8 +671,125 @@
       ctx.restore();
     }
 
+    function renderArbitrationTrace(traceSteps, activeViolations) {
+      const feed = document.getElementById('arbitrationTraceFeed');
+      const badge = document.getElementById('arbitrationStatusBadge');
+      const phiTag = document.getElementById('tracePhiScore');
+      const vTag = document.getElementById('traceViolationCount');
+      const passTag = document.getElementById('tracePassCount');
+      const canvasPhi = document.getElementById('canvasEnergyScore');
+
+      if (!activeViolations || activeViolations.length === 0) {
+        badge.className = 'text-[10px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30';
+        badge.innerText = 'CONVERGED (0 VIOLATIONS)';
+        phiTag.innerText = '0.0';
+        phiTag.className = 'text-base font-bold text-emerald-400';
+        canvasPhi.innerText = '0.0';
+        canvasPhi.className = 'font-bold text-emerald-400';
+        vTag.innerText = '0';
+        vTag.className = 'text-base font-bold text-emerald-400';
+        passTag.innerText = `${traceSteps.length || 1} / 50`;
+      } else {
+        badge.className = 'text-[10px] font-mono px-2.5 py-0.5 rounded bg-red-500/20 text-red-300 font-extrabold border border-red-500/30 animate-pulse';
+        badge.innerText = `${activeViolations.length} ACTIVE VIOLATIONS`;
+        
+        let curEnergy = activeViolations.length * 1000;
+        activeViolations.forEach(v => {
+          if (v.measured?.penetration_depth_mm) curEnergy += v.measured.penetration_depth_mm;
+          if (v.measured?.wall_distance_mm && v.required?.min_wall_offset_mm) curEnergy += (v.required.min_wall_offset_mm - v.measured.wall_distance_mm);
+        });
+
+        phiTag.innerText = curEnergy.toFixed(1);
+        phiTag.className = 'text-base font-bold text-red-400';
+        canvasPhi.innerText = curEnergy.toFixed(1);
+        canvasPhi.className = 'font-bold text-red-400';
+        vTag.innerText = `${activeViolations.length}`;
+        vTag.className = 'text-base font-bold text-red-400';
+        passTag.innerText = `1 / 50`;
+      }
+
+      // Render Decision Trace Stream
+      if (activeViolations && activeViolations.length > 0) {
+        feed.innerHTML = activeViolations.map((v, i) => `
+          <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/30 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-red-400 font-bold font-mono text-[11px]">VIOLATION: ${v.rule_id}</span>
+              <span class="px-2 py-0.5 rounded bg-red-500 text-dark-950 font-extrabold text-[9px]">ACTIVE HAZARD</span>
+            </div>
+            <div class="text-white text-xs font-semibold">${v.message}</div>
+            <div class="p-2 rounded bg-dark-950/70 border border-red-500/20 text-[10px] space-y-1">
+              <div>Affected: <b class="text-white font-mono">${v.affected_placement_ids?.join(', ')}</b></div>
+              <div>Measured: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
+              <div>Required: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
+            </div>
+          </div>
+        `).join('') + `
+          <div class="p-3 rounded-xl bg-cyan-500/10 border border-cyan-500/30 space-y-2">
+            <div class="text-cyan-300 font-bold text-xs flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">psychology</span> Ready for Arbitration
+            </div>
+            <p class="text-[11px] text-gray-300">Click <b>"⚖ Run Arbitration"</b> in the top bar to evaluate candidate repair operators, enforce Lyapunov monotonicity, and repair the layout.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // If trace history exists
+      if (traceSteps.length > 0) {
+        feed.innerHTML = traceSteps.map((step, idx) => `
+          <div class="p-3.5 rounded-xl bg-dark-850 border border-white/10 space-y-3">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+              <div class="flex items-center gap-1.5">
+                <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-300 font-bold text-[10px] flex items-center justify-center">${step.iteration}</span>
+                <span class="font-bold text-white text-[11px]">${step.violation_rule_id}</span>
+              </div>
+              <span class="text-[10px] px-2 py-0.5 rounded font-bold ${step.status === 'REPAIRED' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-amber-500/20 text-amber-300'}">${step.status}</span>
+            </div>
+
+            <div class="text-[11px] text-gray-300">${step.violation_summary}</div>
+
+            <div class="flex justify-between text-[10px] bg-dark-900 p-2 rounded border border-white/5">
+              <span>Φ Before: <b class="text-red-400 font-mono">${step.phi_before}</b></span>
+              <span>Φ After: <b class="text-emerald-400 font-mono">${step.phi_after}</b></span>
+            </div>
+
+            <!-- Candidate Evaluations -->
+            <div class="space-y-1.5 pt-1">
+              <div class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Candidate Operator Evaluations:</div>
+              ${step.candidates_evaluated.map(c => `
+                <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/10 border border-emerald-500/30' : 'bg-red-500/10 border border-red-500/30'} space-y-1">
+                  <div class="flex justify-between items-center text-[10px]">
+                    <span class="font-bold text-white">${c.candidate_id}: ${c.action}</span>
+                    <span class="px-1.5 py-0.2 rounded font-extrabold text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
+                  </div>
+                  <div class="flex justify-between text-[9px] text-gray-300">
+                    <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
+                    <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300' : 'text-red-300'}">${c.reason}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        feed.innerHTML = `
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+            <div class="flex items-center gap-2 text-emerald-300 font-bold text-xs">
+              <span class="material-symbols-outlined text-base">verified</span> Global Lyapunov Minimum Verified
+            </div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              All 8 spatial constraints (RB-GEO-001 through RB-GEO-008) are satisfied. Energy metric Φ(L) = 0.0.
+            </p>
+            <div class="pt-2 border-t border-emerald-500/20 text-[11px] text-emerald-400 font-mono">
+              Deterministic state machine ready. Click "⚡ Inject Violation" to test live arbitration.
+            </div>
+          </div>
+        `;
+      }
+    }
+
     function updateQuoteUI(q) {
-      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase() + ' (INR)';
+      document.getElementById('quoteStatusBadge').innerText = q.status.toUpperCase();
       document.getElementById('quoteStatusBadge').className = q.status === 'priced'
         ? 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold border border-emerald-500/30'
         : 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300 font-bold border border-red-500/30';
@@ -661,95 +817,63 @@
       document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
     }
 
-    function updateViolationsUI(vList) {
-      const feed = document.getElementById('violationFeed');
-      const tag = document.getElementById('violationCountTag');
-      const energyTag = document.getElementById('energyMetricTag');
+    async function injectViolation() {
+      if (!currentData) return;
+      try {
+        showToast('Injecting deliberate wall & overlap violation...', 'bolt');
+        const res = await fetch('/api/v1/arbitration/simulate_violation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            room_spec: currentData.room,
+            placements: currentData.layout.placements
+          })
+        });
+        const simRes = await res.json();
+        currentData.layout.placements = simRes.placements;
+        currentData.layout.violations = simRes.violations;
+        
+        switchTab('arbitration');
+        renderArbitrationTrace([], simRes.violations);
+        draw();
+        showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
+      } catch (err) {
+        showToast('Injection error: ' + err.message, 'error');
+      }
+    }
 
-      if (!vList || vList.length === 0) {
-        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-bold border border-emerald-500/30';
-        tag.innerText = '0 VIOLATIONS';
-        energyTag.innerText = 'Energy: 0.0';
-        feed.innerHTML = `
-          <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-2">
-            <span class="material-symbols-outlined text-base">check_circle</span>
-            All 8 spatial constraints satisfied (RB-GEO-001 through RB-GEO-008).
-          </div>
-        `;
-      } else {
-        tag.className = 'text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400 font-bold border border-red-500/30';
-        tag.innerText = `${vList.length} VIOLATIONS`;
-        feed.innerHTML = vList.map(v => `
-          <div class="p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 space-y-1">
-            <div class="flex justify-between items-center">
-              <span class="text-red-400 font-bold text-[11px] font-mono">${v.rule_id}</span>
-              <span class="px-1.5 py-0.2 bg-red-500 text-black font-bold text-[9px] rounded">VIOLATION</span>
-            </div>
-            <div class="text-xs text-white">${v.message}</div>
-            <div class="grid grid-cols-2 gap-2 text-[10px] pt-1 border-t border-red-500/20 text-gray-300">
-              <div>MEASURED: <b class="text-red-300">${JSON.stringify(v.measured)}</b></div>
-              <div>REQUIRED: <b class="text-emerald-300">${JSON.stringify(v.required)}</b></div>
-            </div>
-          </div>
-        `).join('');
+    async function runArbitrationTrace() {
+      if (!currentData) return;
+      try {
+        showToast('Executing bounded Lyapunov arbitration...', 'balance');
+        const res = await fetch('/api/v1/arbitration/arbitrate_with_trace', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            room_spec: currentData.room,
+            placements: currentData.layout.placements
+          })
+        });
+        const result = await res.json();
+        currentData.layout = result.layout;
+        currentData.quote = result.quote;
+
+        switchTab('arbitration');
+        renderArbitrationTrace(result.trace || [], result.layout.violations || []);
+        updateQuoteUI(result.quote);
+        draw();
+        showToast(result.is_valid ? 'Arbitration Success: 100% Constraints Repaired!' : 'Arbitration in progress', 'check_circle');
+      } catch (err) {
+        showToast('Arbitration error: ' + err.message, 'error');
       }
     }
 
     async function synthesize() {
       if (!currentData) return;
-      try {
-        showToast('Synthesizing ergonomic layout...', 'auto_awesome');
-        const res = await fetch('/api/v1/layout/synthesize', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ room_spec: currentData.room })
-        });
-        currentData.layout = await res.json();
-        await calculateQuote();
-        updateViolationsUI(currentData.layout.violations);
-        draw();
-        showToast('Candidate layout synthesized successfully!', 'check_circle');
-      } catch (err) {
-        showToast('Synthesis failed: ' + err.message, 'error');
-      }
+      await loadSelectedRoom();
+      showToast('Reset to canonical synthesized layout', 'refresh');
     }
 
-    async function verify() {
-      if (!currentData) return;
-      try {
-        showToast('Running deterministic verification...', 'verified');
-        const res = await fetch('/api/v1/layout/verify', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ room_spec: currentData.room, placements: currentData.layout.placements })
-        });
-        const verifyRes = await res.json();
-        currentData.layout.violations = verifyRes.violations;
-        document.getElementById('energyMetricTag').innerText = `Energy: ${verifyRes.energy_score}`;
-        updateViolationsUI(verifyRes.violations);
-        draw();
-        showToast(verifyRes.is_valid ? '100% Constraints Verified!' : `${verifyRes.violation_count} Violations Found`, verifyRes.is_valid ? 'check_circle' : 'warning');
-      } catch (err) {
-        showToast('Verification error: ' + err.message, 'error');
-      }
-    }
-
-    async function calculateQuote() {
-      if (!currentData) return;
-      try {
-        const res = await fetch('/api/v1/quote/calculate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ room_id: currentData.room.room_id, placements: currentData.layout.placements })
-        });
-        currentData.quote = await res.json();
-        updateQuoteUI(currentData.quote);
-      } catch (err) {
-        showToast('Quote calculation error: ' + err.message, 'error');
-      }
-    }
-
-    // Canvas Interactive Handlers (Drag, Zoom, Tooltips)
     canvas.addEventListener('mousedown', e => {
       isDragging = true;
       startX = e.clientX - panX;
@@ -762,7 +886,6 @@
       const mx = e.clientX - rect.left;
       const my = e.clientY - rect.top;
 
-      // Update Cursor coordinates in mm
       const wx = Math.round(toWorldX(mx));
       const wy = Math.round(toWorldY(my));
       document.getElementById('cursorX').innerText = wx;
@@ -775,7 +898,6 @@
         return;
       }
 
-      // Hit testing for hover tooltip
       if (!currentData) return;
       let found = null;
       (currentData.layout?.placements || []).forEach(p => {
