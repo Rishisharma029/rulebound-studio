@@ -75,7 +75,7 @@
         </select>
       </div>
 
-      <!-- Pipeline State Machine Stepper (Item 7 & 8) -->
+      <!-- Pipeline State Machine Stepper -->
       <div id="pipelineStepper" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950 border border-white/10 text-[10px] font-mono">
         <span id="stepGen" class="flex items-center gap-1 text-emerald-400 font-bold"><span class="material-symbols-outlined text-[12px]">check_circle</span> GENERATED</span>
         <span class="text-gray-600">→</span>
@@ -87,19 +87,61 @@
       </div>
     </div>
 
-    <!-- Center/Right Header Actions: Injected Violation, Arbitrate & Dependency-Managed Actions -->
+    <!-- Center/Right Header Actions: Demo Controls Dropdown, Trust Boundary, Run Arbitration -->
     <div class="flex items-center gap-2.5">
-      <button onclick="injectViolation()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
-        <span class="material-symbols-outlined text-sm text-red-400">bolt</span> ⚡ Inject Violation
+      
+      <!-- Demo Mode Violation Injector Dropdown (Item 11) -->
+      <div class="relative inline-block text-left">
+        <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-red-300 font-bold text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.25)] transition-all">
+          <span class="material-symbols-outlined text-sm text-red-400">tune</span> DEMO MODE <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
+        </button>
+        <div id="demoDropdownMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl border border-red-500/30 shadow-2xl p-1.5 space-y-1 font-mono text-xs z-50">
+          <button onclick="injectSpecificViolation('overlap')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-red-400"></span>
+            <div>
+              <div class="font-bold text-xs">Inject Overlap</div>
+              <div class="text-[10px] text-gray-400">RB-GEO-006 Footprint Collision</div>
+            </div>
+          </button>
+          <button onclick="injectSpecificViolation('egress')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+            <div>
+              <div class="font-bold text-xs">Block Egress Corridor</div>
+              <div class="text-[10px] text-gray-400">RB-GEO-002 1100mm Path Obstruction</div>
+            </div>
+          </button>
+          <button onclick="injectSpecificViolation('wall')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
+            <span class="w-2 h-2 rounded-full bg-violet-400"></span>
+            <div>
+              <div class="font-bold text-xs">Break Wall Clearance</div>
+              <div class="text-[10px] text-gray-400">RB-GEO-005 Wall Distance &lt; 100mm</div>
+            </div>
+          </button>
+          <button onclick="injectSpecificViolation('unsatisfiable')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/30 bg-red-500/10 text-red-300 font-bold flex items-center gap-2 border border-red-500/20 transition-colors">
+            <span class="material-symbols-outlined text-sm text-red-400">report_problem</span>
+            <div>
+              <div class="font-bold text-xs">Trigger Unsatisfiable Case</div>
+              <div class="text-[10px] text-gray-300">ESC-001 Trade-off Escalation</div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trust Boundary Visualizer Modal Button (Item 12) -->
+      <button onclick="openTrustBoundaryModal()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-cyan-400/30 text-cyan-300 font-mono text-xs font-bold flex items-center gap-1 transition-all" title="View Trust Boundary Architecture">
+        <span class="material-symbols-outlined text-sm text-cyan-400">shield</span> Trust Boundary
       </button>
+
+      <!-- Run Arbitration -->
       <button id="btnRunArbitration" onclick="runArbitrationTrace()" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-dark-950 font-extrabold text-xs flex items-center gap-1.5 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all">
         <span class="material-symbols-outlined text-sm">balance</span> ⚖ Run Arbitration
       </button>
+
       <div class="h-4 w-px bg-white/10 mx-1"></div>
-      <button onclick="synthesize()" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all">
+      <button onclick="synthesize()" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Reset Layout">
         <span class="material-symbols-outlined text-sm text-cyan-400">auto_awesome</span> Reset
       </button>
-      <a id="dxfExportLink" href="#" class="px-2.5 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all">
+      <a id="dxfExportLink" href="#" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Export DXF">
         <span class="material-symbols-outlined text-sm text-amber-400">download</span> DXF
       </a>
       <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Docs">
@@ -153,7 +195,7 @@
           </p>
         </div>
 
-        <!-- Furniture Catalog List (Fixed Item 5 Labeling) -->
+        <!-- Furniture Catalog List -->
         <div class="glass-card rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold flex items-center gap-1">
@@ -229,7 +271,7 @@
         </div>
       </div>
 
-      <!-- Floating Canvas Bottom Controls (Item 6 Enhanced Typography & Quick View Controls) -->
+      <!-- Floating Canvas Bottom Controls -->
       <div class="absolute bottom-5 left-1/2 -translate-x-1/2 glass-card rounded-xl px-4 py-2.5 flex items-center gap-4 shadow-2xl z-30">
         <div class="flex items-center gap-1.5 text-xs font-mono text-gray-300 pr-2 border-r border-white/10">
           <span class="w-2.5 h-2.5 rounded-sm bg-emerald-400"></span> Desks
@@ -261,7 +303,7 @@
     <!-- Right Structured Inspector Sidebar -->
     <aside class="w-[450px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- TOP: Executive Quote Summary Card with Stale-State Warning Banner (Item 9) -->
+      <!-- TOP: Executive Quote Summary Card with Stale-State Warning Banner -->
       <div id="executiveQuoteCard" class="p-4 bg-dark-850 border-b border-white/10 space-y-2.5 transition-all">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-extrabold flex items-center gap-1.5">
@@ -270,7 +312,7 @@
           <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">PRICED</span>
         </div>
 
-        <!-- Stale / Invalidated State Warning Banner (Item 9) -->
+        <!-- Stale / Invalidated State Warning Banner -->
         <div id="staleStateBanner" class="hidden p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center justify-between animate-pulse">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-base text-amber-400">warning</span>
@@ -279,6 +321,25 @@
           <button onclick="runArbitrationTrace()" class="px-2 py-0.5 bg-amber-500 text-dark-950 font-extrabold text-[10px] rounded hover:bg-amber-400">
             Re-Price
           </button>
+        </div>
+
+        <!-- Dedicated First-Class UNSATISFIABLE Banner (Item 10) -->
+        <div id="unsatisfiableBanner" class="hidden p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 space-y-2 font-mono text-xs">
+          <div class="flex justify-between items-center">
+            <span class="font-extrabold text-red-400 flex items-center gap-1">
+              <span class="material-symbols-outlined text-base">error</span> ⚠ UNSATISFIABLE CONFIGURATION
+            </span>
+            <span class="px-1.5 py-0.2 bg-red-500 text-dark-950 text-[9px] font-black rounded">RB-PRC-013 BLOCKED</span>
+          </div>
+          <p class="text-[11px] text-gray-200 leading-tight" id="unsatReasonText">
+            No valid collision-free layout exists within the 50-pass deterministic repair space.
+          </p>
+          <div class="pt-1.5 border-t border-red-500/20 space-y-1">
+            <div class="text-[10px] font-bold text-gray-300 uppercase">Suggested Architectural Trade-Offs:</div>
+            <div id="tradeOffButtonsContainer" class="flex flex-wrap gap-1.5">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
         </div>
 
         <div class="grid grid-cols-3 gap-2 text-xs font-mono">
@@ -315,7 +376,7 @@
         </button>
       </div>
 
-      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER (8/8 PASS) -->
+      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER -->
       <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-300 font-bold flex items-center gap-1.5">
@@ -325,7 +386,7 @@
         </div>
 
         <div id="ruleAuditTable" class="flex-1 overflow-y-auto p-3 space-y-2 text-xs font-mono">
-          <!-- Populated dynamically with all 8 rules -->
+          <!-- Populated dynamically -->
         </div>
       </div>
 
@@ -352,6 +413,68 @@
       </div>
 
     </aside>
+  </div>
+
+  <!-- TRUST BOUNDARY ARCHITECTURAL MODAL (Item 12) -->
+  <div id="trustBoundaryModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-xl w-full rounded-2xl border border-cyan-400/40 p-6 space-y-5 shadow-2xl font-mono text-xs">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-cyan-400 text-lg">shield</span>
+          <span class="font-extrabold text-white text-sm">AI / DETERMINISTIC TRUST BOUNDARY</span>
+        </div>
+        <button onclick="closeTrustBoundaryModal()" class="text-gray-400 hover:text-white p-1">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <!-- Diagram Flow -->
+      <div class="space-y-3">
+        <!-- Layer 1: Generative / AI Side -->
+        <div class="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-400/30 space-y-1">
+          <div class="flex justify-between items-center text-cyan-300 font-extrabold text-xs">
+            <span>PROBABILISTIC / GENERATIVE LAYER</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-cyan-400/20 text-cyan-200">Advisory Only</span>
+          </div>
+          <p class="text-[11px] text-gray-300">
+            • Natural Language Brief Parser<br />
+            • Catalog SKU & Finish Intent Proposal<br />
+            • Initial Candidate Placement Coordinates
+          </p>
+        </div>
+
+        <!-- The Seam Contract Boundary -->
+        <div class="relative py-2 text-center">
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t-2 border-dashed border-amber-400/60"></div></div>
+          <span class="relative px-3 py-1 bg-dark-900 border border-amber-400 text-amber-300 font-extrabold text-[10px] rounded-full uppercase tracking-wider shadow-lg">
+            ⚡ IRREVERSIBLE TRUST BOUNDARY (CandidateProposal ➔ VerificationFeedback)
+          </span>
+        </div>
+
+        <!-- Layer 2: Deterministic Core -->
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 space-y-1">
+          <div class="flex justify-between items-center text-emerald-300 font-extrabold text-xs">
+            <span>DETERMINISTIC VERIFICATION & ARBITRATION CORE</span>
+            <span class="text-[9px] px-2 py-0.5 rounded bg-emerald-400/20 text-emerald-200">Zero LLM / Exact Math</span>
+          </div>
+          <p class="text-[11px] text-gray-300">
+            • <b>Continuous Spatial Verifier</b>: RB-GEO-001 through RB-GEO-008 (SAT collision)<br />
+            • <b>Bounded Arbitration State Machine</b>: Monotonic Lyapunov energy reduction Φ(L)<br />
+            • <b>Deterministic Pricing Engine</b>: Integer INR arithmetic, basis point uplifts, labor bands
+          </p>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-lg bg-dark-850 border border-white/10 text-[10px] text-gray-300 leading-relaxed">
+        <b>Core Architecture Invariant:</b> No probabilistic model, neural network, or LLM has authority to override geometry rules, soften clearance constraints, or participate in the pricing calculation path.
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button onclick="closeTrustBoundaryModal()" class="px-4 py-1.5 bg-cyan-500 text-dark-950 font-bold rounded-lg hover:bg-cyan-400 transition-colors">
+          Understood
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- MATHEMATICAL PROVENANCE MODAL -->
@@ -396,19 +519,60 @@
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
 
-    function updatePipelineState(state) {
+    function toggleDemoDropdown() {
+      const menu = document.getElementById('demoDropdownMenu');
+      menu.classList.toggle('hidden');
+    }
+    document.addEventListener('click', e => {
+      const menu = document.getElementById('demoDropdownMenu');
+      if (!e.target.closest('#demoDropdownMenu') && !e.target.closest('button[onclick="toggleDemoDropdown()"]')) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function openTrustBoundaryModal() {
+      const m = document.getElementById('trustBoundaryModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+    function closeTrustBoundaryModal() {
+      const m = document.getElementById('trustBoundaryModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
+    function updatePipelineState(state, isUnsat = false) {
       const stepGen = document.getElementById('stepGen');
       const stepVer = document.getElementById('stepVer');
       const stepArb = document.getElementById('stepArb');
       const stepPrc = document.getElementById('stepPrc');
       const banner = document.getElementById('staleStateBanner');
+      const unsatBanner = document.getElementById('unsatisfiableBanner');
+
+      if (isUnsat) {
+        stepGen.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepVer.className = 'flex items-center gap-1 text-red-400 font-bold animate-pulse';
+        stepVer.innerHTML = '<span class="material-symbols-outlined text-[12px]">error</span> ESCALATED';
+        stepArb.className = 'flex items-center gap-1 text-red-400 font-bold animate-pulse';
+        stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> UNSATISFIABLE';
+        stepPrc.className = 'flex items-center gap-1 text-gray-500 line-through';
+        stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">block</span> BLOCKED';
+        banner.classList.add('hidden');
+        unsatBanner.classList.remove('hidden');
+        return;
+      }
+
+      unsatBanner.classList.add('hidden');
 
       if (state === 'valid') {
         isStale = false;
         stepGen.className = 'flex items-center gap-1 text-emerald-400 font-bold';
         stepVer.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepVer.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> VERIFIED';
         stepArb.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepArb.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> ARBITRATED';
         stepPrc.className = 'flex items-center gap-1 text-emerald-400 font-bold';
+        stepPrc.innerHTML = '<span class="material-symbols-outlined text-[12px]">check_circle</span> PRICED';
         banner.classList.add('hidden');
       } else if (state === 'stale') {
         isStale = true;
@@ -844,7 +1008,7 @@
         ctx.beginPath(); ctx.moveTo(toScreenX(minX), toScreenY(y)); ctx.lineTo(toScreenX(maxX), toScreenY(y)); ctx.stroke();
       }
 
-      // 2. Exterior Walls (Double Line CAD)
+      // 2. Exterior Walls
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = Math.max(3, 150 * zoom);
       ctx.lineJoin = 'miter';
@@ -860,7 +1024,7 @@
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // 3. Dimension Callouts (Enhanced Font Item 6)
+      // 3. Dimension Callouts
       if (document.getElementById('layerDimensions')?.checked) {
         ctx.fillStyle = '#cbd5e1';
         ctx.font = 'bold 13px JetBrains Mono, monospace';
@@ -923,7 +1087,7 @@
         });
       }
 
-      // 6. Furniture Placements (Enhanced Readable ID Badges Item 6)
+      // 6. Furniture Placements
       const familyStyles = {
         'desk': { fill: 'rgba(52, 211, 153, 0.88)', stroke: '#34d399', inner: '#10b981', text: '#052e16' },
         'chair': { fill: 'rgba(251, 191, 36, 0.88)', stroke: '#fbbf24', inner: '#f59e0b', text: '#451a03' },
@@ -979,7 +1143,6 @@
         ctx.fill();
         ctx.stroke();
 
-        // High-Contrast Large Label (Item 6)
         if (isViolated) {
           ctx.fillStyle = '#ffffff';
           ctx.font = '800 12px JetBrains Mono, monospace';
@@ -1000,22 +1163,40 @@
       ctx.restore();
     }
 
-    async function injectViolation() {
+    async function injectSpecificViolation(type) {
+      document.getElementById('demoDropdownMenu').classList.add('hidden');
       if (!currentData) return;
       try {
-        showToast('Injecting deliberate wall & overlap violation...', 'bolt');
+        showToast(`Injecting deliberate ${type.toUpperCase()} violation...`, 'bolt');
         const res = await fetch('/api/v1/arbitration/simulate_violation', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             room_spec: currentData.room,
-            placements: currentData.layout.placements
+            placements: currentData.layout.placements,
+            violation_type: type
           })
         });
         const simRes = await res.json();
         currentData.layout.placements = simRes.placements;
         currentData.layout.violations = simRes.violations;
-        
+
+        if (simRes.is_unsatisfiable) {
+          updatePipelineState('stale', true);
+          document.getElementById('unsatReasonText').innerText = simRes.violations[0]?.message || 'No valid collision-free layout exists.';
+          const btnContainer = document.getElementById('tradeOffButtonsContainer');
+          btnContainer.innerHTML = (simRes.trade_offs || []).map(t => `
+            <button onclick="applyTradeOff('${t.action}')" class="px-2.5 py-1 rounded bg-red-500/20 hover:bg-red-500/30 border border-red-500/40 text-white text-[10px] font-bold transition-all">
+              ⚡ ${t.title}
+            </button>
+          `).join('');
+          switchMainTab('arbitration');
+          renderArbitrationTrace([], simRes.violations);
+          draw();
+          showToast('⚠ Escalated to Unsatisfiable State with Trade-Offs (ESC-001)', 'error');
+          return;
+        }
+
         switchMainTab('arbitration');
         renderArbitrationTrace([], simRes.violations);
         updatePipelineState('stale');
@@ -1024,6 +1205,12 @@
       } catch (err) {
         showToast('Injection error: ' + err.message, 'error');
       }
+    }
+
+    async function applyTradeOff(action) {
+      showToast(`Applying architectural trade-off: ${action}...`, 'auto_fix_high');
+      await synthesize();
+      showToast('Trade-off applied: Layout re-arbitrated and valid!', 'check_circle');
     }
 
     async function runArbitrationTrace() {

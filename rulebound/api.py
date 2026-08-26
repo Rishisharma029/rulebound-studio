@@ -15,7 +15,7 @@ from rulebound.constraints import audit_spatial_constraints, verify_spatial_cons
 from rulebound.dxf import export_layout_to_dxf
 from rulebound.generator import LayoutGenerator
 from rulebound.loader import load_asset_pack
-from rulebound.models import Placement, RoomSpec
+from rulebound.models import Placement, RoomSpec, Violation
 from rulebound.pricing import price_placements
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
@@ -72,6 +72,7 @@ class PlacementDTO(BaseModel):
 class VerifyRequest(BaseModel):
     room_spec: dict[str, Any]
     placements: list[PlacementDTO]
+    violation_type: str = "overlap"
     pack_dir: str = str(DATA_DIR)
 
 
@@ -176,20 +177,73 @@ def simulate_violation(req: VerifyRequest):
         )
         for p in req.placements
     ]
-    if placements:
-        # Deliberately move P001 into collision with wall and P002
-        p001 = placements[0]
-        p001.x_mm = 50.0
-        p001.y_mm = placements[1].y_mm if len(placements) > 1 else 120.0
+
+    vtype = req.violation_type
+    if vtype == "overlap" and len(placements) >= 2:
+        # P001 overlaps P002
+        placements[0].x_mm = placements[1].x_mm + 200.0
+        placements[0].y_mm = placements[1].y_mm
+    elif vtype == "egress" and placements:
+        # Move placement right onto egress line
+        egress_target = room.egress.to_point_mm
+        placements[0].x_mm = egress_target[0] - 200.0
+        placements[0].y_mm = egress_target[1] - 400.0
+    elif vtype == "wall" and placements:
+        # Place directly on the wall boundary (30mm)
+        placements[0].x_mm = 30.0
+        placements[0].y_mm = 120.0
+    elif vtype == "unsatisfiable":
+        # Force an overconstrained room (e.g. 50 giant collaboration tables)
+        for i in range(len(placements)):
+            placements[i].x_mm = 50.0 + (i % 3) * 100.0
+            placements[i].y_mm = 50.0 + (i // 3) * 100.0
+    else:
+        # Default combination
+        if placements:
+            placements[0].x_mm = 50.0
+            placements[0].y_mm = placements[1].y_mm if len(placements) > 1 else 120.0
 
     violations = verify_spatial_constraints(room, placements, pack)
     energy = compute_energy_metric(violations)
+    
+    is_unsat = vtype == "unsatisfiable"
+    if is_unsat:
+        escalation_violations = [
+            {
+                "violation_id": "ESC-001",
+                "rule_id": "RB-GEO-002",
+                "message": f"UNSATISFIABLE: Egress corridor obstructed. Room capacity ({room.capacity} seats) exceeds physical spatial bounds.",
+                "affected_placement_ids": [p.placement_id for p in placements[:4]],
+                "measured": {"active_violations": len(violations), "deficit_mm": 650.0},
+                "required": {"egress_clearance_mm": 1100.0},
+                "repair_options": [
+                    {"action": "remove_desk_pod", "trade_off": "Reduce target occupancy from 18 to 14."},
+                    {"action": "downsize_sku", "trade_off": "Replace 1600mm tables with compact 1200mm desks."},
+                    {"action": "reconfigure_zones", "trade_off": "Switch to open-plan benching configuration."}
+                ]
+            }
+        ]
+        return {
+            "placements": [p.to_dict() for p in placements],
+            "violations": escalation_violations,
+            "energy_score": 8500.0,
+            "violation_count": len(escalation_violations),
+            "status": "unsatisfiable",
+            "is_unsatisfiable": True,
+            "trade_offs": [
+                {"title": "Reduce Occupancy", "desc": "Reduce capacity from 18 to 14 occupants.", "action": "reduce_capacity"},
+                {"title": "Downsize Desk SKU", "desc": "Replace 1600mm desks with compact 1200mm units (NW-DES-001).", "action": "downsize_sku"},
+                {"title": "Reconfigure Pods", "desc": "Switch to dual-cluster linear configuration.", "action": "reconfigure"}
+            ]
+        }
+
     return {
         "placements": [p.to_dict() for p in placements],
         "violations": [v.to_dict() for v in violations],
         "energy_score": energy,
         "violation_count": len(violations),
-        "status": "invalid"
+        "status": "invalid",
+        "is_unsatisfiable": False
     }
 
 
@@ -247,7 +301,7 @@ def synthesize_layout(req: LayoutRequest, user=Depends(verify_entra_id_token)):
     pack = load_asset_pack(req.pack_dir)
     room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
     if not room:
-        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
+        raise HTTPException(status_code=404, detail="Room not found.")
     generator = LayoutGenerator()
     placements = generator.generate_candidate_layout(room, pack)
     arbitrator = ArbitrationEngine()
@@ -260,7 +314,7 @@ def verify_layout(req: VerifyRequest, user=Depends(verify_entra_id_token)):
     pack = load_asset_pack(req.pack_dir)
     room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
     if not room:
-        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
+        raise HTTPException(status_code=404, detail="Room not found.")
     placements = [
         Placement(
             placement_id=p.placement_id,
