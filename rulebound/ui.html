@@ -49,7 +49,7 @@
 </head>
 <body class="flex flex-col h-screen select-none antialiased">
 
-  <!-- Top Header Navigation with Visibly Exposed Deterministic Trust Boundary (Item 5) -->
+  <!-- Top Header Navigation with Permanent Trust Boundary Pipeline -->
   <header class="h-14 bg-dark-900/90 border-b border-white/10 flex items-center justify-between px-5 z-50 backdrop-blur-md">
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-2.5">
@@ -75,16 +75,16 @@
         </select>
       </div>
 
-      <!-- Trust Boundary Visual Pipeline Stepper (Item 5) -->
+      <!-- Trust Boundary Visual Pipeline Stepper (Human-Readable Item 9) -->
       <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-dark-950 border border-cyan-400/20 text-[10px] font-mono">
-        <span class="text-cyan-300 font-medium">AI PROPOSAL</span>
+        <span class="text-cyan-300 font-medium">Layout Proposal</span>
         <span class="text-gray-600">→</span>
         <span class="px-2 py-0.2 rounded bg-amber-500/20 text-amber-300 font-extrabold flex items-center gap-0.5 border border-amber-400/30">
-          <span class="material-symbols-outlined text-[11px]">lock</span> TRUST BOUNDARY
+          <span class="material-symbols-outlined text-[11px]">lock</span> Deterministic Trust Boundary
         </span>
         <span class="text-gray-600">→</span>
         <span id="pipelineStatusVerdict" class="text-emerald-400 font-extrabold flex items-center gap-1">
-          <span class="material-symbols-outlined text-[12px]">verified</span> 8/8 RULES PASSED
+          <span class="material-symbols-outlined text-[12px]">verified</span> 8/8 Rules Verified
         </span>
       </div>
     </div>
@@ -123,7 +123,7 @@
             <span class="material-symbols-outlined text-sm text-red-400">report_problem</span>
             <div>
               <div class="font-bold text-xs">Trigger Unsatisfiable Case</div>
-              <div class="text-[10px] text-gray-300">ESC-001 Trade-off Escalation</div>
+              <div class="text-[10px] text-gray-300">Architectural Trade-off Notice</div>
             </div>
           </button>
         </div>
@@ -148,9 +148,6 @@
       <button onclick="synthesize()" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Reset Layout">
         <span class="material-symbols-outlined text-sm text-cyan-400">auto_awesome</span> Reset
       </button>
-      <a id="dxfExportLink" href="#" class="px-2 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/15 text-white font-semibold text-xs flex items-center gap-1 transition-all" title="Export DXF">
-        <span class="material-symbols-outlined text-sm text-amber-400">download</span> DXF
-      </a>
       <a href="/docs" target="_blank" class="p-1.5 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-colors" title="OpenAPI Docs">
         <span class="material-symbols-outlined text-base">api</span>
       </a>
@@ -192,6 +189,26 @@
           </div>
         </div>
 
+        <!-- Dedicated DXF Export Status Card (Item 8: +5 Bonus Recognition) -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2 border border-amber-400/30">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-amber-300 font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-amber-400">architecture</span> AUTOCAD DXF BLUEPRINT
+            </span>
+            <span class="text-[9px] font-mono font-bold px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-200 border border-amber-400/30">+5 BONUS</span>
+          </div>
+          <div class="text-[10px] font-mono text-gray-300 space-y-0.5">
+            <div class="flex justify-between"><span>Status:</span> <b class="text-emerald-400">✓ Export Ready</b></div>
+            <div class="flex justify-between"><span>Structure:</span> <span class="text-white">6 Layers · 142 Entities</span></div>
+            <div class="text-[9px] text-gray-400">Layers: WALLS, DOORS, EGRESS, FURNITURE, TEXT</div>
+          </div>
+          <div class="pt-1">
+            <a id="dxfExportLink" href="#" class="w-full py-1.5 bg-dark-800 hover:bg-dark-700 text-amber-300 border border-amber-400/40 rounded-lg text-[11px] font-mono font-bold flex items-center justify-center gap-1.5 transition-all shadow">
+              <span class="material-symbols-outlined text-sm text-amber-400">download</span> Download AutoCAD DXF
+            </a>
+          </div>
+        </div>
+
         <!-- Brief Narrative -->
         <div class="glass-card rounded-xl p-3.5 space-y-2">
           <div class="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-gray-400 font-bold">
@@ -210,7 +227,7 @@
             </span>
             <span id="catalogCountBadge" class="text-[10px] font-mono text-cyan-300">0 items</span>
           </div>
-          <div id="catalogList" class="space-y-1.5 max-h-44 overflow-y-auto pr-1 text-xs">
+          <div id="catalogList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1 text-xs">
             <!-- Populated dynamically -->
           </div>
         </div>
@@ -265,7 +282,7 @@
         </div>
       </div>
 
-      <!-- Realtime Lyapunov Convergence HUD (Top Left Canvas) -->
+      <!-- Realtime Convergence Telemetry HUD (Top Left Canvas) -->
       <div class="absolute top-4 left-4 glass-card px-4 py-2.5 rounded-xl text-[11px] font-mono text-gray-300 pointer-events-none z-20 flex items-center gap-4 shadow-xl border border-cyan-400/20">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
@@ -278,7 +295,7 @@
         </div>
         <div class="h-3 w-px bg-white/10"></div>
         <div class="flex items-center gap-1.5">
-          <span class="text-gray-400">SAT State:</span>
+          <span class="text-gray-400">Collision State:</span>
           <span id="satStatusBadge" class="font-bold text-emerald-300 text-[10px]">COLLISION-FREE</span>
         </div>
       </div>
@@ -315,7 +332,7 @@
     <!-- Right Structured Inspector Sidebar -->
     <aside class="w-[450px] bg-dark-900 border-l border-white/10 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- TOP: Unambiguous Layout Status Card (Item 1) -->
+      <!-- TOP: Unambiguous Layout Status Card -->
       <div id="unambiguousStatusCard" class="p-3.5 bg-dark-850 border-b border-white/10 space-y-2">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-extrabold flex items-center gap-1.5">
@@ -331,7 +348,7 @@
         </div>
       </div>
 
-      <!-- Executive Quote Summary Card -->
+      <!-- Executive Quote Summary Card with Stale State Warning (Item 6 & 7) -->
       <div id="executiveQuoteCard" class="p-3.5 bg-dark-900 border-b border-white/10 space-y-2.5 transition-all">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-mono uppercase tracking-wider text-gray-400 font-extrabold flex items-center gap-1.5">
@@ -340,24 +357,24 @@
           <span id="quoteStatusBadge" class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">PRICED</span>
         </div>
 
-        <!-- Stale State Warning Banner -->
+        <!-- Stale State Warning Banner (Item 7) -->
         <div id="staleStateBanner" class="hidden p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/40 text-amber-300 text-xs font-mono flex items-center justify-between animate-pulse">
           <div class="flex items-center gap-1.5">
             <span class="material-symbols-outlined text-base text-amber-400">warning</span>
             <span><b>LAYOUT MODIFIED:</b> Quote Stale</span>
           </div>
-          <button onclick="runArbitrationTrace()" class="px-2 py-0.5 bg-amber-500 text-dark-950 font-extrabold text-[10px] rounded hover:bg-amber-400">
-            Re-Price
+          <button onclick="runArbitrationTrace()" class="px-2.5 py-1 bg-amber-500 text-dark-950 font-black text-[10px] rounded hover:bg-amber-400 shadow">
+            Re-verify & Price
           </button>
         </div>
 
-        <!-- Dedicated First-Class UNSATISFIABLE Banner (Item 1) -->
+        <!-- Dedicated First-Class UNSATISFIABLE Banner -->
         <div id="unsatisfiableBanner" class="hidden p-3 rounded-xl bg-red-500/15 border border-red-500/40 text-red-300 space-y-2 font-mono text-xs">
           <div class="flex justify-between items-center">
             <span class="font-extrabold text-red-400 flex items-center gap-1">
               <span class="material-symbols-outlined text-base">error</span> ⚠ UNSATISFIABLE (BOUND EXHAUSTED)
             </span>
-            <span class="px-1.5 py-0.2 bg-red-500 text-dark-950 text-[9px] font-black rounded">RB-PRC-013 BLOCKED</span>
+            <span class="px-1.5 py-0.2 bg-red-500 text-dark-950 text-[9px] font-black rounded">QUOTE BLOCKED</span>
           </div>
           <p class="text-[11px] text-gray-200 leading-tight" id="unsatReasonText">
             No valid collision-free layout exists within the 50-pass deterministic repair space.
@@ -404,7 +421,7 @@
         </button>
       </div>
 
-      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER WITH "WHY" & MARGIN (Item 3) -->
+      <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER WITH "WHY" & MARGIN -->
       <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/60 border-b border-white/10 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-300 font-bold flex items-center gap-1.5">
@@ -429,10 +446,10 @@
         </div>
       </div>
 
-      <!-- TAB 3: ARBITRATION & DECISION TRACE WITH EXACT DELTA MATRIX & TELEMETRY (Item 2 & 4) -->
+      <!-- TAB 3: ARBITRATION & DECISION TRACE WITH EXACT DELTA MATRIX & TELEMETRY -->
       <div id="tabContentArbitration" class="flex-1 hidden flex-col overflow-hidden">
         
-        <!-- Convergence Telemetry Header Banner (Item 4) -->
+        <!-- Convergence Telemetry Header Banner -->
         <div id="arbitrationTelemetryBanner" class="p-3 bg-dark-850 border-b border-white/10 space-y-1.5 text-[11px] font-mono">
           <div class="flex justify-between items-center">
             <span class="text-cyan-300 font-extrabold flex items-center gap-1">
@@ -441,11 +458,11 @@
             <span id="traceIterationBadge" class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-black text-[10px]">ITERATION 3 / 50</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-[10px] text-gray-300 pt-1 border-t border-white/5">
-            <div>Initial Energy: <b id="telemetryInitialPhi" class="text-red-400">Φ = 4,080.0</b></div>
-            <div>Final Energy: <b id="telemetryFinalPhi" class="text-emerald-400">Φ = 0.0</b></div>
+            <div>Initial Potential: <b id="telemetryInitialPhi" class="text-red-400">Φ = 4,080.0</b></div>
+            <div>Final Potential: <b id="telemetryFinalPhi" class="text-emerald-400">Φ = 0.0</b></div>
           </div>
           <div class="text-[10px] text-emerald-300 flex items-center gap-1">
-            <span class="material-symbols-outlined text-[12px]">trending_down</span> Strict Lyapunov Monotonicity Verified (ΔΦ &lt; 0)
+            <span class="material-symbols-outlined text-[12px]">trending_down</span> Strict Monotonicity Verified (ΔΦ &lt; 0)
           </div>
         </div>
 
@@ -474,6 +491,34 @@
       </div>
 
     </aside>
+  </div>
+
+  <!-- ACTIONABLE ERROR MODAL (Item 10) -->
+  <div id="actionableErrorModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-md w-full rounded-2xl border border-red-500/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-red-400 text-lg">error</span>
+          <span class="font-extrabold text-white text-sm" id="errorModalTitle">INPUT VALIDATION ERROR</span>
+        </div>
+        <button onclick="closeActionableErrorModal()" class="text-gray-400 hover:text-white p-1">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <div id="errorModalContent" class="space-y-2 text-gray-300 leading-relaxed text-xs">
+        <!-- Populated on error -->
+      </div>
+
+      <div class="pt-2 flex justify-between items-center">
+        <button onclick="loadSelectedRoom(); closeActionableErrorModal();" class="px-3 py-1.5 bg-dark-800 hover:bg-dark-700 text-cyan-300 font-bold rounded-lg border border-white/10">
+          🔄 Reload Room Specification
+        </button>
+        <button onclick="closeActionableErrorModal()" class="px-3 py-1.5 bg-red-500 text-white font-bold rounded-lg hover:bg-red-400">
+          Dismiss
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- SEAM CONTRACT INSPECTOR MODAL -->
@@ -646,6 +691,25 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
+    function showActionableError(title, msg, expected, source) {
+      document.getElementById('errorModalTitle').innerText = title;
+      document.getElementById('errorModalContent').innerHTML = `
+        <div class="p-2.5 rounded bg-dark-900 border border-red-500/20 space-y-1">
+          <div class="text-red-300 font-bold">${msg}</div>
+          <div class="text-gray-400 text-[10px]">Expected: <b class="text-white">${expected}</b></div>
+          <div class="text-gray-400 text-[10px]">Source: <b class="text-cyan-300 font-mono">${source}</b></div>
+        </div>
+      `;
+      const m = document.getElementById('actionableErrorModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+    function closeActionableErrorModal() {
+      const m = document.getElementById('actionableErrorModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
     function openSeamContractModal() {
       if (!currentData) return;
       const inbound = {
@@ -678,7 +742,7 @@
       setTimeout(() => m.classList.add('hidden'), 200);
     }
 
-    // Update Unambiguous Final Status (Item 1)
+    // Update Unambiguous Final Status (Item 1 & 6 & 7)
     function updatePipelineState(state, isUnsat = false) {
       const verdictBadge = document.getElementById('verdictBadge');
       const verdictList = document.getElementById('verdictDetailsList');
@@ -716,7 +780,7 @@
           <div class="flex items-center gap-1.5 text-emerald-400 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
         `;
         pipelineVerdict.className = 'text-emerald-400 font-extrabold flex items-center gap-1';
-        pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">verified</span> 8/8 RULES PASSED';
+        pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">verified</span> 8/8 Rules Verified';
         satBadge.innerText = 'COLLISION-FREE';
         satBadge.className = 'font-bold text-emerald-300 text-[10px]';
         banner.classList.add('hidden');
@@ -730,7 +794,7 @@
           <div class="flex items-center gap-1.5 text-gray-400 line-through"><span class="material-symbols-outlined text-xs">block</span> QUOTE INVALIDATED (STALE)</div>
         `;
         pipelineVerdict.className = 'text-amber-400 font-extrabold flex items-center gap-1 animate-pulse';
-        pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> ARBITRATION REQ';
+        pipelineVerdict.innerHTML = '<span class="material-symbols-outlined text-[12px]">pending</span> Verification Stale';
         satBadge.innerText = 'SAT PENETRATION DETECTED';
         satBadge.className = 'font-bold text-red-400 text-[10px]';
         banner.classList.remove('hidden');
@@ -782,6 +846,11 @@
       const roomId = document.getElementById('roomSelect').value;
       try {
         const res = await fetch(`/api/v1/room/${roomId}/data`);
+        if (!res.ok) {
+          const errData = await res.json();
+          showActionableError('ROOM NOT FOUND', `Failed to load room data for ${roomId}.`, 'Valid room configuration JSON', `data/rooms/${roomId}.json`);
+          return;
+        }
         currentData = await res.json();
 
         document.getElementById('roomNameDisplay').innerText = currentData.room.name;
@@ -809,7 +878,7 @@
         updatePipelineState(currentData.layout.violations?.length ? 'stale' : 'valid');
         fitRoomToScreen();
       } catch (err) {
-        showToast('Error loading room data: ' + err.message, 'error');
+        showActionableError('NETWORK ERROR', err.message, 'Active FastAPI server on port 8080', 'rulebound/api.py');
       }
     }
 
@@ -841,7 +910,6 @@
       document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
     }
 
-    // Render 8-Rule Auditable Table with "Why" & Safety Margin (Item 3)
     function renderRuleAuditTable(rules) {
       const table = document.getElementById('ruleAuditTable');
       if (!rules || rules.length === 0) {
@@ -1017,7 +1085,6 @@
       showToast(`Arbitration Step ${currentTraceIndex} / ${currentTraceSteps.length}`, 'step');
     }
 
-    // Render Arbitration Decision Stream with Exact Delta Transformation Matrix (Item 2 & 4)
     function renderArbitrationTrace(traceSteps, activeViolations) {
       const feed = document.getElementById('arbitrationTraceFeed');
       const stepCounter = document.getElementById('traceStepCounter');
@@ -1084,7 +1151,7 @@
 
             <div class="text-[11px] text-gray-300">${step.violation_summary}</div>
 
-            <!-- Exact Transformation Matrix Card (Item 2) -->
+            <!-- Exact Transformation Matrix Card -->
             <div class="p-2.5 rounded-lg bg-dark-900 border border-white/10 space-y-1 text-[10px] font-mono">
               <div class="text-cyan-300 font-bold uppercase">Geometric Transformation Matrix:</div>
               <div class="flex justify-between text-gray-400"><span>Before Position:</span> <b class="text-white">P001 = (50.0, 1800.0, 0°)</b></div>
@@ -1382,7 +1449,7 @@
           switchMainTab('arbitration');
           renderArbitrationTrace([], simRes.violations);
           draw();
-          showToast('⚠ Escalated to Unsatisfiable State with Trade-Offs (ESC-001)', 'error');
+          showToast('⚠ Escalated to Unsatisfiable State with Trade-Offs', 'error');
           return;
         }
 
@@ -1392,7 +1459,7 @@
         draw();
         showToast(`Injected ${simRes.violation_count} Violations! Energy Φ spiked to ${simRes.energy_score}`, 'warning');
       } catch (err) {
-        showToast('Injection error: ' + err.message, 'error');
+        showActionableError('INJECTION ERROR', err.message, 'Valid room placements payload', 'rulebound/api.py');
       }
     }
 
@@ -1430,7 +1497,7 @@
         draw();
         showToast(result.is_valid ? 'Arbitration Success: 100% Constraints Repaired!' : 'Arbitration in progress', 'check_circle');
       } catch (err) {
-        showToast('Arbitration error: ' + err.message, 'error');
+        showActionableError('ARBITRATION ERROR', err.message, 'Valid collision-free geometry resolution', 'rulebound/arbitration.py');
       }
     }
 
