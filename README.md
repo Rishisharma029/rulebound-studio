@@ -16,6 +16,8 @@
 Generate `layout.json`, `quote.json`, and `layout.dxf` across all rooms in an input pack:
 
 ```bash
+python main.py --input RuleBound_Round1_Release/data --output OUTPUT
+# or:
 python runner.py --input RuleBound_Round1_Release/data --output OUTPUT
 ```
 
