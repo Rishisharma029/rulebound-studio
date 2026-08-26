@@ -4,11 +4,12 @@ import copy
 import json
 import os
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional
 
-from fastapi import Depends, FastAPI, HTTPException, Header, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.responses import FileResponse, HTMLResponse
-from pydantic import BaseModel
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from pydantic import BaseModel, Field
 
 from rulebound.arbitration import ArbitrationEngine, compute_energy_metric
 from rulebound.constraints import audit_spatial_constraints, verify_spatial_constraints
@@ -22,28 +23,44 @@ ROOT_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT_DIR / "RuleBound_Round1_Release/data"
 UI_HTML_PATH = ROOT_DIR / "rulebound/ui.html"
 
-app = FastAPI(
-    title="RuleBound Enterprise Platform",
-    version="1.0.0",
-    description="Deterministic Layout Verification, Arbitration, and Pricing Engine for Northwind Furnishings.",
+# Microsoft Entra ID (Azure Active Directory) Security Scheme
+security_scheme = HTTPBearer(
+    bearerFormat="JWT",
+    description="Microsoft Entra ID (Azure AD) OAuth2 Bearer Token. Use your tenant JWT or token for authenticated API requests.",
+    auto_error=False
 )
 
-AZURE_TENANT_ID = os.getenv("AZURE_TENANT_ID", "common")
-AZURE_CLIENT_ID = os.getenv("AZURE_CLIENT_ID", "rulebound-api")
+app = FastAPI(
+    title="RuleBound Enterprise API",
+    version="1.0.0",
+    description="""
+### Northwind Furnishings: Deterministic Layout Verification, Bounded Lyapunov Arbitration, and Line-Traceable Pricing Platform.
+
+* **Seam Contracts**: Strictly decoupled `CandidateProposal` inbound and `VerificationFeedback` outbound.
+* **Deterministic Trust Boundary**: Zero LLM or probabilistic models within the verification and pricing paths.
+* **Exact Integer Arithmetic**: Integer INR calculations with Basis Points (bps) and IEEE 754 half-up rounding.
+* **Authentication**: Secured via Microsoft Entra ID (Azure AD) OAuth2 Bearer JWT.
+""",
+    swagger_ui_parameters={"defaultModelsExpandDepth": 2},
+)
+
 REQUIRE_AUTH = os.getenv("REQUIRE_ENTRA_AUTH", "false").lower() == "true"
 
 
-def verify_entra_id_token(authorization: str = Header(None)) -> dict[str, Any]:
+def verify_entra_id_token(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security_scheme),
+) -> dict[str, Any]:
     if not REQUIRE_AUTH:
         return {"sub": "rishi@northwind.com", "roles": ["RuleBound.Architect"]}
 
-    if not authorization or not authorization.startswith("Bearer "):
+    if not credentials or not credentials.credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Missing or malformed Microsoft Entra ID Bearer token.",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    token = authorization.split(" ")[1]
+    token = credentials.credentials
     try:
         import jwt
         decoded = jwt.decode(token, options={"verify_signature": False})
@@ -52,43 +69,60 @@ def verify_entra_id_token(authorization: str = Header(None)) -> dict[str, Any]:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=f"Invalid Entra ID Token: {exc}",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
 
-class LayoutRequest(BaseModel):
-    room_spec: dict[str, Any]
-    pack_dir: str = str(DATA_DIR)
-
-
 class PlacementDTO(BaseModel):
-    placement_id: str
-    sku: str
-    finish_id: str
-    x_mm: float
-    y_mm: float
-    rotation_deg: float
+    placement_id: str = Field(..., example="P001", description="Deterministic placement identifier")
+    sku: str = Field(..., example="NW-DES-003", description="Catalog product SKU")
+    finish_id: str = Field(..., example="F03", description="Selected finish code")
+    x_mm: float = Field(..., example=1400.0, description="X coordinate in millimeters")
+    y_mm: float = Field(..., example=1800.0, description="Y coordinate in millimeters")
+    rotation_deg: float = Field(..., example=0.0, description="Rotation angle (0, 90, 180, 270)")
+
+
+class LayoutRequest(BaseModel):
+    room_id: str = Field("ROOM-01", example="ROOM-01", description="Room identifier")
+    pack_id: str = Field("default", example="default", description="Asset pack identifier")
 
 
 class VerifyRequest(BaseModel):
-    room_spec: dict[str, Any]
-    placements: list[PlacementDTO]
-    violation_type: str = "overlap"
-    pack_dir: str = str(DATA_DIR)
+    room_id: str = Field("ROOM-01", example="ROOM-01", description="Target room identifier")
+    placements: list[PlacementDTO] = Field(
+        ...,
+        description="Candidate furniture placements to verify",
+        example=[
+            {"placement_id": "P001", "sku": "NW-DES-003", "finish_id": "F03", "x_mm": 1400.0, "y_mm": 1800.0, "rotation_deg": 0.0},
+            {"placement_id": "P002", "sku": "NW-CHA-004", "finish_id": "F15", "x_mm": 1400.0, "y_mm": 1200.0, "rotation_deg": 0.0}
+        ]
+    )
+    violation_type: Optional[str] = Field("overlap", example="overlap", description="Violation type for simulation (overlap, egress, wall, unsatisfiable)")
+    pack_id: str = Field("default", example="default", description="Asset pack identifier")
 
 
 class PricingRequest(BaseModel):
-    room_id: str
-    placements: list[PlacementDTO]
-    pack_dir: str = str(DATA_DIR)
+    room_id: str = Field("ROOM-01", example="ROOM-01", description="Room identifier")
+    placements: list[PlacementDTO] = Field(
+        ...,
+        description="Verified collision-free placements to price",
+        example=[
+            {"placement_id": "P001", "sku": "NW-DES-003", "finish_id": "F03", "x_mm": 1400.0, "y_mm": 1800.0, "rotation_deg": 0.0},
+            {"placement_id": "P002", "sku": "NW-CHA-004", "finish_id": "F15", "x_mm": 1400.0, "y_mm": 1200.0, "rotation_deg": 0.0}
+        ]
+    )
+    pack_id: str = Field("default", example="default", description="Asset pack identifier")
 
 
-@app.get("/health")
+@app.get("/health", tags=["System Health"])
 def health_check():
+    """Returns the operational status of the RuleBound Engine."""
     return {"status": "healthy", "service": "RuleBound Enterprise Engine", "version": "1.0.0"}
 
 
-@app.get("/api/v1/rooms")
+@app.get("/api/v1/rooms", tags=["Room Specifications"])
 def list_rooms():
+    """Lists all available room specifications in the asset pack."""
     pack = load_asset_pack(DATA_DIR)
     return [
         {
@@ -109,8 +143,9 @@ def list_rooms():
     ]
 
 
-@app.get("/api/v1/room/{room_id}/data")
+@app.get("/api/v1/room/{room_id}/data", tags=["Room Specifications"])
 def get_room_full_data(room_id: str):
+    """Retrieves full room specifications, catalog, synthesized layout, and quote."""
     pack = load_asset_pack(DATA_DIR)
     room = pack.rooms_by_id.get(room_id)
     if not room:
@@ -159,10 +194,11 @@ def get_room_full_data(room_id: str):
     }
 
 
-@app.post("/api/v1/arbitration/simulate_violation")
+@app.post("/api/v1/arbitration/simulate_violation", tags=["Arbitration Engine"])
 def simulate_violation(req: VerifyRequest):
-    pack = load_asset_pack(req.pack_dir)
-    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    """Simulates deliberate spatial violations (overlap, egress, wall offset, or unsatisfiable)."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
     if not room:
         raise HTTPException(status_code=404, detail="Room not found.")
 
@@ -178,27 +214,22 @@ def simulate_violation(req: VerifyRequest):
         for p in req.placements
     ]
 
-    vtype = req.violation_type
+    vtype = req.violation_type or "overlap"
     if vtype == "overlap" and len(placements) >= 2:
-        # P001 overlaps P002
         placements[0].x_mm = placements[1].x_mm + 200.0
         placements[0].y_mm = placements[1].y_mm
     elif vtype == "egress" and placements:
-        # Move placement right onto egress line
         egress_target = room.egress.to_point_mm
         placements[0].x_mm = egress_target[0] - 200.0
         placements[0].y_mm = egress_target[1] - 400.0
     elif vtype == "wall" and placements:
-        # Place directly on the wall boundary (30mm)
         placements[0].x_mm = 30.0
         placements[0].y_mm = 120.0
     elif vtype == "unsatisfiable":
-        # Force an overconstrained room (e.g. 50 giant collaboration tables)
         for i in range(len(placements)):
             placements[i].x_mm = 50.0 + (i % 3) * 100.0
             placements[i].y_mm = 50.0 + (i // 3) * 100.0
     else:
-        # Default combination
         if placements:
             placements[0].x_mm = 50.0
             placements[0].y_mm = placements[1].y_mm if len(placements) > 1 else 120.0
@@ -247,10 +278,11 @@ def simulate_violation(req: VerifyRequest):
     }
 
 
-@app.post("/api/v1/arbitration/arbitrate_with_trace")
+@app.post("/api/v1/arbitration/arbitrate_with_trace", tags=["Arbitration Engine"])
 def arbitrate_with_trace(req: VerifyRequest):
-    pack = load_asset_pack(req.pack_dir)
-    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    """Executes bounded Lyapunov arbitration and returns full multi-candidate evaluation traces."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
     if not room:
         raise HTTPException(status_code=404, detail="Room not found.")
 
@@ -278,8 +310,9 @@ def arbitrate_with_trace(req: VerifyRequest):
     }
 
 
-@app.get("/api/v1/room/{room_id}/dxf")
+@app.get("/api/v1/room/{room_id}/dxf", tags=["CAD Engine"])
 def download_dxf(room_id: str):
+    """Exports multi-layer 2D AutoCAD-compatible DXF blueprint."""
     dxf_path = ROOT_DIR / f"OUTPUT/{room_id}/layout.dxf"
     pack = load_asset_pack(DATA_DIR)
     room = pack.rooms_by_id.get(room_id)
@@ -296,12 +329,13 @@ def download_dxf(room_id: str):
     )
 
 
-@app.post("/api/v1/layout/synthesize")
+@app.post("/api/v1/layout/synthesize", tags=["Layout Generation"])
 def synthesize_layout(req: LayoutRequest, user=Depends(verify_entra_id_token)):
-    pack = load_asset_pack(req.pack_dir)
-    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    """Generates an initial candidate layout from room briefs and catalog specifications."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
     if not room:
-        raise HTTPException(status_code=404, detail="Room not found.")
+        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
     generator = LayoutGenerator()
     placements = generator.generate_candidate_layout(room, pack)
     arbitrator = ArbitrationEngine()
@@ -309,12 +343,13 @@ def synthesize_layout(req: LayoutRequest, user=Depends(verify_entra_id_token)):
     return result.to_dict()
 
 
-@app.post("/api/v1/layout/verify")
+@app.post("/api/v1/layout/verify", tags=["Constraint Engine"])
 def verify_layout(req: VerifyRequest, user=Depends(verify_entra_id_token)):
-    pack = load_asset_pack(req.pack_dir)
-    room = pack.rooms_by_id.get(req.room_spec.get("room_id", ""))
+    """Verifies all 8 hard spatial constraints (RB-GEO-001 through RB-GEO-008)."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
     if not room:
-        raise HTTPException(status_code=404, detail="Room not found.")
+        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
     placements = [
         Placement(
             placement_id=p.placement_id,
@@ -336,9 +371,10 @@ def verify_layout(req: VerifyRequest, user=Depends(verify_entra_id_token)):
     }
 
 
-@app.post("/api/v1/quote/calculate")
+@app.post("/api/v1/quote/calculate", tags=["Pricing Engine"])
 def calculate_quote(req: PricingRequest, user=Depends(verify_entra_id_token)):
-    pack = load_asset_pack(req.pack_dir)
+    """Computes exact integer INR quote with full mathematical provenance traces."""
+    pack = load_asset_pack(DATA_DIR)
     placements = [
         Placement(
             placement_id=p.placement_id,
@@ -354,8 +390,9 @@ def calculate_quote(req: PricingRequest, user=Depends(verify_entra_id_token)):
     return quote.to_dict()
 
 
-@app.get("/", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse, tags=["Visualizer"])
 def index_visualizer():
+    """Serves the interactive RuleBound Architectural CAD & Pricing Studio."""
     if UI_HTML_PATH.exists():
         return HTMLResponse(content=UI_HTML_PATH.read_text(encoding="utf-8"))
     return HTMLResponse(content="<h1>RuleBound Studio UI</h1>")
