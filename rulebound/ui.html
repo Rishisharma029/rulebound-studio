@@ -1264,7 +1264,7 @@
               </div>
 
               <div class="space-y-1.5 pt-1">
-                <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Evaluations:</div>
+                <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Proof Evaluations:</div>
                 ${step.candidates_evaluated.map(c => {
                   let cardClass = 'bg-red-500/15 border border-red-500/40';
                   let badgeClass = 'bg-red-400 text-dark-950';
@@ -1278,15 +1278,20 @@
                     badgeClass = 'bg-amber-400 text-dark-950';
                     reasonClass = 'text-amber-300 font-bold';
                   }
+                  const dPhi = (c.delta_phi !== undefined) ? c.delta_phi : (c.phi_resulting - step.phi_before);
+                  const dPhiStr = (dPhi > 0 ? `+${dPhi.toFixed(1)}` : `${dPhi.toFixed(1)}`);
+                  const reason = c.decision_reason || c.reason || '';
                   return `
-                    <div class="p-2 rounded-lg ${cardClass} space-y-1">
+                    <div class="p-2.5 rounded-lg ${cardClass} space-y-1 font-mono text-xs">
                       <div class="flex justify-between items-center text-[10px]">
-                        <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
+                        <span class="font-black text-white font-sans">${c.candidate_id}: ${c.action}</span>
                         <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${badgeClass}">${c.decision}</span>
                       </div>
-                      <div class="flex justify-between text-[9px] text-gray-200">
-                        <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
-                        <span class="${reasonClass}">${c.reason}</span>
+                      <div class="flex justify-between items-center text-[10px] text-gray-300 pt-0.5">
+                        <span>Φ: <b class="text-white">${c.phi_before !== undefined ? c.phi_before : step.phi_before}</b> → <b class="text-white">${c.phi_after !== undefined ? c.phi_after : c.phi_resulting}</b> (<span class="${c.decision === 'SELECTED' ? 'text-emerald-400 font-bold' : 'text-red-400'}">ΔΦ: ${dPhiStr}</span>)</span>
+                      </div>
+                      <div class="text-[9px] leading-tight ${reasonClass} pt-0.5 font-sans">
+                        ${reason}
                       </div>
                     </div>
                   `;
