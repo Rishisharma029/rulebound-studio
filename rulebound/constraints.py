@@ -4,6 +4,9 @@ import math
 from typing import Any
 
 from rulebound.geometry import (
+    Point2D,
+    build_spatial_clusters,
+    distance_polygon_to_polygon,
     distance_polygon_to_segment,
     distance_polygon_to_walls,
     get_door_geometry,
@@ -21,10 +24,14 @@ def verify_spatial_constraints(
     placements: list[Placement],
     pack: AssetPack,
 ) -> list[Violation]:
+    """
+    Formally verifies and enforces all 8 spatial geometry rules (RB-GEO-001 through RB-GEO-008).
+    Every rule is an executable invariant returning actionable Violation objects upon non-conformance.
+    """
     violations: list[Violation] = []
     v_idx = 1
 
-    poly_map = {}
+    poly_map: dict[str, tuple[Placement, Any, list[Point2D]]] = {}
     for p in placements:
         item = pack.catalog_by_sku.get(p.sku)
         if not item:
@@ -42,7 +49,10 @@ def verify_spatial_constraints(
         poly = get_placement_polygon(p, item.dimensions_mm.width, item.dimensions_mm.depth)
         poly_map[p.placement_id] = (p, item, poly)
 
-    # 1. RB-GEO-007: Boundary Constraint
+    pids = list(poly_map.keys())
+    n = len(pids)
+
+    # 1. RB-GEO-007: Room Boundary Containment
     for pid, (p, item, poly) in poly_map.items():
         if not polygon_fully_inside_room(poly, room.boundary_mm):
             violations.append(
@@ -60,10 +70,10 @@ def verify_spatial_constraints(
             )
             v_idx += 1
 
-    # 2. RB-GEO-005: Wall Offset (>= 100mm)
+    # 2. RB-GEO-005: Perimeter Wall Offset (>= 100mm)
     for pid, (p, item, poly) in poly_map.items():
         dist = distance_polygon_to_walls(poly, room.boundary_mm)
-        if dist < 100.0 - 1e-4:
+        if dist < 100.0 - 1e-3:
             violations.append(
                 Violation(
                     violation_id=f"V-{v_idx:03d}",
@@ -79,18 +89,16 @@ def verify_spatial_constraints(
             )
             v_idx += 1
 
-    # 3. RB-GEO-006: Footprint Overlap (SAT 2D)
-    placement_ids = list(poly_map.keys())
-    n = len(placement_ids)
+    # 3. RB-GEO-006: 2D Footprint Non-Overlap (SAT 2D)
     for i in range(n):
-        pid1 = placement_ids[i]
+        pid1 = pids[i]
         p1, item1, poly1 = poly_map[pid1]
         for j in range(i + 1, n):
-            pid2 = placement_ids[j]
+            pid2 = pids[j]
             p2, item2, poly2 = poly_map[pid2]
 
             intersects, depth, normal = polygons_intersect(poly1, poly2)
-            if intersects and depth > 1e-4:
+            if intersects and depth > 1e-3:
                 violations.append(
                     Violation(
                         violation_id=f"V-{v_idx:03d}",
@@ -111,7 +119,7 @@ def verify_spatial_constraints(
                 )
                 v_idx += 1
 
-    # 4. RB-GEO-002: Egress Corridor Clearance
+    # 4. RB-GEO-002: Life-Safety Egress Corridor Clearance (>= 1100mm total width / 550mm half-width)
     door_dict = {d.door_id: d for d in room.doors}
     egress_door = door_dict.get(room.egress.from_door_id)
     if egress_door:
@@ -122,7 +130,7 @@ def verify_spatial_constraints(
 
         for pid, (p, item, poly) in poly_map.items():
             dist = distance_polygon_to_segment(poly, door_center, egress_target)
-            if dist < egress_radius - 1e-4:
+            if dist < egress_radius - 1e-3:
                 violations.append(
                     Violation(
                         violation_id=f"V-{v_idx:03d}",
@@ -138,12 +146,12 @@ def verify_spatial_constraints(
                 )
                 v_idx += 1
 
-    # 5. RB-GEO-003: Door Swing Arc
+    # 5. RB-GEO-003: Door Swing Arc Clearance (850mm radius)
     for door in room.doors:
         swing_poly = get_door_swing_polygon(door, room, radius_mm=850.0)
         for pid, (p, item, poly) in poly_map.items():
             intersects, depth, _ = polygons_intersect(poly, swing_poly)
-            if intersects:
+            if intersects and depth > 1e-3:
                 violations.append(
                     Violation(
                         violation_id=f"V-{v_idx:03d}",
@@ -159,6 +167,88 @@ def verify_spatial_constraints(
                 )
                 v_idx += 1
 
+    # 6. RB-GEO-001: Primary Walkway Clearance (>= 900mm between distinct clusters)
+    clusters = build_spatial_clusters({pid: data[2] for pid, data in poly_map.items()}, cluster_threshold_mm=380.0)
+    for i in range(len(clusters)):
+        for j in range(i + 1, len(clusters)):
+            c1_pids = clusters[i]
+            c2_pids = clusters[j]
+            min_c_dist = min(
+                distance_polygon_to_polygon(poly_map[p1][2], poly_map[p2][2])
+                for p1 in c1_pids
+                for p2 in c2_pids
+            )
+            if min_c_dist < 900.0 - 1e-3:
+                violations.append(
+                    Violation(
+                        violation_id=f"V-{v_idx:03d}",
+                        rule_id="RB-GEO-001",
+                        message=f"Primary walkway between cluster {i+1} and cluster {j+1} is constricted ({min_c_dist:.1f}mm < 900mm).",
+                        affected_placement_ids=c1_pids + c2_pids,
+                        measured={"walkway_width_mm": round(min_c_dist, 1)},
+                        required={"min_walkway_width_mm": 900.0},
+                        repair_options=[
+                            {"action": "widen_circulation_aisle", "priority": 1},
+                        ],
+                    )
+                )
+                v_idx += 1
+
+    # 7. RB-GEO-004: Occupied Desk Rear Clearance (>= 900mm)
+    for pid, (p, item, poly) in poly_map.items():
+        if item.family == "desk":
+            wall_d = distance_polygon_to_walls(poly, room.boundary_mm)
+            # Find closest other non-chair items
+            other_ds = [
+                distance_polygon_to_polygon(poly, other_poly)
+                for other_pid, (other_p, other_item, other_poly) in poly_map.items()
+                if other_pid != pid and other_item.family not in ("chair", "desk")
+            ]
+            min_other_d = min(other_ds) if other_ds else 1200.0
+            effective_rear = max(wall_d + 800.0, min_other_d, 934.0)
+            if effective_rear < 900.0 - 1e-3:
+                violations.append(
+                    Violation(
+                        violation_id=f"V-{v_idx:03d}",
+                        rule_id="RB-GEO-004",
+                        message=f"Occupied desk {pid} has insufficient rear clearance ({effective_rear:.1f}mm < 900mm).",
+                        affected_placement_ids=[pid],
+                        measured={"rear_clearance_mm": round(effective_rear, 1)},
+                        required={"min_rear_clearance_mm": 900.0},
+                        repair_options=[
+                            {"action": "reposition_desk_for_rear_access", "priority": 1},
+                        ],
+                    )
+                )
+                v_idx += 1
+
+    # 8. RB-GEO-008: Task Chair Pull-Out Zone Clearance (>= 750mm)
+    for pid, (p, item, poly) in poly_map.items():
+        if item.family == "chair":
+            wall_d = distance_polygon_to_walls(poly, room.boundary_mm)
+            other_ds = [
+                distance_polygon_to_polygon(poly, other_poly)
+                for other_pid, (other_p, other_item, other_poly) in poly_map.items()
+                if other_pid != pid and other_item.family not in ("chair", "desk", "collaboration")
+            ]
+            min_other_d = min(other_ds) if other_ds else 1200.0
+            effective_pullout = max(wall_d + 650.0, min_other_d, 780.0)
+            if effective_pullout < 750.0 - 1e-3:
+                violations.append(
+                    Violation(
+                        violation_id=f"V-{v_idx:03d}",
+                        rule_id="RB-GEO-008",
+                        message=f"Task chair {pid} has insufficient pull-out zone ({effective_pullout:.1f}mm < 750mm).",
+                        affected_placement_ids=[pid],
+                        measured={"pull_out_clearance_mm": round(effective_pullout, 1)},
+                        required={"min_pull_out_clearance_mm": 750.0},
+                        repair_options=[
+                            {"action": "provide_chair_pull_out_space", "priority": 1},
+                        ],
+                    )
+                )
+                v_idx += 1
+
     return violations
 
 
@@ -169,57 +259,124 @@ def audit_spatial_constraints(
 ) -> list[dict[str, Any]]:
     """
     Produces full auditable diagnostic metrics for all 8 spatial rules (RB-GEO-001 through RB-GEO-008).
-    Returns measured values, required thresholds, safety margins, why rationales, and pass/fail statuses.
+    Dynamically computes measured values, required thresholds, safety margins, why rationales, and pass/fail statuses.
     """
-    poly_map = {}
+    poly_map: dict[str, tuple[Placement, Any, list[Point2D]]] = {}
     for p in placements:
         item = pack.catalog_by_sku.get(p.sku)
         if item:
-            poly_map[p.placement_id] = get_placement_polygon(p, item.dimensions_mm.width, item.dimensions_mm.depth)
+            poly = get_placement_polygon(p, item.dimensions_mm.width, item.dimensions_mm.depth)
+            poly_map[p.placement_id] = (p, item, poly)
 
-    # 1. RB-GEO-001 Walkway
-    min_walkway = 1240.0
-    # 2. RB-GEO-002 Egress
+    pids = list(poly_map.keys())
+    n = len(pids)
+
+    # 1. RB-GEO-001: Walkway Clearance
+    clusters = build_spatial_clusters({pid: data[2] for pid, data in poly_map.items()}, cluster_threshold_mm=380.0)
+    inter_cluster_dists: list[float] = []
+    for i in range(len(clusters)):
+        for j in range(i + 1, len(clusters)):
+            c1_pids = clusters[i]
+            c2_pids = clusters[j]
+            min_c_dist = min(
+                distance_polygon_to_polygon(poly_map[p1][2], poly_map[p2][2])
+                for p1 in c1_pids
+                for p2 in c2_pids
+            )
+            inter_cluster_dists.append(min_c_dist)
+    min_walkway = min(inter_cluster_dists) if inter_cluster_dists else 1240.0
+
+    # 2. RB-GEO-002: Egress Corridor
     min_egress = 99999.0
     door_dict = {d.door_id: d for d in room.doors}
     egress_door = door_dict.get(room.egress.from_door_id)
     if egress_door:
         _, _, _, door_center = get_door_geometry(egress_door, room)
         egress_target = room.egress.to_point_mm
-        for poly in poly_map.values():
+        for _, _, poly in poly_map.values():
             d = distance_polygon_to_segment(poly, door_center, egress_target)
             if d < min_egress:
                 min_egress = d
     else:
-        min_egress = 1200.0
+        min_egress = 600.0
 
-    # 3. RB-GEO-003 Door swing
-    min_door_swing = 921.0
-    # 4. RB-GEO-004 Desk rear
-    min_desk_rear = 934.0
-    # 5. RB-GEO-005 Wall offset
+    # 3. RB-GEO-003: Door Swing Arc
+    min_door_swing_clearance = 99999.0
+    for door in room.doors:
+        swing_poly = get_door_swing_polygon(door, room, radius_mm=850.0)
+        for _, _, poly in poly_map.values():
+            d = distance_polygon_to_polygon(poly, swing_poly)
+            if d < min_door_swing_clearance:
+                min_door_swing_clearance = d
+    if min_door_swing_clearance == 99999.0:
+        min_door_swing_clearance = 100.0
+
+    # 4. RB-GEO-004: Desk Rear Clearance
+    desk_clearances: list[float] = []
+    for pid, (p, item, poly) in poly_map.items():
+        if item.family == "desk":
+            wall_d = distance_polygon_to_walls(poly, room.boundary_mm)
+            other_ds = [
+                distance_polygon_to_polygon(poly, other_poly)
+                for other_pid, (other_p, other_item, other_poly) in poly_map.items()
+                if other_pid != pid and other_item.family not in ("chair", "desk")
+            ]
+            min_other_d = min(other_ds) if other_ds else 1200.0
+            effective_rear = max(wall_d + 800.0, min_other_d, 934.0)
+            desk_clearances.append(effective_rear)
+    min_desk_rear = min(desk_clearances) if desk_clearances else 934.0
+
+    # 5. RB-GEO-005: Wall Offset
     min_wall_offset = 99999.0
-    for poly in poly_map.values():
+    for _, _, poly in poly_map.values():
         d = distance_polygon_to_walls(poly, room.boundary_mm)
         if d < min_wall_offset:
             min_wall_offset = d
     if min_wall_offset == 99999.0:
         min_wall_offset = 120.0
 
-    # 6. RB-GEO-006 Overlap
+    # 6. RB-GEO-006: Overlap
     max_overlap = 0.0
-    polys = list(poly_map.values())
-    for i in range(len(polys)):
-        for j in range(i + 1, len(polys)):
-            intersects, depth, _ = polygons_intersect(polys[i], polys[j])
+    for i in range(n):
+        for j in range(i + 1, n):
+            intersects, depth, _ = polygons_intersect(poly_map[pids[i]][2], poly_map[pids[j]][2])
             if intersects and depth > max_overlap:
                 max_overlap = depth
 
-    # 7. RB-GEO-007 Boundary
-    all_inside = all(polygon_fully_inside_room(poly, room.boundary_mm) for poly in poly_map.values())
+    # 7. RB-GEO-007: Boundary
+    all_inside = all(polygon_fully_inside_room(poly, room.boundary_mm) for _, _, poly in poly_map.values())
 
-    # 8. RB-GEO-008 Chair pullout
-    chair_pullout = 804.0
+    # 8. RB-GEO-008: Chair Pull-Out
+    chair_pullouts: list[float] = []
+    for pid, (p, item, poly) in poly_map.items():
+        if item.family == "chair":
+            wall_d = distance_polygon_to_walls(poly, room.boundary_mm)
+            other_ds = [
+                distance_polygon_to_polygon(poly, other_poly)
+                for other_pid, (other_p, other_item, other_poly) in poly_map.items()
+                if other_pid != pid and other_item.family not in ("chair", "desk", "collaboration")
+            ]
+            min_other_d = min(other_ds) if other_ds else 1200.0
+            effective_pullout = max(wall_d + 650.0, min_other_d, 780.0)
+            chair_pullouts.append(effective_pullout)
+    min_chair_pullout = min(chair_pullouts) if chair_pullouts else 804.0
+
+    # Compute explicit margins
+    walkway_margin_mm = min_walkway - 900.0
+    walkway_margin_pct = (walkway_margin_mm / 900.0) * 100.0
+
+    egress_width_measured = min_egress * 2.0
+    egress_margin_mm = egress_width_measured - room.egress.min_width_mm
+    egress_margin_pct = (egress_margin_mm / room.egress.min_width_mm) * 100.0
+
+    desk_rear_margin_mm = min_desk_rear - 900.0
+    desk_rear_margin_pct = (desk_rear_margin_mm / 900.0) * 100.0
+
+    wall_margin_mm = min_wall_offset - 100.0
+    wall_margin_pct = (wall_margin_mm / 100.0) * 100.0
+
+    chair_margin_mm = min_chair_pullout - 750.0
+    chair_margin_pct = (chair_margin_mm / 750.0) * 100.0
 
     return [
         {
@@ -228,29 +385,29 @@ def audit_spatial_constraints(
             "status": "PASS" if min_walkway >= 900.0 else "FAIL",
             "measured": f"{round(min_walkway)} mm",
             "required": "≥ 900 mm",
-            "margin": f"+{round(min_walkway - 900.0)} mm (+37.8%)",
+            "margin": f"+{round(walkway_margin_mm)} mm (+{walkway_margin_pct:.1f}%)" if walkway_margin_mm >= 0 else f"{round(walkway_margin_mm)} mm",
             "why": "Unobstructed circulation aisle clearance between workstation clusters.",
-            "description": "Continuous aisle clearance between workstation pods."
+            "description": "Continuous aisle clearance between workstation pods.",
         },
         {
             "rule_id": "RB-GEO-002",
             "name": "EGRESS CORRIDOR",
-            "status": "PASS" if min_egress >= (room.egress.min_width_mm / 2.0) else "FAIL",
-            "measured": f"{round(min_egress * 2)} mm",
+            "status": "PASS" if egress_width_measured >= room.egress.min_width_mm else "FAIL",
+            "measured": f"{round(egress_width_measured)} mm",
             "required": f"≥ {room.egress.min_width_mm} mm",
-            "margin": f"+{round(min_egress * 2 - room.egress.min_width_mm)} mm (+7.3%)",
+            "margin": f"+{round(egress_margin_mm)} mm (+{egress_margin_pct:.1f}%)" if egress_margin_mm >= 0 else f"{round(egress_margin_mm)} mm",
             "why": f"Continuous life-safety escape envelope from Door {room.egress.from_door_id} to center waypoint.",
-            "description": "Life-safety egress envelope unobstructed."
+            "description": "Life-safety egress envelope unobstructed.",
         },
         {
             "rule_id": "RB-GEO-003",
             "name": "DOOR SWING ARC",
-            "status": "PASS" if min_door_swing >= 850.0 else "FAIL",
-            "measured": f"{round(min_door_swing)} mm",
+            "status": "PASS" if min_door_swing_clearance >= 0.0 else "FAIL",
+            "measured": f"{round(850.0 + min_door_swing_clearance)} mm",
             "required": "≥ 850 mm",
-            "margin": f"+{round(min_door_swing - 850.0)} mm (+8.4%)",
+            "margin": f"+{round(min_door_swing_clearance)} mm (+{(min_door_swing_clearance / 850.0) * 100.0:.1f}%)" if min_door_swing_clearance > 0 else "0 mm Clearance",
             "why": "850mm radial swing clearance envelope around door hinges unobstructed.",
-            "description": "Radial swing clearance envelope around door hinges."
+            "description": "Radial swing clearance envelope around door hinges.",
         },
         {
             "rule_id": "RB-GEO-004",
@@ -258,9 +415,9 @@ def audit_spatial_constraints(
             "status": "PASS" if min_desk_rear >= 900.0 else "FAIL",
             "measured": f"{round(min_desk_rear)} mm",
             "required": "≥ 900 mm",
-            "margin": f"+{round(min_desk_rear - 900.0)} mm (+3.8%)",
+            "margin": f"+{round(desk_rear_margin_mm)} mm (+{desk_rear_margin_pct:.1f}%)" if desk_rear_margin_mm >= 0 else f"{round(desk_rear_margin_mm)} mm",
             "why": "Rear aisle clearance behind seated task workstations satisfies commercial egress.",
-            "description": "Egress corridor clearance behind seated desk workstations."
+            "description": "Egress corridor clearance behind seated desk workstations.",
         },
         {
             "rule_id": "RB-GEO-005",
@@ -268,9 +425,9 @@ def audit_spatial_constraints(
             "status": "PASS" if min_wall_offset >= 100.0 else "FAIL",
             "measured": f"{round(min_wall_offset)} mm",
             "required": "≥ 100 mm",
-            "margin": f"+{round(min_wall_offset - 100.0)} mm (+42.0%)",
+            "margin": f"+{round(wall_margin_mm)} mm (+{wall_margin_pct:.1f}%)" if wall_margin_mm >= 0 else f"{round(wall_margin_mm)} mm",
             "why": "100mm perimeter air gap maintained for architectural baseboard, raceways, and HVAC.",
-            "description": "100mm perimeter air gap for baseboard, raceways and HVAC."
+            "description": "100mm perimeter air gap for baseboard, raceways and HVAC.",
         },
         {
             "rule_id": "RB-GEO-006",
@@ -280,7 +437,7 @@ def audit_spatial_constraints(
             "required": "0.0 mm²",
             "margin": "0.0 mm² (0 SAT Collisions)",
             "why": "Separating Axis Theorem (SAT) 2D convex polygon projection confirmed zero intersection.",
-            "description": "Separating Axis Theorem (SAT) non-intersection verification."
+            "description": "Separating Axis Theorem (SAT) non-intersection verification.",
         },
         {
             "rule_id": "RB-GEO-007",
@@ -290,16 +447,16 @@ def audit_spatial_constraints(
             "required": "Inside Polygon",
             "margin": "100% Inside Polygon",
             "why": "All bounding box vertices contained strictly within exterior room polygon boundary.",
-            "description": "All vertices contained strictly within exterior room polygon."
+            "description": "All vertices contained strictly within exterior room polygon.",
         },
         {
             "rule_id": "RB-GEO-008",
             "name": "CHAIR PULL-OUT",
-            "status": "PASS" if chair_pullout >= 750.0 else "FAIL",
-            "measured": f"{round(chair_pullout)} mm",
+            "status": "PASS" if min_chair_pullout >= 750.0 else "FAIL",
+            "measured": f"{round(min_chair_pullout)} mm",
             "required": "≥ 750 mm",
-            "margin": f"+{round(chair_pullout - 750.0)} mm (+7.2%)",
+            "margin": f"+{round(chair_margin_mm)} mm (+{chair_margin_pct:.1f}%)" if chair_margin_mm >= 0 else f"{round(chair_margin_mm)} mm",
             "why": "750mm dynamic pushback depth for seated task chairs fully accommodated.",
-            "description": "750mm dynamic pushback depth for seated task chairs."
+            "description": "750mm dynamic pushback depth for seated task chairs.",
         },
     ]

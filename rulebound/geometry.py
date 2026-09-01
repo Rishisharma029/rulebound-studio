@@ -262,3 +262,74 @@ def get_door_swing_polygon(door: DoorSpec, room: RoomSpec, radius_mm: float = 85
         pts.append((hx + radius_mm * math.cos(theta), hy + radius_mm * math.sin(theta)))
 
     return pts
+
+
+def distance_polygon_to_polygon(poly1: list[Point2D], poly2: list[Point2D]) -> float:
+    """
+    Computes exact Euclidean minimum distance between two disjoint convex polygons.
+    Returns 0.0 if the polygons intersect.
+    """
+    intersects, depth, _ = polygons_intersect(poly1, poly2)
+    if intersects and depth > 1e-4:
+        return 0.0
+
+    min_dist = float("inf")
+    n1, n2 = len(poly1), len(poly2)
+
+    # Check vertices of poly1 against edges of poly2
+    for pt in poly1:
+        for j in range(n2):
+            d = distance_point_to_segment(pt, poly2[j], poly2[(j + 1) % n2])
+            if d < min_dist:
+                min_dist = d
+
+    # Check vertices of poly2 against edges of poly1
+    for pt in poly2:
+        for i in range(n1):
+            d = distance_point_to_segment(pt, poly1[i], poly1[(i + 1) % n1])
+            if d < min_dist:
+                min_dist = d
+
+    return min_dist
+
+
+def build_spatial_clusters(
+    poly_map: dict[str, list[Point2D]],
+    cluster_threshold_mm: float = 380.0,
+) -> list[list[str]]:
+    """
+    Groups placements into connected spatial clusters/pods.
+    Placements within cluster_threshold_mm of each other belong to the same cluster.
+    """
+    pids = list(poly_map.keys())
+    adj = {pid: [] for pid in pids}
+
+    for i in range(len(pids)):
+        pid1 = pids[i]
+        poly1 = poly_map[pid1]
+        for j in range(i + 1, len(pids)):
+            pid2 = pids[j]
+            poly2 = poly_map[pid2]
+            d = distance_polygon_to_polygon(poly1, poly2)
+            if d <= cluster_threshold_mm:
+                adj[pid1].append(pid2)
+                adj[pid2].append(pid1)
+
+    visited = set()
+    clusters: list[list[str]] = []
+    for pid in pids:
+        if pid not in visited:
+            cluster: list[str] = []
+            queue = [pid]
+            visited.add(pid)
+            while queue:
+                curr = queue.pop(0)
+                cluster.append(curr)
+                for neighbor in adj[curr]:
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append(neighbor)
+            clusters.append(cluster)
+
+    return clusters
+

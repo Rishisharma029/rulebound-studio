@@ -48,3 +48,38 @@ def test_wall_distance_and_offset():
 
     assert distance_polygon_to_walls(item_poly_near, room_poly) < 100.0
     assert distance_polygon_to_walls(item_poly_far, room_poly) >= 100.0
+
+
+def test_polygon_to_polygon_distance():
+    from rulebound.geometry import distance_polygon_to_polygon
+    poly1 = [(0.0, 0.0), (1000.0, 0.0), (1000.0, 1000.0), (0.0, 1000.0)]
+    poly2 = [(2000.0, 0.0), (3000.0, 0.0), (3000.0, 1000.0), (2000.0, 1000.0)]
+    dist = distance_polygon_to_polygon(poly1, poly2)
+    assert abs(dist - 1000.0) < 1e-4
+
+
+def test_spatial_constraints_all_8_rules_executable():
+    from rulebound.constraints import verify_spatial_constraints, audit_spatial_constraints
+    room = PACK.rooms_by_id["ROOM-01"]
+    
+    # Create valid placements
+    placements = [
+        Placement("P001", "NW-DES-003", "F03", 2720.0, 120.0, 0.0),
+        Placement("P002", "NW-DES-003", "F03", 4320.0, 120.0, 0.0),
+    ]
+    violations = verify_spatial_constraints(room, placements, PACK)
+    assert len(violations) == 0
+
+    # Audit returns all 8 rules with explicit measurements
+    audit = audit_spatial_constraints(room, placements, PACK)
+    assert len(audit) == 8
+    rule_ids = [a["rule_id"] for a in audit]
+    assert rule_ids == [
+        "RB-GEO-001", "RB-GEO-002", "RB-GEO-003", "RB-GEO-004",
+        "RB-GEO-005", "RB-GEO-006", "RB-GEO-007", "RB-GEO-008"
+    ]
+    for a in audit:
+        assert a["status"] == "PASS"
+        assert "measured" in a
+        assert "margin" in a
+
