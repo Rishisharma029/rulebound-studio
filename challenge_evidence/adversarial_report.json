@@ -1,0 +1,81 @@
+{
+  "suite_name": "RuleBound Adversarial Verification & Arbitration Proof Suite",
+  "timestamp": "2026-09-02T00:47:00Z",
+  "total_tests": 10,
+  "passed_tests": 10,
+  "failed_tests": 0,
+  "pass_rate_percentage": 100.0,
+  "tests": [
+    {
+      "test_name": "Wall Collision (RB-GEO-005)",
+      "scenario": "Placement at (50, 50) within 100mm wall buffer",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Egress Obstruction (RB-GEO-002)",
+      "scenario": "Placement blocking door-to-presentation egress path (<550mm half-width)",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Door Swing Intrusion (RB-GEO-003)",
+      "scenario": "Placement inside 850mm radial arc of door hinge",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Two Overlapping Objects (RB-GEO-006)",
+      "scenario": "Direct SAT 2D polygon penetration between two desks",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Room Boundary Breach (RB-GEO-007)",
+      "scenario": "Placement geometry extending outside room polygon perimeter",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Desk Rear Clearance Breach (RB-GEO-004)",
+      "scenario": "Desk oriented with rear seating zone breaching wall envelope (<900mm)",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Chair Pull-Out Breach (RB-GEO-008)",
+      "scenario": "Task chair placed with <750mm dynamic pushback zone to wall",
+      "verifier_detected": true,
+      "arbitration_repaired": true,
+      "status": "PASS"
+    },
+    {
+      "test_name": "Invalid SKU Unpriced Line (RB-PRC-013)",
+      "scenario": "Line item with unrecognized catalog SKU NW-FAKE-999",
+      "verifier_detected": true,
+      "arbitration_repaired": "N/A (Strict Invalidation Exception Raised)",
+      "status": "PASS"
+    },
+    {
+      "test_name": "Invalid Finish ID (RB-CAT-002)",
+      "scenario": "Line item with non-existent finish F99",
+      "verifier_detected": true,
+      "arbitration_repaired": "N/A (Strict Invalidation Exception Raised)",
+      "status": "PASS"
+    },
+    {
+      "test_name": "Impossible Room Overload Escalation",
+      "scenario": "15 giant collaboration tables in compact 7.2m x 5.4m room (exceeds physical floor capacity)",
+      "verifier_detected": true,
+      "arbitration_repaired": false,
+      "escalation_status": "unsatisfiable",
+      "status": "PASS"
+    }
+  ]
+}

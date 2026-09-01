@@ -1,0 +1,82 @@
+{
+  "suite_name": "RuleBound Multi-Process & Cross-Seed Determinism Proof",
+  "timestamp": "2026-09-02T00:47:00Z",
+  "total_rooms_verified": 5,
+  "total_files_verified": 15,
+  "cross_process_identical": true,
+  "cross_seed_identical": true,
+  "floating_point_leakage": "ZERO (Strict Integer Basis-Point & Decimal Math)",
+  "hashes_by_room": {
+    "ROOM-01": {
+      "layout.dxf": {
+        "size_bytes": 11629,
+        "sha256": "ef4855005b0dcdd4f15786fcfbe4b532f6a16c6f188d874bb71a08b2c68d61d7"
+      },
+      "layout.json": {
+        "size_bytes": 3738,
+        "sha256": "050f3fcc77f7b4c4d86957cae10e6711b8db99124bcd386a1d4b0a3cfef022d2"
+      },
+      "quote.json": {
+        "size_bytes": 4318,
+        "sha256": "bd270dee0a41b3ae66b3dcb93837a72c6339bd189f9611fa246982593397cf44"
+      }
+    },
+    "ROOM-02": {
+      "layout.dxf": {
+        "size_bytes": 13732,
+        "sha256": "573d8c78d3ab6c7556d668aa1993a00025fd50636b1f5e58303e02385794096e"
+      },
+      "layout.json": {
+        "size_bytes": 4434,
+        "sha256": "4b2c9389b905fb5381eee602442d16173cf4740c27ac5adaa01d7850a624f946"
+      },
+      "quote.json": {
+        "size_bytes": 4304,
+        "sha256": "b28508109b15a8b94afa3af847081afaf5cea8d3f48141d735875c8dcb600f2a"
+      }
+    },
+    "ROOM-03": {
+      "layout.dxf": {
+        "size_bytes": 13906,
+        "sha256": "3daeec2961bd68b237ab829fdd3817f0cb1f7c0f873e81fe5aa68d8a6ec060ae"
+      },
+      "layout.json": {
+        "size_bytes": 4434,
+        "sha256": "54d3cd32064919fe4e7837f5c3c53fe05dd4174776ccf204f606f7c87fc35f7d"
+      },
+      "quote.json": {
+        "size_bytes": 4326,
+        "sha256": "ccbabec62e614d941beb26015f04e85c29eb53ceaa7e32de68c87e9b919c0dfd"
+      }
+    },
+    "ROOM-04": {
+      "layout.dxf": {
+        "size_bytes": 15606,
+        "sha256": "842505ab0acc0d263726a347d2dde29fe1908c7af3b41fd98666e9e76d3f9c05"
+      },
+      "layout.json": {
+        "size_bytes": 6923,
+        "sha256": "2901431724de4d5a2b1628f1b98f5e5611cbc74a5c25e0b006c12e7d9d16a86d"
+      },
+      "quote.json": {
+        "size_bytes": 292,
+        "sha256": "a49c764a1189b8b81cae989b2d8655652cb5cda76a8a760085e2e1fc49e6e22e"
+      }
+    },
+    "ROOM-05": {
+      "layout.dxf": {
+        "size_bytes": 22488,
+        "sha256": "b22d7aa511b29e38e30867af8d408c6f4cc4f4309247403999d34106118340ca"
+      },
+      "layout.json": {
+        "size_bytes": 12277,
+        "sha256": "ee0df5716da94e8bdfb5755bab36e43ea6eef3ae45782eb422e7e609a12371b3"
+      },
+      "quote.json": {
+        "size_bytes": 292,
+        "sha256": "92c50ad29257a4014da6e811371877c2ed1a3e95962f89ed28f6052997405fdd"
+      }
+    }
+  },
+  "verdict": "DETERMINISTIC: 15/15 files byte-identical across all seeds and processes"
+}
