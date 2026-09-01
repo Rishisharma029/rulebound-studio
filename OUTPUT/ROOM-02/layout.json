@@ -29,80 +29,80 @@
       "placement_id": "P004",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 5570.0,
-      "y_mm": 120.0
+      "x_mm": 150.0,
+      "y_mm": 2850.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P005",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 6170.0,
-      "y_mm": 120.0
+      "x_mm": 150.0,
+      "y_mm": 3450.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P006",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 6770.0,
-      "y_mm": 120.0
+      "x_mm": 150.0,
+      "y_mm": 4050.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P007",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 7370.0,
-      "y_mm": 120.0
+      "x_mm": 150.0,
+      "y_mm": 4650.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P008",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 7970.0,
-      "y_mm": 120.0
+      "x_mm": 750.0,
+      "y_mm": 2550.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P009",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 5570.0,
-      "y_mm": 720.0
+      "x_mm": 750.0,
+      "y_mm": 3150.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P010",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 6170.0,
-      "y_mm": 720.0
+      "x_mm": 750.0,
+      "y_mm": 3750.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P011",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 6770.0,
-      "y_mm": 720.0
+      "x_mm": 750.0,
+      "y_mm": 4350.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P012",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 7370.0,
-      "y_mm": 720.0
+      "x_mm": 1350.0,
+      "y_mm": 2850.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P013",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 7970.0,
-      "y_mm": 720.0
+      "x_mm": 1350.0,
+      "y_mm": 3450.0
     },
     {
       "finish_id": "F13",

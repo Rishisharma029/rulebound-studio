@@ -7,6 +7,8 @@ from typing import Any
 from rulebound.geometry import (
     distance_polygon_to_segment,
     distance_polygon_to_walls,
+    get_chair_pullout_zone_polygon,
+    get_desk_rear_zone_polygon,
     get_door_geometry,
     get_door_swing_polygon,
     get_placement_polygon,
@@ -287,23 +289,35 @@ class LayoutGenerator:
                     cand_p = Placement(f"P{pid:03d}", sku, finish_id, gx, gy, rot)
                     poly = get_placement_polygon(cand_p, item.dimensions_mm.width, item.dimensions_mm.depth)
 
-                    # 1. Boundary & wall offset
+                    # 1. Boundary & wall offset (RB-GEO-007, RB-GEO-005)
                     if not polygon_fully_inside_room(poly, room.boundary_mm):
                         continue
                     if distance_polygon_to_walls(poly, room.boundary_mm) < 100.0 - 1e-3:
                         continue
 
-                    # 2. Egress corridor clearance
+                    # 2. Egress corridor clearance (RB-GEO-002)
                     if egress_door and distance_polygon_to_segment(poly, door_center, egress_target) < half_egress - 1e-3:
                         continue
 
-                    # 3. Door swing clearance
+                    # 3. Door swing clearance (RB-GEO-003)
                     if any(polygons_intersect(poly, s)[0] for s in door_swings):
                         continue
 
-                    # 4. Overlap non-intersection
+                    # 4. Overlap non-intersection (RB-GEO-006)
                     if any(polygons_intersect(poly, o)[0] and polygons_intersect(poly, o)[1] > 0.1 for o in placed_polys):
                         continue
+
+                    # 5. Desk rear clearance zone (RB-GEO-004)
+                    if item.family == "desk":
+                        rear_zone = get_desk_rear_zone_polygon(cand_p, item.dimensions_mm.width, item.dimensions_mm.depth, 900.0)
+                        if not polygon_fully_inside_room(rear_zone, room.boundary_mm):
+                            continue
+
+                    # 6. Chair pullout clearance zone (RB-GEO-008)
+                    if item.family == "chair":
+                        pull_zone = get_chair_pullout_zone_polygon(cand_p, item.dimensions_mm.width, item.dimensions_mm.depth, 750.0)
+                        if not polygon_fully_inside_room(pull_zone, room.boundary_mm):
+                            continue
 
                     # Valid placement
                     placements.append(cand_p)

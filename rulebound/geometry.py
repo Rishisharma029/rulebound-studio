@@ -304,12 +304,17 @@ def build_spatial_clusters(
     pids = list(poly_map.keys())
     adj = {pid: [] for pid in pids}
 
+    def _get_poly(val):
+        if isinstance(val, tuple) and len(val) >= 3:
+            return val[2]
+        return val
+
     for i in range(len(pids)):
         pid1 = pids[i]
-        poly1 = poly_map[pid1]
+        poly1 = _get_poly(poly_map[pid1])
         for j in range(i + 1, len(pids)):
             pid2 = pids[j]
-            poly2 = poly_map[pid2]
+            poly2 = _get_poly(poly_map[pid2])
             d = distance_polygon_to_polygon(poly1, poly2)
             if d <= cluster_threshold_mm:
                 adj[pid1].append(pid2)
@@ -333,3 +338,55 @@ def build_spatial_clusters(
 
     return clusters
 
+
+
+def get_desk_rear_zone_polygon(placement: Placement, width: float, depth: float, rear_depth_mm: float = 900.0) -> list[Point2D]:
+    """
+    Returns the oriented 2D polygon for an occupied desk's rear seating zone (RB-GEO-004).
+    Extends rear_depth_mm outward along user seating edge (+Y direction before rotation).
+    """
+    x = placement.x_mm
+    y = placement.y_mm
+    rot = placement.rotation_deg % 360
+
+    r0 = (x, y + depth)
+    r1 = (x + width, y + depth)
+    r2 = (x + width, y + depth + rear_depth_mm)
+    r3 = (x, y + depth + rear_depth_mm)
+
+    if abs(rot) < 1e-4:
+        return [r0, r1, r2, r3]
+
+    center = (x + width / 2.0, y + depth / 2.0)
+    return [
+        rotate_point(r0, center, rot),
+        rotate_point(r1, center, rot),
+        rotate_point(r2, center, rot),
+        rotate_point(r3, center, rot),
+    ]
+
+
+def get_chair_pullout_zone_polygon(placement: Placement, width: float, depth: float, pullout_depth_mm: float = 750.0) -> list[Point2D]:
+    """
+    Returns the oriented 2D polygon for a task chair's dynamic pull-out zone (RB-GEO-008).
+    Extends pullout_depth_mm outward behind the chair (+Y direction before rotation).
+    """
+    x = placement.x_mm
+    y = placement.y_mm
+    rot = placement.rotation_deg % 360
+
+    p0 = (x, y + depth)
+    p1 = (x + width, y + depth)
+    p2 = (x + width, y + depth + pullout_depth_mm)
+    p3 = (x, y + depth + pullout_depth_mm)
+
+    if abs(rot) < 1e-4:
+        return [p0, p1, p2, p3]
+
+    center = (x + width / 2.0, y + depth / 2.0)
+    return [
+        rotate_point(p0, center, rot),
+        rotate_point(p1, center, rot),
+        rotate_point(p2, center, rot),
+        rotate_point(p3, center, rot),
+    ]

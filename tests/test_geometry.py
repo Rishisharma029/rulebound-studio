@@ -83,3 +83,36 @@ def test_spatial_constraints_all_8_rules_executable():
         assert "measured" in a
         assert "margin" in a
 
+
+def test_adversarial_desk_rear_clearance_rb_geo_004():
+    """
+    Adversarial test: Places a desk too close to a wall/obstacle so that its
+    900mm rear seating exclusion zone is violated. Proves RB-GEO-004 is genuinely executable.
+    """
+    from rulebound.constraints import verify_spatial_constraints
+    room = PACK.rooms_by_id["ROOM-01"]
+
+    # Place desk at Y=5000 (North wall is at Y=5400, depth is 800, so rear zone Y+depth+900 = 6700 > 5400)
+    adversarial_desk = [
+        Placement("P001", "NW-DES-003", "F03", 2000.0, 4400.0, 0.0),
+    ]
+    violations = verify_spatial_constraints(room, adversarial_desk, PACK)
+    assert any(v.rule_id == "RB-GEO-004" for v in violations)
+
+
+def test_adversarial_chair_pullout_clearance_rb_geo_008():
+    """
+    Adversarial test: Places a task chair too close to a wall/cabinet so that its
+    750mm dynamic pull-out zone is violated. Proves RB-GEO-008 is genuinely executable.
+    """
+    from rulebound.constraints import verify_spatial_constraints
+    room = PACK.rooms_by_id["ROOM-01"]
+
+    # Place chair at Y=4800 (North wall is at Y=5400, depth is 650, so pullout zone Y+depth+750 = 6200 > 5400)
+    adversarial_chair = [
+        Placement("P001", "NW-CHA-004", "F15", 2000.0, 4500.0, 0.0),
+    ]
+    violations = verify_spatial_constraints(room, adversarial_chair, PACK)
+    assert any(v.rule_id == "RB-GEO-008" for v in violations)
+
+
