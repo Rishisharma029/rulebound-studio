@@ -9,15 +9,35 @@
 
 ---
 
+## ⚡ Quick Evaluation Command (Single Copy-Paste)
+
+To execute the complete end-to-end pipeline across all 5 benchmark rooms (`ROOM-01` through `ROOM-05`), verify all spatial constraints, generate line-traceable quotes, and export AutoCAD DXF blueprints:
+
+```bash
+python runner.py --input RuleBound_Round1_Release/data --output OUTPUT
+```
+
+*Or via Python module execution:*
+```bash
+python -m rulebound.runner --input RuleBound_Round1_Release/data --output OUTPUT
+```
+
+To run the full adversarial benchmark matrix and generate all 4 machine-readable evidence reports (`challenge_evidence/`):
+```bash
+python scripts/generate_challenge_evidence.py
+```
+
+---
+
 ## 📌 Executive Summary
 
 **RuleBound Studio** is a deterministic, auditable spatial engineering platform engineered for commercial office layout generation, rigorous constraint enforcement, continuous geometry verification, and mathematical price provenance.
 
 Architected with a **strict irreversible Trust Boundary**, RuleBound cleanly decouples advisory AI generation from deterministic verification:
-- **No LLM in the Loop of Authority**: Generative models are restricted to advisory initial SKU placement proposals.
+- **No LLM in the Loop of Authority**: Generative models are restricted to advisory initial SKU placement proposals via typed intermediate requirement graphs (`RequirementIR`).
 - **Continuous 2D Separating Axis Theorem (SAT)**: Exact arbitrary-polygon collision and clearance verification (`RB-GEO-001` through `RB-GEO-008`).
-- **Bounded Deterministic Arbitration**: Monotonic Lyapunov penalty energy reduction ($\Phi(L) \to 0$) guaranteed to converge in $\le 50$ iterations without infinite loops.
-- **Pure Integer INR Pricing Engine**: 100% deterministic Decimal half-up arithmetic enforcing tiered quantity discounts, finish uplifts, labor rate bands, and freight logistics with zero floating-point leakage.
+- **Bounded Deterministic Lyapunov Arbitration**: Monotonic penalty energy reduction ($\Phi(L) 	o 0$) guaranteed to converge in $\le 50$ iterations with explicit $(C_i, \Phi_{	ext{before}}, \Phi_{	ext{after}}, \Delta\Phi, 	ext{decision}, 	ext{reason})$ proof evaluations.
+- **Pure Integer INR Pricing Engine**: 100% deterministic Decimal half-up arithmetic enforcing tiered quantity discounts, finish uplifts, labor rate bands, and freight logistics with automated 6-point accounting invariant verification.
 - **AutoCAD DXF Blueprint Generator (+5 Bonus)**: Direct multi-layer AutoCAD Release 12 CAD export.
 
 ---
@@ -27,30 +47,32 @@ Architected with a **strict irreversible Trust Boundary**, RuleBound cleanly dec
 ```mermaid
 flowchart TD
     subgraph Generative_Layer["Probabilistic / Advisory Layer (Non-Authoritative)"]
-        NL["Client Brief & Natural Language Intent"] --> GP["Initial Candidate Proposal Generator"]
-        GP --> SKU["SKU & Finish Intent Proposals (JSON)"]
+        NL["Client Brief (Natural Language)"] --> IR["Structured Requirement IR (rulebound/ir.py)"]
+        IR --> SKU["Catalog Feature & Trait Matcher"]
+        SKU --> GP["2D Spatial Grid & Zone Solver"]
     end
 
-    SKU -->|"CandidateProposal Seam Contract"| TB{{"🔒 IRREVERSIBLE TRUST BOUNDARY"}}
+    GP -->|"Candidate Proposal Seam"| TB{{"🔒 IRREVERSIBLE TRUST BOUNDARY"}}
 
     subgraph Deterministic_Core["Deterministic Verification Core (Exact Math & Code)"]
         TB --> SV["Continuous Spatial Verifier (SAT 2D Polygon Engine)"]
         SV -->|"Violations Detected: ΔΦ > 0"| ARB["Bounded Lyapunov Arbitrator (Kmax = 50)"]
-        ARB -->|"Evaluate Multi-Candidate Operators"| CAND["Candidate Micro-Nudges & Grid Anchors"]
+        ARB -->|"Evaluate Candidate Operators (C1, C2, C3)"| CAND["Candidate Transformations & Grid Anchors"]
         CAND -->|"Strict Lyapunov Monotonicity: ΔΦ < 0"| SV
         ARB -->|"Bound Exhausted"| UNSAT["⚠ UNSATISFIABLE Escalation & Trade-offs"]
         
         SV -->|"0 Violations: Φ(L) == 0"| PRC["Deterministic Pricing Engine (Decimal INR)"]
-        PRC --> QTY["Quantity Break Discounts (RB-PRC-009)"]
-        PRC --> FIN["Finish Compatibility & Uplifts (RB-PRC-010)"]
-        PRC --> LAB["Assembly Labour Tier Bands (RB-PRC-011)"]
-        PRC --> FRG["Net Goods Tiered Freight (RB-PRC-012)"]
+        PRC --> INV["Accounting Invariant Validator (RB-PRC-013)"]
+        INV --> QTY["Quantity Break Discounts (RB-PRC-009)"]
+        INV --> FIN["Finish Compatibility & Uplifts (RB-PRC-010)"]
+        INV --> LAB["Assembly Labour Tier Bands (RB-PRC-011)"]
+        INV --> FRG["Net Goods Tiered Freight (RB-PRC-012)"]
         
-        PRC --> OUT["JSON Artifacts: layout.json & quote.json"]
+        INV --> OUT["JSON Artifacts: layout.json & quote.json"]
         SV --> DXF["AutoCAD DXF Exporter: layout.dxf (+5 Bonus)"]
     end
 
-    OUT --> AUDIT["Auditable Provenance & Verification Feedback"]
+    OUT --> AUDIT["Auditable Provenance & Requirement Satisfaction Feedback"]
 ```
 
 ---
@@ -61,23 +83,23 @@ RuleBound indexes, enforces, and audits all **14 domain rules** across geometry,
 
 | Rule ID | Category | Rule Name | Specification & Constraint Threshold |
 | :--- | :--- | :--- | :--- |
-| **`RB-GEO-001`** | Geometry | Primary Walkway Clearance | Clear passage $\ge 900\text{ mm}$ between active workstation clusters. |
-| **`RB-GEO-002`** | Geometry | Life-Safety Egress Corridor | Dedicated exit path with clear corridor width $\ge 1,100\text{ mm}$ to door. |
-| **`RB-GEO-003`** | Geometry | Door Swing Encroachment | Furniture boundary strictly outside the $850\text{ mm}$ quarter-circle door swing arc. |
-| **`RB-GEO-004`** | Geometry | Workstation Rear Clearance | Minimum $900\text{ mm}$ aisle clearance behind seated desks. |
-| **`RB-GEO-005`** | Geometry | Perimeter Wall Offset | Workstation boundary offset $\ge 100\text{ mm}$ from perimeter boundary walls. |
+| **`RB-GEO-001`** | Geometry | Primary Walkway Clearance | Clear passage $\ge 900	ext{ mm}$ between active workstation clusters. |
+| **`RB-GEO-002`** | Geometry | Life-Safety Egress Corridor | Dedicated exit path with clear corridor width $\ge 1,100	ext{ mm}$ to door. |
+| **`RB-GEO-003`** | Geometry | Door Swing Encroachment | Furniture boundary strictly outside the $850	ext{ mm}$ quarter-circle door swing arc. |
+| **`RB-GEO-004`** | Geometry | Workstation Rear Clearance | Minimum $900	ext{ mm}$ rear seating exclusion zone behind desks. |
+| **`RB-GEO-005`** | Geometry | Perimeter Wall Offset | Workstation boundary offset $\ge 100	ext{ mm}$ from perimeter boundary walls. |
 | **`RB-GEO-006`** | Geometry | 2D Footprint Non-Overlap | Zero intersecting area between any two furniture bounding polygons (SAT 2D). |
 | **`RB-GEO-007`** | Geometry | Room Boundary Containment | All vertices must lie strictly within the room boundary polygon. |
-| **`RB-GEO-008`** | Geometry | Chair Pull-Out Clearance | Dedicated pull-out depth $\ge 750\text{ mm}$ in front of every task chair. |
+| **`RB-GEO-008`** | Geometry | Chair Pull-Out Clearance | Dedicated dynamic pull-out depth $\ge 750	ext{ mm}$ for task chairs. |
 | **`RB-CAT-001`** | Catalog | SKU Dimension Conformance | Physical width, depth, height must match catalog specification sheet. |
 | **`RB-CAT-002`** | Catalog | Finish Compatibility | Applied finish ID must exist in SKU compatible finishes list. |
 | **`RB-CAT-003`** | Catalog | Functional Family Mapping | Placement role must map to recognized family (desk, chair, storage, collab, accessory). |
-| **`RB-PRC-009`** | Pricing | Quantity Break Discounts | $1\text{--}4: 0\%, \quad 5\text{--}9: 3\%\text{ (300 bps)}, \quad 10\text{--}19: 7\%\text{ (700 bps)}, \quad 20+: 10\%\text{ (1000 bps)}$. |
-| **`RB-PRC-010`** | Pricing | Finish Surcharge Uplifts | Exact catalog basis-point uplifts ($0\text{--}1,800\text{ bps}$) on base line amount. |
-| **`RB-PRC-011`** | Pricing | Assembly Labour Tiers | $\le 240\text{ min}: \text{₹}900/\text{hr}, \quad 241\text{--}480\text{ min}: \text{₹}800/\text{hr}, \quad >480\text{ min}: \text{₹}750/\text{hr}$. |
-| **`RB-PRC-012`** | Pricing | Net Goods Freight Tiers | $\le \text{₹}100\text{k}: \text{Flat ₹}5,000, \quad \text{₹}100\text{k}\text{--}250\text{k}: \text{Flat ₹}9,000, \quad >\text{₹}250\text{k}: 4\%\text{ (400 bps)}$. |
-| **`RB-PRC-013`** | Pricing | Constraint Block Invariant | Any geometry or catalog violation immediately halts and blocks quote issuance. |
-| **`RB-PRC-014`** | Pricing | Rounding Invariant | Half-up integer INR quantization ($0.50 \to 1$) with zero floating-point drift. |
+| **`RB-PRC-009`** | Pricing | Quantity Break Discounts | $1	ext{--}4: 0\%, \quad 5	ext{--}9: 3\%	ext{ (300 bps)}, \quad 10	ext{--}19: 7\%	ext{ (700 bps)}, \quad 20+: 10\%	ext{ (1000 bps)}$. |
+| **`RB-PRC-010`** | Pricing | Finish Surcharge Uplifts | Exact catalog basis-point uplifts ($0	ext{--}1,800	ext{ bps}$) on base line amount. |
+| **`RB-PRC-011`** | Pricing | Assembly Labour Tiers | $\le 240	ext{ min}: 	ext{₹}900/	ext{hr}, \quad 241	ext{--}480	ext{ min}: 	ext{₹}800/	ext{hr}, \quad >480	ext{ min}: 	ext{₹}750/	ext{hr}$. |
+| **`RB-PRC-012`** | Pricing | Net Goods Freight Tiers | $\le 	ext{₹}100	ext{k}: 	ext{Flat ₹}5,000, \quad 	ext{₹}100	ext{k}	ext{--}250	ext{k}: 	ext{Flat ₹}9,000, \quad >	ext{₹}250	ext{k}: 4\%	ext{ (400 bps)}$. |
+| **`RB-PRC-013`** | Pricing | Invariant & Audit Block | Any accounting mismatch or unpriced SKU immediately blocks quote issuance. |
+| **`RB-PRC-014`** | Pricing | Rounding Invariant | Half-up integer INR quantization ($0.50 	o 1$) with zero floating-point drift. |
 
 ---
 
@@ -85,66 +107,28 @@ RuleBound indexes, enforces, and audits all **14 domain rules** across geometry,
 
 The Arbitration State Machine converts spatial violations into structured geometric repairs using a strictly decreasing Lyapunov potential function $\Phi(L)$:
 
-$$\Phi(L) = 1000 \cdot N_{\text{violations}} + \sum \text{Depth}_{\text{penetration}} + \sum \text{Deficit}_{\text{clearance}}$$
+$$\Phi(L) = 1000 \cdot N_{	ext{violations}} + \sum 	ext{Depth}_{	ext{penetration}} + \sum 	ext{Deficit}_{	ext{clearance}}$$
 
-```mermaid
-sequenceDiagram
-    autonumber
-    actor Engine as Arbitration State Machine
-    participant SAT as Continuous SAT Verifier
-    participant Cand as Candidate Operator Synthesizer
-    participant Lyap as Lyapunov Energy Evaluator
-
-    Engine->>SAT: Verify Layout L(k)
-    SAT-->>Engine: Violations V = [RB-GEO-006, RB-GEO-002]
-    Engine->>Lyap: Compute Energy Potential Phi_before = Phi(L_k)
-    
-    loop Bounded Passes (Pass <= 50)
-        Engine->>Cand: Generate Structured Operators (C1, C2, C_BOUND, C_SAT, C_GRID)
-        Cand-->>Engine: Candidates [C1: Reverse, C2: Canonical Anchor, C3: Wall Clamping, C4: Egress Shift]
-        Engine->>Lyap: Evaluate Phi(C_i) for each candidate
-        Lyap-->>Engine: Phi(C1) = 7684 (Reject), Phi(C2) = 6684 (Accept: Delta_Phi = -1000)
-        Engine->>Engine: Accept argmin(Phi) with strict decrease Delta_Phi < 0
-        Engine->>SAT: Verify new Layout L(k+1)
-        SAT-->>Engine: Updated Violations
-    end
-    
-    alt 0 Violations (Phi == 0.0)
-        Engine->>Engine: Status = VALID, Convergence Proven
-    else Bounded Passes Exhausted (Pass == 50)
-        Engine->>Engine: Status = UNSATISFIABLE, Emit Escalation & Trade-Offs
-    end
-```
+Every repair pass evaluates candidates with unambiguous mathematical proof tuples:
+- `(candidate_id, action, phi_before, phi_after, delta_phi, decision, decision_reason)`
+- Decisions: Exactly `SELECTED` ($rg\min \Phi$ where $\Delta\Phi < 0$), `REJECTED` (non-improving), or `UNSATISFIABLE`.
 
 ---
 
-## 💰 Mathematical Price Provenance Formula
+## 💰 Formally Audited Pricing Pipeline
 
-All financial computations adhere strictly to integer INR arithmetic using Python's `decimal.Decimal` and `ROUND_HALF_UP` (exact half-up integer rounding: $\lfloor x + 0.5 \rfloor$):
+All financial computations adhere strictly to integer INR arithmetic using Python's `decimal.Decimal` and `ROUND_HALF_UP`:
 
-1. **Base Line List Amount**:
-   $$\text{Base} = \text{Quantity} \times \text{Unit List Price}$$
-
-2. **Finish Surcharge Uplift (`RB-PRC-010`)**:
-   $$\text{Uplift} = \left\lfloor \frac{\text{Base} \times \text{UpliftBps}}{10000} + 0.5 \right\rfloor$$
-
-3. **Quantity Break Discount (`RB-PRC-009`)**:
-   $$\text{Discount} = \left\lfloor \frac{\text{Base} \times \text{DiscountBps}}{10000} + 0.5 \right\rfloor$$
-
-4. **Net Line Goods**:
-   $$\text{NetGoods}_{i} = \text{Base}_{i} + \text{Uplift}_{i} - \text{Discount}_{i}$$
-
-5. **Cumulative Net Goods**:
-   $$\text{TotalNetGoods} = \sum_{i} \text{NetGoods}_{i}$$
-
-6. **Assembly Labour (`RB-PRC-011`)**:
-   $$\text{Labour (INR)} = \left\lfloor \frac{\sum \text{Minutes} \times \text{HourlyRate}}{60} + 0.5 \right\rfloor$$
-
-7. **Freight Surcharge (`RB-PRC-012`)**:
-   $$\text{Freight (INR)} = \begin{cases} 5000 & \text{if } \text{TotalNetGoods} \le 100000 \\ 9000 & \text{if } 100000 < \text{TotalNetGoods} \le 250000 \\ \left\lfloor \frac{\text{TotalNetGoods} \times 400}{10000} + 0.5 \right\rfloor & \text{if } \text{TotalNetGoods} > 250000 \end{cases}$$
-
-8. **Executive Grand Total**:
-   $$\text{Grand Total (INR)} = \text{TotalNetGoods} + \text{Labour} + \text{Freight}$$
+$$egin{aligned}
+	ext{Line Invariants:} \quad
+&	ext{base} = 	ext{unit\_price} 	imes 	ext{qty} \
+&	ext{finish\_uplift} = \left\lfloor 	ext{base} 	imes rac{	ext{uplift\_bps}}{10000} + 0.5 ightfloor \
+&	ext{discount} = \left\lfloor 	ext{base} 	imes rac{	ext{discount\_bps}}{10000} + 0.5 ightfloor \
+&	ext{net\_goods} = 	ext{base} + 	ext{finish\_uplift} - 	ext{discount} \[6pt]
+	ext{Summary Invariants:} \quad
+&	ext{goods\_total} = \sum 	ext{line.net\_goods} \
+&	ext{grand\_total} = 	ext{goods\_total} + 	ext{labour} + 	ext{freight}
+\end{aligned}$$
 
 ---
 
@@ -152,20 +136,16 @@ All financial computations adhere strictly to integer INR arithmetic using Pytho
 
 RuleBound generates production-ready, industry-standard **AutoCAD Release 12 DXF blueprints** for all synthesized layouts:
 - **`WALLS` Layer (Color: Cyan)**: Double-line room perimeter with precise millimeter door/window cutouts.
-- **`DOORS` Layer (Color: Yellow)**: Hinged door leafs with $850\text{ mm}$ radial sweep arcs.
+- **`DOORS` Layer (Color: Yellow)**: Hinged door leafs with $850	ext{ mm}$ radial sweep arcs.
 - **`EGRESS` Layer (Color: Green)**: Continuous life-safety corridor envelopes and centerline dashes.
 - **`FURNITURE` Layer (Color: Magenta/Green/Blue)**: 2D closed metric entity boundary polygons for workstations, chairs, and pods.
 - **`TEXT` Layer (Color: White)**: Metric dimension callouts and SKU placement labels.
 
 ---
 
-## 🚀 Quickstart & Installation
+## 🚀 Installation & Local Web Studio
 
-### Prerequisites
-- Python 3.11, 3.12, 3.13, or 3.14
-- Git
-
-### 1. Clone & Setup Environment
+### 1. Setup Environment
 ```bash
 git clone https://github.com/Rishisharma029/rulebound-studio.git
 cd rulebound-studio
@@ -175,16 +155,15 @@ python -m venv .venv
 # On Linux/macOS:
 source .venv/bin/activate
 # On Windows:
-.venv\Scripts\activate
+.venv\Scriptsctivate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
 ### 2. Run Autonomous Pipeline
-Synthesizes all 5 benchmark rooms (`ROOM-01` through `ROOM-05`), verifies spatial constraints, derives quotes, and generates AutoCAD DXF files:
 ```bash
-python runner.py
+python runner.py --input RuleBound_Round1_Release/data --output OUTPUT
 ```
 
 ### 3. Launch Web Studio CAD Workspace & API
@@ -197,29 +176,17 @@ python -m uvicorn rulebound.api:app --host 127.0.0.1 --port 8080 --reload
 
 ---
 
-## 🧪 Verification Battery & Determinism Tests
+## 🧪 Challenge Evidence & Verification Reports
 
-### Run Full PyTest Suite (15 Unit Tests)
+Machine-readable JSON reports are generated in `challenge_evidence/`:
+- **`challenge_evidence/adversarial_report.json`**: 10/10 adversarial spatial & catalog tests passing (100%).
+- **`challenge_evidence/pricing_boundary_report.json`**: 19/19 exact basis-point and threshold tests passing.
+- **`challenge_evidence/determinism_report.json`**: Multi-process & cross-`PYTHONHASHSEED` byte-identical SHA-256 validation (15/15 files).
+- **`challenge_evidence/arbitration_trace.json`**: Full Lyapunov proof stream traces across passes.
+
+Regenerate all evidence reports at any time with:
 ```bash
-python -m pytest -v
-```
-
-### Run Official Challenge Verification Battery
-```bash
-# 1. Official Determinism Checker across fresh runs
-python RuleBound_Round1_Release/tools/check_determinism.py OUTPUT OUTPUT_TEST
-
-# 2. Official Schema & Constraint Validator
-python RuleBound_Round1_Release/tools/validate_output.py OUTPUT
-```
-
-### Cross-Process & PYTHONHASHSEED Invariance Verification
-```bash
-python scratch/test_cross_process_determinism.py
-```
-```text
-✓ Tested Seeds: [0, 1, 42, 999, 1337, random]
-✓ 15/15 output files are bitwise byte-identical SHA-256 matches.
+python scripts/generate_challenge_evidence.py
 ```
 
 ---
@@ -230,23 +197,32 @@ python scratch/test_cross_process_determinism.py
 ├── RuleBound_Round1_Release/    # Challenge benchmark asset pack
 │   ├── data/                   # Catalog, finish rules, and room definitions
 │   └── tools/                  # Official check_determinism.py & validate_output.py
+├── challenge_evidence/         # Machine-readable JSON proof reports
+│   ├── adversarial_report.json
+│   ├── arbitration_trace.json
+│   ├── determinism_report.json
+│   └── pricing_boundary_report.json
 ├── rulebound/                  # Core deterministic engine
 │   ├── api.py                  # FastAPI REST endpoints & Swagger documentation
 │   ├── arbitration.py          # Bounded Lyapunov arbitration engine (Kmax = 50)
-│   ├── constraints.py          # Continuous spatial verifier (SAT 2D) & safety margins
+│   ├── constraints.py          # Data-driven spatial verifier (SAT 2D) & safety margins
 │   ├── dxf.py                  # Multi-layer AutoCAD DXF blueprint generator (+5 Bonus)
-│   ├── generator.py            # Natural language brief parser & candidate synthesizer
+│   ├── generator.py            # 2D spatial placement solver
 │   ├── geometry.py             # Convex polygon SAT intersection & clearance math
+│   ├── ir.py                   # Intermediate Requirement Graph & satisfaction scorer
 │   ├── loader.py               # Strict typed Asset Pack schema loader
 │   ├── models.py               # Pydantic & dataclass domain models
-│   ├── pricing.py              # Pure integer INR price provenance engine
+│   ├── pricing.py              # Pure integer INR price provenance & invariant engine
+│   ├── runner.py               # CLI runner module
 │   └── ui.html                 # High-contrast Web Studio CAD workspace
-├── tests/                      # PyTest unit test battery (15 tests)
-│   ├── test_arbitration.py     # Lyapunov monotonicity & termination tests
-│   ├── test_geometry.py        # SAT polygon intersection & distance tests
-│   ├── test_pricing.py         # Integer rounding & basis point uplifts
-│   ├── test_pricing_thresholds.py # Boundary threshold unit tests
-│   └── test_runner.py          # End-to-end pipeline verification
+├── scripts/
+│   └── generate_challenge_evidence.py # Autonomous evidence generator
+├── tests/                      # PyTest unit test battery
+│   ├── test_arbitration.py
+│   ├── test_geometry.py
+│   ├── test_pricing.py
+│   ├── test_pricing_thresholds.py
+│   └── test_runner.py
 ├── OUTPUT/                     # Deterministic synthesized artifacts (5 rooms)
 │   ├── ROOM-01/                # Harbour Design Studio (layout.json, quote.json, layout.dxf)
 │   ├── ROOM-02/                # Cedar Client Workshop
@@ -256,7 +232,7 @@ python scratch/test_cross_process_determinism.py
 ├── DEMO_SCRIPT.md              # 5-Minute Competition Recording Guide
 ├── CODE_OF_CONDUCT.md          # Contributor Covenant 2.1
 ├── LICENSE                     # MIT License
-└── runner.py                   # Main CLI execution entry point
+└── runner.py                   # Canonical CLI entry point
 ```
 
 ---
