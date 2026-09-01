@@ -1265,18 +1265,32 @@
 
               <div class="space-y-1.5 pt-1">
                 <div class="text-[10px] font-black text-gray-300 uppercase tracking-wider">Candidate Operator Evaluations:</div>
-                ${step.candidates_evaluated.map(c => `
-                  <div class="p-2 rounded-lg ${c.decision === 'ACCEPTED' ? 'bg-emerald-500/15 border border-emerald-500/40' : 'bg-red-500/15 border border-red-500/40'} space-y-1">
-                    <div class="flex justify-between items-center text-[10px]">
-                      <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
-                      <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${c.decision === 'ACCEPTED' ? 'bg-emerald-400 text-dark-950' : 'bg-red-400 text-dark-950'}">${c.decision}</span>
+                ${step.candidates_evaluated.map(c => {
+                  let cardClass = 'bg-red-500/15 border border-red-500/40';
+                  let badgeClass = 'bg-red-400 text-dark-950';
+                  let reasonClass = 'text-red-300 font-bold';
+                  if (c.decision === 'SELECTED' || c.decision === 'ACCEPTED') {
+                    cardClass = 'bg-emerald-500/15 border border-emerald-500/40';
+                    badgeClass = 'bg-emerald-400 text-dark-950';
+                    reasonClass = 'text-emerald-300 font-bold';
+                  } else if (c.decision === 'UNSATISFIABLE') {
+                    cardClass = 'bg-amber-500/15 border border-amber-500/40';
+                    badgeClass = 'bg-amber-400 text-dark-950';
+                    reasonClass = 'text-amber-300 font-bold';
+                  }
+                  return `
+                    <div class="p-2 rounded-lg ${cardClass} space-y-1">
+                      <div class="flex justify-between items-center text-[10px]">
+                        <span class="font-black text-white">${c.candidate_id}: ${c.action}</span>
+                        <span class="px-1.5 py-0.2 rounded font-black text-[9px] ${badgeClass}">${c.decision}</span>
+                      </div>
+                      <div class="flex justify-between text-[9px] text-gray-200">
+                        <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
+                        <span class="${reasonClass}">${c.reason}</span>
+                      </div>
                     </div>
-                    <div class="flex justify-between text-[9px] text-gray-200">
-                      <span>Resulting Φ: <b>${c.phi_resulting}</b></span>
-                      <span class="${c.decision === 'ACCEPTED' ? 'text-emerald-300 font-bold' : 'text-red-300 font-bold'}">${c.reason}</span>
-                    </div>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
             </div>
           `;

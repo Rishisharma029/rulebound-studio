@@ -15,7 +15,7 @@ class CandidateEvaluation:
     candidate_id: str
     action: str
     phi_resulting: float
-    decision: Literal["ACCEPTED", "REJECTED"]
+    decision: Literal["SELECTED", "REJECTED", "UNSATISFIABLE"]
     reason: str
 
     def to_dict(self) -> dict[str, Any]:
@@ -94,17 +94,19 @@ def compute_energy_metric(violations: list[Violation]) -> float:
             score += max(0.0, float(v.required["min_half_width_mm"]) - float(v.measured["corridor_distance_mm"]))
         if "swing_encroachment_mm" in v.measured:
             score += float(v.measured["swing_encroachment_mm"])
-        if "measured_rear_clearance_mm" in v.measured and "min_rear_clearance_mm" in v.required:
-            score += max(0.0, float(v.required["min_rear_clearance_mm"]) - float(v.measured["measured_rear_clearance_mm"]))
-        if "measured_pull_depth_mm" in v.measured and "min_pull_depth_mm" in v.required:
-            score += max(0.0, float(v.required["min_pull_depth_mm"]) - float(v.measured["measured_pull_depth_mm"]))
+        if "walkway_width_mm" in v.measured and "min_walkway_width_mm" in v.required:
+            score += max(0.0, float(v.required["min_walkway_width_mm"]) - float(v.measured["walkway_width_mm"]))
+        if "rear_clearance_mm" in v.measured and "min_rear_clearance_mm" in v.required:
+            score += max(0.0, float(v.required["min_rear_clearance_mm"]) - float(v.measured["rear_clearance_mm"]))
+        if "pull_out_clearance_mm" in v.measured and "min_pull_out_clearance_mm" in v.required:
+            score += max(0.0, float(v.required["min_pull_out_clearance_mm"]) - float(v.measured["pull_out_clearance_mm"]))
     return round(score, 2)
 
 
 class ArbitrationEngine:
     """
     Deterministic arbitration state machine enforcing bounded, terminating repair loops
-    with full line-level decision tracing across all 8 spatial rules.
+    with full line-level decision tracing and strictly unambiguous single-outcome candidate labeling.
     """
 
     def __init__(self, max_passes: int = 50):
@@ -151,8 +153,8 @@ class ArbitrationEngine:
             primary_v = violations[0]
             phi_before = current_energy
             pid = primary_v.affected_placement_ids[0] if primary_v.affected_placement_ids else None
-            
-            candidates_list = []
+
+            candidates_list: list[tuple[str, list[Placement], str]] = []
 
             if pid:
                 p_idx = next((i for i, p in enumerate(placements) if p.placement_id == pid), None)
@@ -252,42 +254,66 @@ class ArbitrationEngine:
                     if best_grid_pls is not None:
                         candidates_list.append(("C_GRID", best_grid_pls, f"Relocate {pid} to collision-free open cell"))
 
-            # Evaluate all candidates
-            evaluated_evals = []
-            best_candidate_placements = None
-            best_candidate_energy = phi_before
-            best_candidate_action = ""
-
+            # Evaluate all candidate operators
+            evaluated_data: list[tuple[str, list[Placement], str, float]] = []
             for cid, c_pls, action_desc in candidates_list:
                 c_viols = verify_spatial_constraints(room, c_pls, pack)
                 c_energy = compute_energy_metric(c_viols)
+                evaluated_data.append((cid, c_pls, action_desc, c_energy))
 
-                if c_energy < best_candidate_energy:
-                    best_candidate_energy = c_energy
-                    best_candidate_placements = c_pls
-                    best_candidate_action = action_desc
+            # Select the optimal candidate with minimum Lyapunov energy
+            best_idx = None
+            best_c_energy = phi_before
+
+            for idx, (cid, c_pls, action_desc, c_energy) in enumerate(evaluated_data):
+                if c_energy < best_c_energy:
+                    best_c_energy = c_energy
+                    best_idx = idx
+
+            # Construct unambiguous, mutually exclusive candidate outcomes
+            evaluated_evals: list[CandidateEvaluation] = []
+            for idx, (cid, c_pls, action_desc, c_energy) in enumerate(evaluated_data):
+                if best_idx is not None and idx == best_idx:
+                    # The single winning candidate
+                    delta = round(phi_before - c_energy, 1)
                     evaluated_evals.append(
                         CandidateEvaluation(
                             candidate_id=cid,
                             action=action_desc,
                             phi_resulting=c_energy,
-                            decision="ACCEPTED",
-                            reason=f"Strict Lyapunov improvement: Delta_Phi = -{round(phi_before - c_energy, 1)}"
+                            decision="SELECTED",
+                            reason=f"Optimal Lyapunov descent: Delta_Phi = -{delta} (Phi: {phi_before} -> {c_energy})",
                         )
                     )
-                else:
+                elif c_energy >= phi_before:
+                    # Non-improving candidate
                     evaluated_evals.append(
                         CandidateEvaluation(
                             candidate_id=cid,
                             action=action_desc,
                             phi_resulting=c_energy,
                             decision="REJECTED",
-                            reason=f"No improvement: Phi ({c_energy}) >= Phi_before ({phi_before})"
+                            reason=f"No improvement: Phi ({c_energy}) >= Phi_before ({phi_before})",
+                        )
+                    )
+                else:
+                    # Improving, but suboptimal compared to the selected best candidate
+                    best_cid = evaluated_data[best_idx][0]
+                    best_delta = round(phi_before - best_c_energy, 1)
+                    sub_delta = round(phi_before - c_energy, 1)
+                    evaluated_evals.append(
+                        CandidateEvaluation(
+                            candidate_id=cid,
+                            action=action_desc,
+                            phi_resulting=c_energy,
+                            decision="REJECTED",
+                            reason=f"Suboptimal descent (Delta_Phi = -{sub_delta}) inferior to {best_cid} (Delta_Phi = -{best_delta})",
                         )
                     )
 
-            if best_candidate_placements is not None:
-                transforms = []
+            if best_idx is not None:
+                best_candidate_placements = evaluated_data[best_idx][1]
+                transforms: list[PlacementTransformation] = []
                 for p_old, p_new in zip(placements, best_candidate_placements):
                     if abs(p_old.x_mm - p_new.x_mm) > 1e-3 or abs(p_old.y_mm - p_new.y_mm) > 1e-3:
                         transforms.append(
@@ -306,12 +332,16 @@ class ArbitrationEngine:
 
                 placements = best_candidate_placements
                 violations = verify_spatial_constraints(room, placements, pack)
-                current_energy = best_candidate_energy
+                current_energy = best_c_energy
 
                 if current_energy < best_energy:
                     best_energy = current_energy
                     best_placements = copy.deepcopy(placements)
                     best_violations = violations
+
+                selected_eval = evaluated_evals[best_idx]
+                rejected_evals = [e for i, e in enumerate(evaluated_evals) if i != best_idx]
+                trace_evals = [selected_eval] + rejected_evals[:2]
 
                 self.last_trace.append(
                     ArbitrationTraceStep(
@@ -320,7 +350,7 @@ class ArbitrationEngine:
                         violation_summary=primary_v.message,
                         affected_placements=primary_v.affected_placement_ids,
                         phi_before=phi_before,
-                        candidates_evaluated=evaluated_evals[:3],
+                        candidates_evaluated=trace_evals,
                         phi_after=current_energy,
                         status="REPAIRED" if not violations else "IN_PROGRESS",
                         transformations=transforms,
@@ -328,44 +358,37 @@ class ArbitrationEngine:
                 )
 
                 if not violations:
-                    return LayoutResult(
-                        room_id=room.room_id,
-                        placements=placements,
-                        violations=[],
-                        status="valid",
-                    )
+                    break
             else:
+                # No candidate improves energy; record bounded stagnation and escalate
+                unsat_eval = CandidateEvaluation(
+                    candidate_id="ESC_UNSAT",
+                    action="Exhaustive search of candidate operator space",
+                    phi_resulting=phi_before,
+                    decision="UNSATISFIABLE",
+                    reason="No valid candidate placement strictly decreases Lyapunov potential metric Phi(L)",
+                )
+                self.last_trace.append(
+                    ArbitrationTraceStep(
+                        iteration=pass_idx,
+                        violation_rule_id=primary_v.rule_id,
+                        violation_summary=primary_v.message,
+                        affected_placements=primary_v.affected_placement_ids,
+                        phi_before=phi_before,
+                        candidates_evaluated=[unsat_eval],
+                        phi_after=phi_before,
+                        status="UNSATISFIABLE",
+                        transformations=[],
+                    )
+                )
                 break
 
-        if not violations:
-            return LayoutResult(
-                room_id=room.room_id,
-                placements=placements,
-                violations=[],
-                status="valid",
-            )
-
-        escalation_violations = [
-            Violation(
-                violation_id=f"ESC-{v.violation_id}",
-                rule_id=v.rule_id,
-                message=f"UNSATISFIABLE: {v.message}. Arbitration exhausted bounds ({self.max_passes} passes).",
-                affected_placement_ids=v.affected_placement_ids,
-                measured=v.measured,
-                required=v.required,
-                repair_options=[
-                    {
-                        "action": "human_escalation",
-                        "trade_off": "Reduce requested room capacity or select compact furniture dimensions.",
-                    }
-                ],
-            )
-            for v in best_violations
-        ]
+        final_violations = verify_spatial_constraints(room, placements, pack)
+        is_valid = len(final_violations) == 0
 
         return LayoutResult(
             room_id=room.room_id,
-            placements=best_placements,
-            violations=escalation_violations,
-            status="unsatisfiable",
+            placements=placements if is_valid else best_placements,
+            violations=final_violations if is_valid else best_violations,
+            status="valid" if is_valid else "unsatisfiable",
         )

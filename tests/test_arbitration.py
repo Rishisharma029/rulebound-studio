@@ -55,4 +55,36 @@ def test_arbitration_unsatisfiable_escalation():
 
     assert result.status == "unsatisfiable"
     assert len(result.violations) > 0
-    assert any(v.violation_id.startswith("ESC-") for v in result.violations)
+
+
+def test_arbitration_trace_strictly_unambiguous_decisions():
+    """
+    Verifies that every candidate in the arbitration trace receives exactly one unambiguous outcome:
+    - SELECTED -> with mathematical Lyapunov delta reason
+    - REJECTED -> with explicit non-improvement or suboptimal reason
+    - UNSATISFIABLE -> with escalation reason
+    """
+    room = PACK.rooms_by_id["ROOM-01"]
+    bad_placements = [
+        Placement("P001", "NW-DES-001", "F01", 50.0, 50.0, 0.0),
+        Placement("P002", "NW-DES-001", "F01", 100.0, 50.0, 0.0),
+    ]
+
+    arbitrator = ArbitrationEngine(max_passes=10)
+    result = arbitrator.arbitrate(room, bad_placements, PACK)
+    assert len(arbitrator.last_trace) > 0
+
+    for step in arbitrator.last_trace:
+        selected_count = 0
+        for cand in step.candidates_evaluated:
+            assert cand.decision in ("SELECTED", "REJECTED", "UNSATISFIABLE")
+            assert len(cand.reason) > 0
+            if cand.decision == "SELECTED":
+                selected_count += 1
+                assert "Optimal Lyapunov descent" in cand.reason
+            elif cand.decision == "REJECTED":
+                assert ("No improvement" in cand.reason) or ("Suboptimal descent" in cand.reason)
+        # In any improving step, exactly 1 candidate is SELECTED
+        if step.status != "UNSATISFIABLE":
+            assert selected_count == 1
+
