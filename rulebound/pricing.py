@@ -89,6 +89,82 @@ def get_freight_cost_and_trace(goods_net_inr: int) -> tuple[int, dict[str, Any]]
         }
 
 
+def validate_quote_invariants(quote: QuoteResult, pack: AssetPack) -> tuple[bool, list[str]]:
+    """
+    Formally verifies every accounting invariant across all quote lines and summary figures.
+    Guarantees that:
+      1. base == unit_price * qty
+      2. finish_uplift == round_half_up(base * uplift_bps / 10000)
+      3. discount == round_half_up(base * discount_bps / 10000)
+      4. net_goods == base + uplift - discount
+      5. sum(line.net_goods) == summary.goods_after_adjustments
+      6. grand_total == net_goods + labour + freight
+    """
+    errors: list[str] = []
+    if quote.status == "blocked" or not isinstance(quote.summary, QuoteSummary):
+        return (False, quote.blocking_reasons)
+
+    calculated_net_goods = 0
+    for line in quote.lines:
+        item = pack.catalog_by_sku.get(line.sku)
+        finish = pack.finishes_by_id.get(line.finish_id)
+        if not item or not finish:
+            errors.append(f"RB-PRC-013: Missing item {line.sku} or finish {line.finish_id} in catalog.")
+            continue
+
+        # Invariant 1: base == unit_price * qty
+        expected_base = line.unit_list_price_inr * line.quantity
+        if line.base_amount_inr != expected_base:
+            errors.append(
+                f"RB-PRC-013: Line {line.line_id} base amount invariant failed ({line.base_amount_inr} != {expected_base})"
+            )
+
+        # Invariant 2: finish_uplift == round_half_up(base * uplift_bps / 10000)
+        expected_uplift = round_half_up(
+            Decimal(line.base_amount_inr) * Decimal(finish.uplift_bps) / Decimal(10000)
+        )
+        if line.finish_uplift_inr != expected_uplift:
+            errors.append(
+                f"RB-PRC-013: Line {line.line_id} finish uplift invariant failed ({line.finish_uplift_inr} != {expected_uplift})"
+            )
+
+        # Invariant 3: discount == round_half_up(base * discount_bps / 10000)
+        discount_bps = get_quantity_discount_bps(line.quantity)
+        expected_discount = round_half_up(
+            Decimal(line.base_amount_inr) * Decimal(discount_bps) / Decimal(10000)
+        )
+        if line.quantity_discount_inr != expected_discount:
+            errors.append(
+                f"RB-PRC-013: Line {line.line_id} quantity discount invariant failed ({line.quantity_discount_inr} != {expected_discount})"
+            )
+
+        # Invariant 4: net_goods == base + uplift - discount
+        expected_net = line.base_amount_inr + line.finish_uplift_inr - line.quantity_discount_inr
+        if line.net_goods_inr != expected_net:
+            errors.append(
+                f"RB-PRC-013: Line {line.line_id} net goods invariant failed ({line.net_goods_inr} != {expected_net})"
+            )
+
+        calculated_net_goods += line.net_goods_inr
+
+    # Invariant 5: sum(line.net_goods) == summary.goods_after_adjustments
+    if quote.summary.goods_after_adjustments_inr != calculated_net_goods:
+        errors.append(
+            f"RB-PRC-013: Summary goods total invariant failed ({quote.summary.goods_after_adjustments_inr} != {calculated_net_goods})"
+        )
+
+    # Invariant 6: grand_total == net_goods + labour + freight
+    expected_grand_total = (
+        quote.summary.goods_after_adjustments_inr + quote.summary.labour_inr + quote.summary.freight_inr
+    )
+    if quote.summary.grand_total_inr != expected_grand_total:
+        errors.append(
+            f"RB-PRC-013: Grand total reconciliation invariant failed ({quote.summary.grand_total_inr} != {expected_grand_total})"
+        )
+
+    return (len(errors) == 0, errors)
+
+
 def price_placements(
     room_id: str,
     placements: list[Placement],
@@ -98,6 +174,7 @@ def price_placements(
     """
     Pure deterministic pricing engine executing PRICING_SPEC.md.
     Guarantees byte-identical, line-traceable, mathematically reconciled outputs.
+    Formally validates all quote accounting invariants before issuance.
     """
     qid = quote_id or f"QUOTE-{room_id}"
 
@@ -110,7 +187,7 @@ def price_placements(
             summary={"grand_total_inr": 0},
             summary_trace=[],
             status="blocked",
-            blocking_reasons=["No placements provided to pricing engine."],
+            blocking_reasons=["RB-PRC-013: No placements provided to pricing engine."],
         )
 
     # Aggregate quantities by (sku, finish_id)
@@ -228,7 +305,7 @@ def price_placements(
         ),
     ]
 
-    return QuoteResult(
+    result = QuoteResult(
         quote_id=qid,
         room_id=room_id,
         currency="INR",
@@ -237,3 +314,11 @@ def price_placements(
         summary_trace=summary_trace,
         status="priced",
     )
+
+    # Formally validate accounting invariants
+    is_valid, invariant_errors = validate_quote_invariants(result, pack)
+    if not is_valid:
+        result.status = "blocked"
+        result.blocking_reasons.extend(invariant_errors)
+
+    return result

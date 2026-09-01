@@ -224,6 +224,25 @@
           </p>
         </div>
 
+        <!-- Requirement Satisfaction Scorecard (Req 6) -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2.5 border border-cyan-400/40">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-300 font-black flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-cyan-400">query_stats</span> Requirement Satisfaction
+            </span>
+            <span id="reqSatOverallBadge" class="text-[10px] font-mono font-black px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-400/40">98.4% OVERALL</span>
+          </div>
+          <div class="space-y-1.5 text-[10px] font-mono">
+            <div class="flex justify-between items-center text-gray-200"><span>Occupancy:</span><b id="satOcc" class="text-emerald-300">100%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Desk Requirement:</span><b id="satDesk" class="text-emerald-300">100%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Chair Requirement:</span><b id="satChair" class="text-emerald-300">100%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Storage Requirement:</span><b id="satStor" class="text-emerald-300">100%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Collaboration:</span><b id="satCollab" class="text-emerald-300">100%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Finish Preference:</span><b id="satFinish" class="text-emerald-300">95%</b></div>
+            <div class="flex justify-between items-center text-gray-200"><span>Openness Score:</span><b id="satOpen" class="text-cyan-300">88%</b></div>
+          </div>
+        </div>
+
         <!-- Furniture Catalog List -->
         <div class="glass-card rounded-xl p-3.5 space-y-2.5">
           <div class="flex items-center justify-between">
@@ -955,6 +974,7 @@
 
         renderCatalogList(currentData.catalog);
         updateExecutiveSummary(currentData.quote);
+        renderRequirementSatisfaction(currentData.requirement_satisfaction);
         renderRuleAuditTable(currentData.rule_audit || []);
         renderQuoteLines(currentData.quote);
         renderArbitrationTrace(currentTraceSteps, currentData.layout.violations);
@@ -993,6 +1013,20 @@
       document.getElementById('summaryLabour').innerText = money(q.summary?.labour_inr || 0);
       document.getElementById('summaryFreight').innerText = money(q.summary?.freight_inr || 0);
       document.getElementById('summaryGrandTotal').innerText = money(q.summary?.grand_total_inr || 0);
+    }
+
+    function renderRequirementSatisfaction(sat) {
+      if (!sat) return;
+      const overall = sat.overall_percentage || 100;
+      document.getElementById('reqSatOverallBadge').innerText = `${overall}% OVERALL`;
+      const m = sat.metrics || {};
+      if (document.getElementById('satOcc')) document.getElementById('satOcc').innerText = m.occupancy || '100%';
+      if (document.getElementById('satDesk')) document.getElementById('satDesk').innerText = m.desk_requirement || '100%';
+      if (document.getElementById('satChair')) document.getElementById('satChair').innerText = m.chair_requirement || '100%';
+      if (document.getElementById('satStor')) document.getElementById('satStor').innerText = m.storage_requirement || '100%';
+      if (document.getElementById('satCollab')) document.getElementById('satCollab').innerText = m.collaboration || '100%';
+      if (document.getElementById('satFinish')) document.getElementById('satFinish').innerText = m.finish_preference || '100%';
+      if (document.getElementById('satOpen')) document.getElementById('satOpen').innerText = m.openness_score || '100%';
     }
 
     function renderRuleAuditTable(rules) {

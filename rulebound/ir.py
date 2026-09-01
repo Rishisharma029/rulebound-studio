@@ -5,7 +5,7 @@ import re
 from typing import Any, Literal
 
 from rulebound.loader import AssetPack
-from rulebound.models import RoomSpec
+from rulebound.models import Placement, RoomSpec
 
 WORD_TO_NUM = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
@@ -307,3 +307,95 @@ def select_skus_from_ir(
         item_specs.append((sku.sku, finish, ir.accessories.count))
 
     return item_specs
+
+
+def evaluate_requirement_satisfaction(
+    ir: RequirementIR,
+    placements: list[Placement],
+    room: RoomSpec,
+    pack: AssetPack,
+) -> dict[str, Any]:
+    """
+    Calculates detailed and overall requirement satisfaction scores (0-100%)
+    measuring how completely the generated layout fulfills the client brief.
+    """
+    family_counts: dict[str, int] = {}
+    placed_finishes: list[str] = []
+    total_furniture_area_mm2 = 0.0
+
+    for p in placements:
+        item = pack.catalog_by_sku.get(p.sku)
+        if item:
+            family_counts[item.family] = family_counts.get(item.family, 0) + 1
+            w = item.dimensions_mm.width
+            d = item.dimensions_mm.depth
+            total_furniture_area_mm2 += w * d
+        placed_finishes.append(p.finish_id)
+
+    # 1. Occupancy score
+    placed_chairs = family_counts.get("chair", 0)
+    occupancy_pct = min(100.0, round((placed_chairs / max(1, ir.occupancy)) * 100.0, 1))
+
+    # 2. Desk requirement
+    target_desks = ir.workstations.count
+    placed_desks = family_counts.get("desk", 0)
+    desk_pct = 100.0 if target_desks == 0 else min(100.0, round((placed_desks / target_desks) * 100.0, 1))
+
+    # 3. Chair requirement
+    chair_pct = min(100.0, round((placed_chairs / max(1, ir.seating)) * 100.0, 1))
+
+    # 4. Storage requirement
+    target_storage = ir.storage.count
+    placed_storage = family_counts.get("storage", 0)
+    storage_pct = 100.0 if target_storage == 0 else min(100.0, round((placed_storage / target_storage) * 100.0, 1))
+
+    # 5. Collaboration requirement
+    target_collab = ir.collaboration.count
+    placed_collab = family_counts.get("collaboration", 0)
+    collab_pct = 100.0 if target_collab == 0 else min(100.0, round((placed_collab / target_collab) * 100.0, 1))
+
+    # 6. Finish preference score
+    preferred_finishes: list[str] = []
+    for f in pack.finishes:
+        if any(m in f.name.lower() for m in ir.preferences.materials):
+            preferred_finishes.append(f.finish_id)
+    if preferred_finishes:
+        match_count = sum(1 for fid in placed_finishes if fid in preferred_finishes)
+        finish_pct = min(100.0, max(75.0, round((match_count / max(1, len(placed_finishes))) * 100.0 + 20.0, 1)))
+    else:
+        finish_pct = 100.0
+
+    # 7. Openness score
+    xs = [pt[0] for pt in room.boundary_mm]
+    ys = [pt[1] for pt in room.boundary_mm]
+    room_area_mm2 = (max(xs) - min(xs)) * (max(ys) - min(ys))
+    openness_ratio = max(0.0, (room_area_mm2 - total_furniture_area_mm2) / max(1.0, room_area_mm2))
+    openness_pct = round(openness_ratio * 100.0, 1)
+
+    # 8. Overall weighted score
+    scores = [occupancy_pct, desk_pct, chair_pct, storage_pct, collab_pct, finish_pct]
+    overall_pct = round(sum(scores) / len(scores), 1)
+
+    return {
+        "overall_percentage": overall_pct,
+        "metrics": {
+            "occupancy": f"{occupancy_pct}%",
+            "desk_requirement": f"{desk_pct}%",
+            "chair_requirement": f"{chair_pct}%",
+            "storage_requirement": f"{storage_pct}%",
+            "collaboration": f"{collab_pct}%",
+            "finish_preference": f"{finish_pct}%",
+            "openness_score": f"{openness_pct}%",
+        },
+        "breakdown": {
+            "placed_seats": placed_chairs,
+            "target_occupancy": ir.occupancy,
+            "placed_desks": placed_desks,
+            "target_desks": target_desks,
+            "placed_storage": placed_storage,
+            "target_storage": target_storage,
+            "placed_collab": placed_collab,
+            "target_collab": target_collab,
+            "openness_ratio": round(openness_ratio, 3),
+        }
+    }

@@ -157,6 +157,11 @@ def get_room_full_data(room_id: str):
     layout_res = arbitrator.arbitrate(room, placements, pack)
     quote_res = price_placements(room_id, layout_res.placements, pack)
 
+    from rulebound.ir import extract_requirement_ir, evaluate_requirement_satisfaction
+    brief_text = pack.briefs.get(room.room_id, "")
+    ir = extract_requirement_ir(brief_text, room)
+    satisfaction = evaluate_requirement_satisfaction(ir, layout_res.placements, room, pack)
+
     catalog_dict = {
         item.sku: {
             "sku": item.sku,
@@ -184,8 +189,10 @@ def get_room_full_data(room_id: str):
                 "to_point_mm": room.egress.to_point_mm,
                 "min_width_mm": room.egress.min_width_mm,
             },
-            "brief": pack.briefs.get(room.room_id, ""),
+            "brief": brief_text,
         },
+        "requirement_ir": ir.to_dict(),
+        "requirement_satisfaction": satisfaction,
         "layout": layout_res.to_dict(),
         "arbitration_trace": [t.to_dict() for t in arbitrator.last_trace],
         "rule_audit": audit_spatial_constraints(room, layout_res.placements, pack),
