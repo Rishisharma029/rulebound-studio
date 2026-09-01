@@ -244,7 +244,7 @@
       "measured": {
         "penetration_depth_mm": 120.0
       },
-      "message": "Placements P014 (Northwind Desk 09) and P018 (Northwind Chair 12) overlap by 120.0mm.",
+      "message": "Placements P014 (Northwind Desk 09) and P018 (Northwind Chair 12) overlap by 120.0mm (RB-GEO-006 collision).",
       "repair_options": [],
       "required": {
         "max_overlap_depth_mm": 0.0
@@ -260,7 +260,7 @@
       "measured": {
         "pull_out_clearance_mm": 0.0
       },
-      "message": "Task chair P020 pull-out zone obstructed by P029 (0.0mm < 750mm required).",
+      "message": "Task chair P020 pull-out zone obstructed by P029 (0.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -276,7 +276,7 @@
       "measured": {
         "pull_out_clearance_mm": 20.0
       },
-      "message": "Task chair P023 pull-out zone obstructed by P029 (20.0mm < 750mm required).",
+      "message": "Task chair P023 pull-out zone obstructed by P029 (20.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -292,7 +292,7 @@
       "measured": {
         "pull_out_clearance_mm": 620.0
       },
-      "message": "Task chair P027 pull-out zone obstructed by P029 (620.0mm < 750mm required).",
+      "message": "Task chair P027 pull-out zone obstructed by P029 (620.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0

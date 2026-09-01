@@ -347,7 +347,7 @@
       "measured": {
         "corridor_distance_mm": 512.4
       },
-      "message": "Placement P012 (Northwind Desk 14) is 512.4mm from egress corridor centerline (minimum 550.0mm required).",
+      "message": "Placement P012 (Northwind Desk 14) is 512.4mm from egress corridor centerline (minimum 550.0mm half-width required by RB-GEO-002).",
       "repair_options": [],
       "required": {
         "min_half_width_mm": 550.0
@@ -363,7 +363,7 @@
       "measured": {
         "pull_out_clearance_mm": 640.0
       },
-      "message": "Task chair P021 pull-out zone obstructed by P033 (640.0mm < 750mm required).",
+      "message": "Task chair P021 pull-out zone obstructed by P033 (640.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -379,7 +379,7 @@
       "measured": {
         "pull_out_clearance_mm": 640.0
       },
-      "message": "Task chair P022 pull-out zone obstructed by P033 (640.0mm < 750mm required).",
+      "message": "Task chair P022 pull-out zone obstructed by P033 (640.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -395,7 +395,7 @@
       "measured": {
         "pull_out_clearance_mm": 640.0
       },
-      "message": "Task chair P023 pull-out zone obstructed by P039 (640.0mm < 750mm required).",
+      "message": "Task chair P023 pull-out zone obstructed by P039 (640.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -411,7 +411,7 @@
       "measured": {
         "pull_out_clearance_mm": 640.0
       },
-      "message": "Task chair P024 pull-out zone obstructed by P039 (640.0mm < 750mm required).",
+      "message": "Task chair P024 pull-out zone obstructed by P039 (640.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -427,7 +427,7 @@
       "measured": {
         "pull_out_clearance_mm": 40.0
       },
-      "message": "Task chair P025 pull-out zone obstructed by P033 (40.0mm < 750mm required).",
+      "message": "Task chair P025 pull-out zone obstructed by P033 (40.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -443,7 +443,7 @@
       "measured": {
         "pull_out_clearance_mm": 40.0
       },
-      "message": "Task chair P026 pull-out zone obstructed by P033 (40.0mm < 750mm required).",
+      "message": "Task chair P026 pull-out zone obstructed by P033 (40.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -459,7 +459,7 @@
       "measured": {
         "pull_out_clearance_mm": 390.0
       },
-      "message": "Task chair P029 pull-out zone obstructed by P035 (390.0mm < 750mm required).",
+      "message": "Task chair P029 pull-out zone obstructed by P035 (390.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -475,7 +475,7 @@
       "measured": {
         "pull_out_clearance_mm": 40.0
       },
-      "message": "Task chair P030 pull-out zone obstructed by P035 (40.0mm < 750mm required).",
+      "message": "Task chair P030 pull-out zone obstructed by P035 (40.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -491,7 +491,7 @@
       "measured": {
         "pull_out_clearance_mm": 40.0
       },
-      "message": "Task chair P031 pull-out zone obstructed by P039 (40.0mm < 750mm required).",
+      "message": "Task chair P031 pull-out zone obstructed by P039 (40.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
@@ -507,7 +507,7 @@
       "measured": {
         "pull_out_clearance_mm": 40.0
       },
-      "message": "Task chair P032 pull-out zone obstructed by P039 (40.0mm < 750mm required).",
+      "message": "Task chair P032 pull-out zone obstructed by P039 (40.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0

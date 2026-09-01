@@ -108,11 +108,45 @@ def test_adversarial_chair_pullout_clearance_rb_geo_008():
     from rulebound.constraints import verify_spatial_constraints
     room = PACK.rooms_by_id["ROOM-01"]
 
-    # Place chair at Y=4800 (North wall is at Y=5400, depth is 650, so pullout zone Y+depth+750 = 6200 > 5400)
     adversarial_chair = [
         Placement("P001", "NW-CHA-004", "F15", 2000.0, 4500.0, 0.0),
     ]
     violations = verify_spatial_constraints(room, adversarial_chair, PACK)
     assert any(v.rule_id == "RB-GEO-008" for v in violations)
+
+
+def test_data_driven_rule_pack_execution():
+    """
+    Proves that the verifier executes the released rule pack objects (AssetPack.rules_by_id)
+    rather than hardcoded constants. Modifying a rule in the pack immediately changes verifier behavior.
+    """
+    from rulebound.constraints import verify_spatial_constraints
+    import copy
+    from rulebound.models import Rule
+
+    room = PACK.rooms_by_id["ROOM-01"]
+    test_placements = [
+        Placement("P001", "NW-DES-003", "F03", 3500.0, 150.0, 0.0),
+    ]
+
+    # Baseline: at wall_offset = 100mm (rules.yaml standard), 150mm is VALID
+    base_viols = verify_spatial_constraints(room, test_placements, PACK)
+    assert len(base_viols) == 0
+
+    # Dynamic Reconfiguration: simulate updated rule pack with wall_offset = 200mm
+    custom_pack = copy.deepcopy(PACK)
+    custom_pack.rules_by_id["RB-GEO-005"] = Rule(
+        rule_id="RB-GEO-005",
+        kind="min_wall_offset",
+        value_mm=200.0,
+        severity="error",
+        message="Strict perimeter wall offset required: 200mm",
+    )
+
+    # Now the 150mm placement MUST fail under the data-driven rule pack!
+    strict_viols = verify_spatial_constraints(room, test_placements, custom_pack)
+    assert any(v.rule_id == "RB-GEO-005" for v in strict_viols)
+    assert strict_viols[0].required["min_wall_offset_mm"] == 200.0
+
 
 
