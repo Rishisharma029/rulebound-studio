@@ -9,6 +9,7 @@ from rulebound.pricing import (
 
 def test_round_half_up_exact():
     # Exactly half rounds UP
+    assert round_half_up(Decimal("10.5")) == 11
     assert round_half_up(Decimal("2.5")) == 3
     assert round_half_up(Decimal("3.5")) == 4
     assert round_half_up(Decimal("2.49999")) == 2
@@ -62,3 +63,33 @@ def test_freight_cost_thresholds():
     assert c_250k_1 == round_half_up(Decimal(250001) * Decimal(400) / Decimal(10000))
     assert t_250k_1["band"] == "above_250000"
     assert t_250k_1["percent_bps"] == 400
+
+
+def test_quote_grand_total_exact_reconciliation():
+    """
+    Formally verifies that for all generated quotes:
+    grand_total == goods_after_adjustments + labour + freight
+    """
+    from pathlib import Path
+    from rulebound.loader import load_asset_pack
+    from rulebound.pricing import price_placements, validate_quote_invariants
+    from rulebound.models import Placement
+
+    pack = load_asset_pack(Path(__file__).resolve().parents[1] / "RuleBound_Round1_Release/data")
+    for room in pack.rooms:
+        # Test varied quantity mixes triggering all discount and freight tiers
+        for q in [4, 5, 9, 10, 19, 20]:
+            placements = [
+                Placement(f"P{i:03d}", "NW-DES-001", "F01", 1000.0, 1000.0, 0.0)
+                for i in range(q)
+            ]
+            quote = price_placements(room.room_id, placements, pack)
+            assert quote.status == "priced"
+            assert quote.summary.grand_total_inr == (
+                quote.summary.goods_after_adjustments_inr
+                + quote.summary.labour_inr
+                + quote.summary.freight_inr
+            )
+            is_valid, errors = validate_quote_invariants(quote, pack)
+            assert is_valid is True
+            assert len(errors) == 0
