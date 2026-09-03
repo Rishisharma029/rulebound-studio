@@ -36,9 +36,9 @@ class CandidateEvaluation:
             "phi_after": round(float(self.phi_after), 2),
             "delta_phi": round(float(self.delta_phi), 2),
             "decision": self.decision,
+            "reason": self.decision_reason,
             "decision_reason": self.decision_reason,
             "phi_resulting": round(float(self.phi_after), 2),
-            "reason": self.decision_reason,
         }
 
 
