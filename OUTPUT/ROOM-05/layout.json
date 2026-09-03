@@ -37,48 +37,48 @@
       "placement_id": "P005",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 200.0,
-      "y_mm": 5400.0
+      "x_mm": 1800.0,
+      "y_mm": 4600.0
     },
     {
       "finish_id": "F02",
       "placement_id": "P006",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 1800.0,
-      "y_mm": 4600.0
+      "x_mm": 4200.0,
+      "y_mm": 5800.0
     },
     {
       "finish_id": "F02",
       "placement_id": "P007",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 1800.0,
-      "y_mm": 5400.0
+      "x_mm": 1000.0,
+      "y_mm": 6200.0
     },
     {
       "finish_id": "F02",
       "placement_id": "P008",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 3400.0,
-      "y_mm": 5000.0
+      "x_mm": 3620.0,
+      "y_mm": 720.0
     },
     {
       "finish_id": "F02",
       "placement_id": "P009",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 3400.0,
-      "y_mm": 5800.0
+      "x_mm": 5020.0,
+      "y_mm": 720.0
     },
     {
       "finish_id": "F02",
       "placement_id": "P010",
       "rotation_deg": 0.0,
       "sku": "NW-DES-014",
-      "x_mm": 5400.0,
-      "y_mm": 150.0
+      "x_mm": 6420.0,
+      "y_mm": 720.0
     },
     {
       "finish_id": "F02",
@@ -342,19 +342,66 @@
   "violations": [
     {
       "affected_placement_ids": [
-        "P010",
-        "P013"
+        "P007"
       ],
       "measured": {
-        "rear_clearance_mm": 570.0
+        "rear_clearance_mm": 800.0
       },
-      "message": "Occupied desk P010 rear zone obstructed by P013 (570.0mm < 900mm required by RB-GEO-004).",
+      "message": "Occupied desk P007 has insufficient rear clearance to perimeter wall (800.0mm < 900mm required by RB-GEO-004).",
       "repair_options": [],
       "required": {
         "min_rear_clearance_mm": 900.0
       },
       "rule_id": "RB-GEO-004",
       "violation_id": "V-001"
+    },
+    {
+      "affected_placement_ids": [
+        "P008",
+        "P013"
+      ],
+      "measured": {
+        "rear_clearance_mm": 0.0
+      },
+      "message": "Occupied desk P008 rear zone obstructed by P013 (0.0mm < 900mm required by RB-GEO-004).",
+      "repair_options": [],
+      "required": {
+        "min_rear_clearance_mm": 900.0
+      },
+      "rule_id": "RB-GEO-004",
+      "violation_id": "V-002"
+    },
+    {
+      "affected_placement_ids": [
+        "P009",
+        "P013"
+      ],
+      "measured": {
+        "rear_clearance_mm": 0.0
+      },
+      "message": "Occupied desk P009 rear zone obstructed by P013 (0.0mm < 900mm required by RB-GEO-004).",
+      "repair_options": [],
+      "required": {
+        "min_rear_clearance_mm": 900.0
+      },
+      "rule_id": "RB-GEO-004",
+      "violation_id": "V-003"
+    },
+    {
+      "affected_placement_ids": [
+        "P010",
+        "P013"
+      ],
+      "measured": {
+        "rear_clearance_mm": 0.0
+      },
+      "message": "Occupied desk P010 rear zone obstructed by P013 (0.0mm < 900mm required by RB-GEO-004).",
+      "repair_options": [],
+      "required": {
+        "min_rear_clearance_mm": 900.0
+      },
+      "rule_id": "RB-GEO-004",
+      "violation_id": "V-004"
     },
     {
       "affected_placement_ids": [
@@ -370,7 +417,7 @@
         "min_rear_clearance_mm": 900.0
       },
       "rule_id": "RB-GEO-004",
-      "violation_id": "V-002"
+      "violation_id": "V-005"
     },
     {
       "affected_placement_ids": [
@@ -386,7 +433,7 @@
         "min_rear_clearance_mm": 900.0
       },
       "rule_id": "RB-GEO-004",
-      "violation_id": "V-003"
+      "violation_id": "V-006"
     },
     {
       "affected_placement_ids": [
@@ -402,7 +449,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-004"
+      "violation_id": "V-007"
     },
     {
       "affected_placement_ids": [
@@ -418,7 +465,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-005"
+      "violation_id": "V-008"
     },
     {
       "affected_placement_ids": [
@@ -434,7 +481,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-006"
+      "violation_id": "V-009"
     },
     {
       "affected_placement_ids": [
@@ -450,7 +497,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-007"
+      "violation_id": "V-010"
     },
     {
       "affected_placement_ids": [
@@ -466,7 +513,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-008"
+      "violation_id": "V-011"
     },
     {
       "affected_placement_ids": [
@@ -482,7 +529,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-009"
+      "violation_id": "V-012"
     },
     {
       "affected_placement_ids": [
@@ -498,7 +545,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-010"
+      "violation_id": "V-013"
     },
     {
       "affected_placement_ids": [
@@ -514,7 +561,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-011"
+      "violation_id": "V-014"
     },
     {
       "affected_placement_ids": [
@@ -530,7 +577,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-012"
+      "violation_id": "V-015"
     },
     {
       "affected_placement_ids": [
@@ -546,7 +593,7 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-013"
+      "violation_id": "V-016"
     }
   ]
 }

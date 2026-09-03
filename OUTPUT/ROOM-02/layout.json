@@ -30,23 +30,23 @@
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
       "x_mm": 200.0,
-      "y_mm": 3400.0
+      "y_mm": 4200.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P005",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 200.0,
-      "y_mm": 4200.0
+      "x_mm": 1800.0,
+      "y_mm": 3400.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P006",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 1000.0,
-      "y_mm": 3000.0
+      "x_mm": 3400.0,
+      "y_mm": 4200.0
     },
     {
       "finish_id": "F13",
@@ -69,32 +69,32 @@
       "placement_id": "P009",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 1000.0,
-      "y_mm": 3800.0
+      "x_mm": 3800.0,
+      "y_mm": 1800.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P010",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 1000.0,
-      "y_mm": 4600.0
+      "x_mm": 4600.0,
+      "y_mm": 1800.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P011",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 1800.0,
-      "y_mm": 3400.0
+      "x_mm": 5400.0,
+      "y_mm": 1800.0
     },
     {
       "finish_id": "F13",
       "placement_id": "P012",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-010",
-      "x_mm": 1800.0,
-      "y_mm": 4200.0
+      "x_mm": 7400.0,
+      "y_mm": 1400.0
     },
     {
       "finish_id": "F13",

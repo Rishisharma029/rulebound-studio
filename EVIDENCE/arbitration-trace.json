@@ -24,9 +24,9 @@
           "phi_after": 7444.1,
           "delta_phi": -5700.0,
           "decision": "SELECTED",
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -5700.0 (\u03a6: 13144.1 \u2192 7444.1)",
           "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -5700.0 (\u03a6: 13144.1 \u2192 7444.1)",
-          "phi_resulting": 7444.1,
-          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -5700.0 (\u03a6: 13144.1 \u2192 7444.1)"
+          "phi_resulting": 7444.1
         },
         {
           "candidate_id": "C1",
@@ -35,9 +35,9 @@
           "phi_after": 13124.1,
           "delta_phi": -20.0,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -20.0) inferior to C2 (\u0394\u03a6 = -5700.0)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -20.0) inferior to C2 (\u0394\u03a6 = -5700.0)",
-          "phi_resulting": 13124.1,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -20.0) inferior to C2 (\u0394\u03a6 = -5700.0)"
+          "phi_resulting": 13124.1
         },
         {
           "candidate_id": "C4",
@@ -46,9 +46,9 @@
           "phi_after": 12062.8,
           "delta_phi": -1081.3,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -1081.3) inferior to C2 (\u0394\u03a6 = -5700.0)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -1081.3) inferior to C2 (\u0394\u03a6 = -5700.0)",
-          "phi_resulting": 12062.8,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -1081.3) inferior to C2 (\u0394\u03a6 = -5700.0)"
+          "phi_resulting": 12062.8
         },
         {
           "candidate_id": "C7",
@@ -57,9 +57,9 @@
           "phi_after": 12030.2,
           "delta_phi": -1113.9,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -1113.9) inferior to C2 (\u0394\u03a6 = -5700.0)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -1113.9) inferior to C2 (\u0394\u03a6 = -5700.0)",
-          "phi_resulting": 12030.2,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -1113.9) inferior to C2 (\u0394\u03a6 = -5700.0)"
+          "phi_resulting": 12030.2
         }
       ],
       "phi_after": 7444.1,
@@ -101,9 +101,9 @@
           "phi_after": 4444.1,
           "delta_phi": -3000.0,
           "decision": "SELECTED",
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3000.0 (\u03a6: 7444.1 \u2192 4444.1)",
           "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -3000.0 (\u03a6: 7444.1 \u2192 4444.1)",
-          "phi_resulting": 4444.1,
-          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3000.0 (\u03a6: 7444.1 \u2192 4444.1)"
+          "phi_resulting": 4444.1
         },
         {
           "candidate_id": "C1",
@@ -112,9 +112,9 @@
           "phi_after": 7484.1,
           "delta_phi": 40.0,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +40.0 (\u03a6: 7444.1 \u2192 7484.1 >= 7444.1)",
           "decision_reason": "No improvement: \u0394\u03a6 = +40.0 (\u03a6: 7444.1 \u2192 7484.1 >= 7444.1)",
-          "phi_resulting": 7484.1,
-          "reason": "No improvement: \u0394\u03a6 = +40.0 (\u03a6: 7444.1 \u2192 7484.1 >= 7444.1)"
+          "phi_resulting": 7484.1
         },
         {
           "candidate_id": "C6",
@@ -123,9 +123,9 @@
           "phi_after": 7344.1,
           "delta_phi": -100.0,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -100.0) inferior to C2 (\u0394\u03a6 = -3000.0)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -100.0) inferior to C2 (\u0394\u03a6 = -3000.0)",
-          "phi_resulting": 7344.1,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -100.0) inferior to C2 (\u0394\u03a6 = -3000.0)"
+          "phi_resulting": 7344.1
         },
         {
           "candidate_id": "C7",
@@ -134,9 +134,9 @@
           "phi_after": 7444.1,
           "delta_phi": 0.0,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 7444.1 \u2192 7444.1 >= 7444.1)",
           "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 7444.1 \u2192 7444.1 >= 7444.1)",
-          "phi_resulting": 7444.1,
-          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 7444.1 \u2192 7444.1 >= 7444.1)"
+          "phi_resulting": 7444.1
         }
       ],
       "phi_after": 4444.1,
@@ -177,9 +177,9 @@
           "phi_after": 1370.0,
           "delta_phi": -3074.1,
           "decision": "SELECTED",
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3074.1 (\u03a6: 4444.1 \u2192 1370.0)",
           "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -3074.1 (\u03a6: 4444.1 \u2192 1370.0)",
-          "phi_resulting": 1370.0,
-          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3074.1 (\u03a6: 4444.1 \u2192 1370.0)"
+          "phi_resulting": 1370.0
         },
         {
           "candidate_id": "C1",
@@ -188,9 +188,9 @@
           "phi_after": 4441.9,
           "delta_phi": -2.2,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -2.2) inferior to C2 (\u0394\u03a6 = -3074.1)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -2.2) inferior to C2 (\u0394\u03a6 = -3074.1)",
-          "phi_resulting": 4441.9,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -2.2) inferior to C2 (\u0394\u03a6 = -3074.1)"
+          "phi_resulting": 4441.9
         },
         {
           "candidate_id": "C7",
@@ -199,9 +199,9 @@
           "phi_after": 5653.6,
           "delta_phi": 1209.5,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +1209.5 (\u03a6: 4444.1 \u2192 5653.6 >= 4444.1)",
           "decision_reason": "No improvement: \u0394\u03a6 = +1209.5 (\u03a6: 4444.1 \u2192 5653.6 >= 4444.1)",
-          "phi_resulting": 5653.6,
-          "reason": "No improvement: \u0394\u03a6 = +1209.5 (\u03a6: 4444.1 \u2192 5653.6 >= 4444.1)"
+          "phi_resulting": 5653.6
         },
         {
           "candidate_id": "C8",
@@ -210,9 +210,9 @@
           "phi_after": 4438.7,
           "delta_phi": -5.4,
           "decision": "REJECTED",
+          "reason": "Suboptimal descent (\u0394\u03a6 = -5.4) inferior to C2 (\u0394\u03a6 = -3074.1)",
           "decision_reason": "Suboptimal descent (\u0394\u03a6 = -5.4) inferior to C2 (\u0394\u03a6 = -3074.1)",
-          "phi_resulting": 4438.7,
-          "reason": "Suboptimal descent (\u0394\u03a6 = -5.4) inferior to C2 (\u0394\u03a6 = -3074.1)"
+          "phi_resulting": 4438.7
         }
       ],
       "phi_after": 1370.0,
@@ -253,9 +253,9 @@
           "phi_after": 0.0,
           "delta_phi": -1370.0,
           "decision": "SELECTED",
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -1370.0 (\u03a6: 1370.0 \u2192 0.0)",
           "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -1370.0 (\u03a6: 1370.0 \u2192 0.0)",
-          "phi_resulting": 0.0,
-          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -1370.0 (\u03a6: 1370.0 \u2192 0.0)"
+          "phi_resulting": 0.0
         },
         {
           "candidate_id": "C1",
@@ -264,9 +264,9 @@
           "phi_after": 1390.0,
           "delta_phi": 20.0,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +20.0 (\u03a6: 1370.0 \u2192 1390.0 >= 1370.0)",
           "decision_reason": "No improvement: \u0394\u03a6 = +20.0 (\u03a6: 1370.0 \u2192 1390.0 >= 1370.0)",
-          "phi_resulting": 1390.0,
-          "reason": "No improvement: \u0394\u03a6 = +20.0 (\u03a6: 1370.0 \u2192 1390.0 >= 1370.0)"
+          "phi_resulting": 1390.0
         },
         {
           "candidate_id": "C7",
@@ -275,9 +275,9 @@
           "phi_after": 1370.0,
           "delta_phi": 0.0,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
           "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
-          "phi_resulting": 1370.0,
-          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)"
+          "phi_resulting": 1370.0
         },
         {
           "candidate_id": "C8",
@@ -286,9 +286,9 @@
           "phi_after": 1370.0,
           "delta_phi": 0.0,
           "decision": "REJECTED",
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
           "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
-          "phi_resulting": 1370.0,
-          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)"
+          "phi_resulting": 1370.0
         }
       ],
       "phi_after": 0.0,

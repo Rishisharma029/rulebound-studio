@@ -9,54 +9,54 @@
   "hashes_by_room": {
     "ROOM-01": {
       "layout.dxf": {
-        "size_bytes": 11629,
-        "sha256": "ef4855005b0dcdd4f15786fcfbe4b532f6a16c6f188d874bb71a08b2c68d61d7"
+        "size_bytes": 11643,
+        "sha256": "49bd08dc6c7d668f53f8352b643a68806c40437a3e45bb920de1ee976c205c39"
       },
       "layout.json": {
-        "size_bytes": 3738,
-        "sha256": "050f3fcc77f7b4c4d86957cae10e6711b8db99124bcd386a1d4b0a3cfef022d2"
+        "size_bytes": 6393,
+        "sha256": "f4ba31829fd7a510feb0459e5f5afacbc46fe22f62bcb518fc567739684c460d"
       },
       "quote.json": {
-        "size_bytes": 4318,
-        "sha256": "bd270dee0a41b3ae66b3dcb93837a72c6339bd189f9611fa246982593397cf44"
+        "size_bytes": 292,
+        "sha256": "9a29d08609aa186ea938544e54a049fb37699e1c2e19d1e0fef12909df850367"
       }
     },
     "ROOM-02": {
       "layout.dxf": {
-        "size_bytes": 13732,
-        "sha256": "573d8c78d3ab6c7556d668aa1993a00025fd50636b1f5e58303e02385794096e"
+        "size_bytes": 13724,
+        "sha256": "e8ea9d508a09ffbc54e222540e320e524022dda008333d751f5f864fb13cf24f"
       },
       "layout.json": {
-        "size_bytes": 4434,
-        "sha256": "4b2c9389b905fb5381eee602442d16173cf4740c27ac5adaa01d7850a624f946"
+        "size_bytes": 4431,
+        "sha256": "e8a029ca9e382169ceb3eb13534d471d912cb6a6c2342f7b8d394d1bd9f2c1a9"
       },
       "quote.json": {
         "size_bytes": 4304,
-        "sha256": "b28508109b15a8b94afa3af847081afaf5cea8d3f48141d735875c8dcb600f2a"
+        "sha256": "31ff744afaf1a9d6f4ec0644a4797b115718dbbb7a4bb468c83337b5e0021d83"
       }
     },
     "ROOM-03": {
       "layout.dxf": {
-        "size_bytes": 13906,
-        "sha256": "3daeec2961bd68b237ab829fdd3817f0cb1f7c0f873e81fe5aa68d8a6ec060ae"
+        "size_bytes": 13907,
+        "sha256": "530d7cbab36ee1c7432856e8921f3c61945dcb1a51b8f620ba35c2ca8d2d99a1"
       },
       "layout.json": {
-        "size_bytes": 4434,
-        "sha256": "54d3cd32064919fe4e7837f5c3c53fe05dd4174776ccf204f606f7c87fc35f7d"
+        "size_bytes": 7941,
+        "sha256": "e660cc0b2a3aed72fe41f57a9709d4a6b952fa98480d26c94d04991b66b76c4d"
       },
       "quote.json": {
-        "size_bytes": 4326,
-        "sha256": "ccbabec62e614d941beb26015f04e85c29eb53ceaa7e32de68c87e9b919c0dfd"
+        "size_bytes": 292,
+        "sha256": "c8f01913cde9f33b733b0f0d9d8e48609c227b4f2cfa112852c1d2239695ae8b"
       }
     },
     "ROOM-04": {
       "layout.dxf": {
-        "size_bytes": 15606,
-        "sha256": "842505ab0acc0d263726a347d2dde29fe1908c7af3b41fd98666e9e76d3f9c05"
+        "size_bytes": 17120,
+        "sha256": "f618ed5b814bedf4875cf10b9670e6679ea37b63e770eee5a94333d31937efb8"
       },
       "layout.json": {
-        "size_bytes": 6923,
-        "sha256": "2901431724de4d5a2b1628f1b98f5e5611cbc74a5c25e0b006c12e7d9d16a86d"
+        "size_bytes": 8295,
+        "sha256": "a963296c7b7c645149eff1264061d83368743e01c4e5d452e4638f48f42ecb5d"
       },
       "quote.json": {
         "size_bytes": 292,
@@ -65,12 +65,12 @@
     },
     "ROOM-05": {
       "layout.dxf": {
-        "size_bytes": 22488,
-        "sha256": "b22d7aa511b29e38e30867af8d408c6f4cc4f4309247403999d34106118340ca"
+        "size_bytes": 22495,
+        "sha256": "0dce66fccbec0667a202e157d045e550dd8d12801890411c29f62071546814d8"
       },
       "layout.json": {
-        "size_bytes": 12277,
-        "sha256": "ee0df5716da94e8bdfb5755bab36e43ea6eef3ae45782eb422e7e609a12371b3"
+        "size_bytes": 14414,
+        "sha256": "654cc7235f8f066bbef507e6ba13ca827bdeb1c2520bdec76b832ded5676f518"
       },
       "quote.json": {
         "size_bytes": 292,

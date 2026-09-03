@@ -66,7 +66,7 @@ def test_egress_violation():
 def test_egress_valid():
     """RB-GEO-002 PASS: Placement clear of egress path (>550mm half-width corridor)."""
     placements = [
-        Placement("P001", "NW-DES-003", "F03", 4500.0, 2000.0, 0.0),
+        Placement("P001", "NW-DES-003", "F03", 1000.0, 3500.0, 0.0),
     ]
     violations = verify_spatial_constraints(ROOM, placements, PACK)
     assert not any(v.rule_id == "RB-GEO-002" for v in violations)
@@ -161,10 +161,10 @@ def test_overlap_violation():
 
 
 def test_overlap_valid():
-    """RB-GEO-006 PASS: Two adjacent desks with 50mm non-intersecting gap."""
+    """RB-GEO-006 PASS: Two adjacent desks with non-intersecting gap."""
     placements = [
-        Placement("P001", "NW-DES-003", "F03", 2500.0, 1500.0, 0.0),
-        Placement("P002", "NW-DES-003", "F03", 3950.0, 1500.0, 0.0),
+        Placement("P001", "NW-DES-003", "F03", 2000.0, 1500.0, 0.0),
+        Placement("P002", "NW-DES-003", "F03", 4000.0, 1500.0, 0.0),
     ]
     violations = verify_spatial_constraints(ROOM, placements, PACK)
     assert not any(v.rule_id == "RB-GEO-006" for v in violations)

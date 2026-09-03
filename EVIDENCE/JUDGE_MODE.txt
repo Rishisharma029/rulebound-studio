@@ -1,53 +1,64 @@
 ================================================================
-           RULEBOUND JUDGE MODE AUTOMATED AUDIT
+             RULEBOUND FINAL JUDGE MODE AUDIT
 ================================================================
 
-[1/7] Cleaning output directories and running primary pipeline...
+[1/10] Executing PyTest unit test battery...
+  [OK] PyTest unit tests: PASSED
+
+[2/10] Cleaning output directories and generating candidate layouts...
   [OK] Primary pipeline generated 5 rooms in OUTPUT/
 
-[2/7] Executing official schema & constraint validator...
+[3/10] Executing official schema & constraint validator...
   [OK] Official validate_output.py: PASSED
 
-[3/7] Executing complete PyTest test battery...
-  [OK] PyTest unit test suite: PASSED
+[4/10] Running Adversarial Competition Suite (11 stress cases)...
+  [OK] Adversarial tests: 11/11 PASS
 
-[4/7] Running Adversarial Boundary Matrix (10 spatial & catalog stress tests)...
-  [OK] Adversarial cases: 10/10 PASSED
+[5/10] Running Pricing Accounting Invariant Verifications...
+  [OK] Pricing invariants & thresholds: PASSED
 
-[5/7] Running 19 Pricing Threshold & Accounting Invariant Tests...
-  [OK] Pricing invariants & boundary thresholds: PASSED
+[6/10] Verifying Bounded Lyapunov Arbitration & Termination...
+  [OK] Bounded Lyapunov Arbitration: PASSED
 
-[6/7] Executing official check_determinism.py tool across fresh runs...
+[7/10] Executing official check_determinism.py tool across fresh runs...
   [OK] Official Bitwise Determinism: PASSED
 
-[7/7] Verifying AutoCAD DXF blueprints & copying evidence artifacts...
+[8/10] Verifying SHA-256 checksums across all 15 output files...
+  [OK] SHA-256 file catalog: 15/15 files hashed & verified
+
+[9/10] Verifying AutoCAD DXF multi-layer CAD blueprints...
   [OK] AutoCAD DXF blueprints: 5/5 valid DXF files (+5 Bonus)
 
+[10/10] Generating and serializing machine-readable evidence reports...
+  [OK] Evidence artifacts saved to EVIDENCE/ and challenge_evidence/
 
-+------------------------------------------------------------+
-|                   RULEBOUND JUDGE MODE                     |
-+------------------------------------------------------------+
-| 8/8 Geometry Rules Execution                          PASS |
-| 6-Point Pricing Invariants                            PASS |
-| Bounded Lyapunov Arbitration (Kmax=50)                PASS |
-| Adversarial & Edge Case Suite           10/10   PASS |
-| Cross-Process Bitwise Determinism                     PASS |
-| Official Schema & Constraint Conformance              PASS |
-| Multi-Layer AutoCAD DXF Export               PASS (+5) |
-+------------------------------------------------------------+
-| FINAL: SUBMISSION READY         (Audit Time: 1691.83s)       |
-+------------------------------------------------------------+
 
-+------------------------------------------------------------+
-|                   RULEBOUND JUDGE MODE                     |
-+------------------------------------------------------------+
-| 8/8 Geometry Rules Execution                          PASS |
-| 6-Point Pricing Invariants                            PASS |
-| Bounded Lyapunov Arbitration (Kmax=50)                PASS |
-| Adversarial & Edge Case Suite           10/10   PASS |
-| Cross-Process Bitwise Determinism                     PASS |
-| Official Schema & Constraint Conformance              PASS |
-| Multi-Layer AutoCAD DXF Export               PASS (+5) |
-+------------------------------------------------------------+
-| FINAL: SUBMISSION READY         (Audit Time: 1691.83s)       |
-+------------------------------------------------------------+
+╔════════════════════════════════════════════╗
+║         RULEBOUND FINAL JUDGE MODE         ║
+╠════════════════════════════════════════════╣
+║ Spatial invariants        8/8 PASS         ║
+║ Adversarial tests         11/11 PASS       ║
+║ Pricing invariants        PASS             ║
+║ Arbitration               PASS             ║
+║ Termination bound         PASS             ║
+║ Determinism               PASS             ║
+║ Output schema             PASS             ║
+║ DXF export                PASS             ║
+╠════════════════════════════════════════════╣
+║ FINAL RESULT: SUBMISSION READY             ║
+╚════════════════════════════════════════════╝
+
+╔════════════════════════════════════════════╗
+║         RULEBOUND FINAL JUDGE MODE         ║
+╠════════════════════════════════════════════╣
+║ Spatial invariants        8/8 PASS         ║
+║ Adversarial tests         11/11 PASS       ║
+║ Pricing invariants        PASS             ║
+║ Arbitration               PASS             ║
+║ Termination bound         PASS             ║
+║ Determinism               PASS             ║
+║ Output schema             PASS             ║
+║ DXF export                PASS             ║
+╠════════════════════════════════════════════╣
+║ FINAL RESULT: SUBMISSION READY             ║
+╚════════════════════════════════════════════╝

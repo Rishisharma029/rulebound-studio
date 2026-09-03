@@ -169,7 +169,7 @@ def verify_spatial_constraints(
     # ---------------------------------------------------------
     # RB-GEO-001: Primary Walkway Clearance
     # ---------------------------------------------------------
-    clusters = build_spatial_clusters(poly_map, cluster_threshold_mm=600.0)
+    clusters = build_spatial_clusters(poly_map, cluster_threshold_mm=150.0)
     if len(clusters) > 1:
         for c1_idx in range(len(clusters)):
             for c2_idx in range(c1_idx + 1, len(clusters)):
@@ -369,7 +369,7 @@ def audit_spatial_constraints(
                 min_swing_clear = min(min_swing_clear, val_swing - depth)
 
     # 5. RB-GEO-001 Inter-Cluster Walkway
-    clusters = build_spatial_clusters(poly_map, cluster_threshold_mm=600.0)
+    clusters = build_spatial_clusters(poly_map, cluster_threshold_mm=150.0)
     min_walkway = float("inf")
     if len(clusters) > 1:
         for c1_idx in range(len(clusters)):
