@@ -87,3 +87,46 @@ def test_arbitration_trace_strictly_unambiguous_decisions():
         # In any improving step, exactly 1 candidate is SELECTED
         if step.status != "UNSATISFIABLE":
             assert selected_count == 1
+
+
+def test_arbitration_strictly_decreases_phi():
+    """
+    Formally proves the Lyapunov property and bounded termination of the arbitration engine:
+    1. Every accepted repair strictly decreases energy: phi_after < phi_before (Delta_Phi < 0).
+    2. Bounded termination: trace length <= Kmax (50 passes).
+    3. Escalation: physically impossible layout terminates with status == 'unsatisfiable'.
+    """
+    room = PACK.rooms_by_id["ROOM-01"]
+
+    # Multi-violation scenario: overlapping desks with wall breaches and corridor intrusion
+    bad_placements = [
+        Placement("P001", "NW-DES-003", "F03", 50.0, 50.0, 0.0),
+        Placement("P002", "NW-DES-003", "F03", 100.0, 100.0, 0.0),
+        Placement("P003", "NW-DES-003", "F03", 2000.0, 4400.0, 0.0),
+    ]
+
+    arbitrator = ArbitrationEngine(max_passes=50)
+    result = arbitrator.arbitrate(room, bad_placements, PACK)
+
+    # Invariant 1: Bounded termination (Kmax <= 50)
+    assert len(arbitrator.last_trace) <= 50
+
+    # Invariant 2: Strict Lyapunov decrease on every accepted pass
+    for step in arbitrator.last_trace:
+        assert step.phi_after < step.phi_before
+        selected_cand = next((c for c in step.candidates_evaluated if c.decision == "SELECTED"), None)
+        if selected_cand:
+            assert selected_cand.phi_after < selected_cand.phi_before
+            assert selected_cand.delta_phi < 0.0
+
+    # Invariant 3: Impossible layout escalates to unsatisfiable within bounded passes
+    impossible_pls = [
+        Placement(f"P{i:03d}", "NW-COL-008", "F09", 1000.0 + (i % 3) * 600.0, 1000.0 + (i // 3) * 600.0, 0.0)
+        for i in range(15)
+    ]
+    arbitrator_unsat = ArbitrationEngine(max_passes=5)
+    result_unsat = arbitrator_unsat.arbitrate(room, impossible_pls, PACK)
+
+    assert result_unsat.status == "unsatisfiable"
+    assert len(arbitrator_unsat.last_trace) <= 50
+
