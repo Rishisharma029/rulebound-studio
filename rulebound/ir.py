@@ -72,14 +72,21 @@ class RequirementIR:
     preferences: PreferencesRequirement
 
     def to_dict(self) -> dict[str, Any]:
+        pref_dict = {m: True for m in self.preferences.materials}
+        if self.preferences.openness == "high":
+            pref_dict["open_layout"] = True
         return {
             "occupancy": self.occupancy,
-            "workstations": {
+            "workstations": self.workstations.count,
+            "chairs": self.seating,
+            "storage": self.storage.count,
+            "collaboration_tables": self.collaboration.count,
+            "workstations_detail": {
                 "count": self.workstations.count,
                 "arrangement": self.workstations.arrangement,
             },
             "seating": self.seating,
-            "storage": {
+            "storage_detail": {
                 "count": self.storage.count,
                 "lockable": self.storage.lockable,
                 "distributed": self.storage.distributed,
@@ -94,10 +101,7 @@ class RequirementIR:
                 "acoustic": self.accessories.acoustic,
                 "writable": self.accessories.writable,
             },
-            "preferences": {
-                "materials": list(self.preferences.materials),
-                "openness": self.preferences.openness,
-            }
+            "preferences": pref_dict,
         }
 
 
