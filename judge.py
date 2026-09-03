@@ -169,21 +169,36 @@ def run_judge_mode() -> int:
 
     elapsed = time.time() - start_time
 
-    # Final Verdict Card
+    # Evaluate overall status
+    final_ok = all([pytest_pass, val_pass, adv_pass, pricing_tests_ok, arb_pass, det_pass, sha_pass, dxf_pass])
+
+    P = "PASS"
+    F = "FAIL"
+    s_spatial = "8/8 PASS" if val_pass else F
+    s_adv = "11/11 PASS" if adv_pass else F
+    s_pricing = P if pricing_tests_ok else F
+    s_arb = P if arb_pass else F
+    s_term = P if arb_pass else F
+    s_det = P if (det_pass and sha_pass) else F
+    s_schema = P if val_pass else F
+    s_dxf = P if dxf_pass else F
+    final_verdict = "SUBMISSION READY" if final_ok else "AUDIT FAILED"
+
+    # Dynamic Final Verdict Card
     box = [
         "╔════════════════════════════════════════════╗",
         "║         RULEBOUND FINAL JUDGE MODE         ║",
         "╠════════════════════════════════════════════╣",
-        "║ Spatial invariants        8/8 PASS         ║",
-        "║ Adversarial tests         11/11 PASS       ║",
-        "║ Pricing invariants        PASS             ║",
-        "║ Arbitration               PASS             ║",
-        "║ Termination bound         PASS             ║",
-        "║ Determinism               PASS             ║",
-        "║ Output schema             PASS             ║",
-        "║ DXF export                PASS             ║",
+        f"║ Spatial invariants        {s_spatial:>16} ║",
+        f"║ Adversarial tests         {s_adv:>16} ║",
+        f"║ Pricing invariants        {s_pricing:>16} ║",
+        f"║ Arbitration               {s_arb:>16} ║",
+        f"║ Termination bound         {s_term:>16} ║",
+        f"║ Determinism               {s_det:>16} ║",
+        f"║ Output schema             {s_schema:>16} ║",
+        f"║ DXF export                {s_dxf:>16} ║",
         "╠════════════════════════════════════════════╣",
-        "║ FINAL RESULT: SUBMISSION READY             ║",
+        f"║ FINAL RESULT: {final_verdict:>28} ║",
         "╚════════════════════════════════════════════╝",
     ]
     box_str = "\n".join(box)
@@ -192,8 +207,7 @@ def run_judge_mode() -> int:
     (evidence_dir / "JUDGE_MODE.txt").write_text("\n".join(log_lines) + "\n\n" + box_str + "\n", encoding="utf-8")
     log(f"\nSaved complete audit transcript to {evidence_dir / 'JUDGE_MODE.txt'}\n")
 
-    all_ok = all([pytest_pass, val_pass, adv_pass, pricing_tests_ok, arb_pass, det_pass, sha_pass, dxf_pass])
-    return 0 if all_ok else 1
+    return 0 if final_ok else 1
 
 
 if __name__ == "__main__":
