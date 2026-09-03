@@ -21,7 +21,7 @@
   [OK] Bounded Lyapunov Arbitration: PASSED
 
 [7/10] Executing official check_determinism.py tool across fresh runs...
-  [OK] Official Bitwise Determinism: PASSED
+  [FAIL] Official Bitwise Determinism: FAILED
 
 [8/10] Verifying SHA-256 checksums across all 15 output files...
   [OK] SHA-256 file catalog: 15/15 files hashed & verified

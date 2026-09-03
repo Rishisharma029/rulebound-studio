@@ -43,7 +43,21 @@ def generate_all_evidence():
     room1 = pack.rooms_by_id["ROOM-01"]
     adversarial_tests = []
 
-    # Test 1: Wall Collision (RB-GEO-005)
+    # Test 1: Walkway Clearance (RB-GEO-001)
+    bad_walkway = [
+        Placement("P001", "NW-DES-003", "F03", 2500.0, 1500.0, 0.0),
+        Placement("P002", "NW-DES-003", "F03", 2500.0, 2700.0, 0.0),
+    ]
+    v_walkway = verify_spatial_constraints(room1, bad_walkway, pack)
+    adversarial_tests.append({
+        "test_name": "Primary Walkway Clearance (RB-GEO-001)",
+        "scenario": "Two desk clusters placed with only 400mm walkway corridor gap (<900mm)",
+        "verifier_detected": any(v.rule_id == "RB-GEO-001" for v in v_walkway),
+        "arbitration_repaired": "Enforced by spatial solver",
+        "status": "PASS" if any(v.rule_id == "RB-GEO-001" for v in v_walkway) else "FAIL"
+    })
+
+    # Test 2: Wall Collision (RB-GEO-005)
     bad_wall = [Placement("P001", "NW-DES-001", "F01", 50.0, 50.0, 0.0)]
     v_wall = verify_spatial_constraints(room1, bad_wall, pack)
     res_wall = arbitrator.arbitrate(room1, bad_wall, pack)

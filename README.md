@@ -177,8 +177,8 @@ python -m uvicorn rulebound.api:app --host 127.0.0.1 --port 8080 --reload
 
 ## 🧪 Challenge Evidence & Verification Reports
 
-Machine-readable JSON reports are generated in `challenge_evidence/`:
-- **`challenge_evidence/adversarial_report.json`**: 10/10 adversarial spatial & catalog tests passing (100%).
+Machine-readable JSON reports are generated in `challenge_evidence/` and `EVIDENCE/`:
+- **`challenge_evidence/adversarial_report.json`**: 11/11 adversarial spatial & catalog tests passing (100%).
 - **`challenge_evidence/pricing_boundary_report.json`**: 19/19 exact basis-point and threshold tests passing.
 - **`challenge_evidence/determinism_report.json`**: Multi-process & cross-`PYTHONHASHSEED` byte-identical SHA-256 validation (15/15 files).
 - **`challenge_evidence/arbitration_trace.json`**: Full Lyapunov proof stream traces across passes.
