@@ -145,7 +145,7 @@ def run_judge_mode() -> int:
                 if f.is_file():
                     hashes[f"{room_dir.name}/{f.name}"] = hashlib.sha256(f.read_bytes()).hexdigest()
     sha_pass = (len(hashes) >= 15)
-    log(f"  [{'OK' if sha_pass else 'FAIL'}] SHA-256 file catalog: {len(hashes)}/15 files hashed & verified\n")
+    log(f"  [{'OK' if sha_pass else 'FAIL'}] SHA-256 file catalog: {len(hashes)}/15 output files hashed\n")
 
     # Step 9: Verify DXF Blueprint Files
     log("[9/10] Verifying AutoCAD DXF multi-layer CAD blueprints...")
