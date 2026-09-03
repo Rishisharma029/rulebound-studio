@@ -9,22 +9,21 @@
 
 ---
 
-## ⚡ Quick Evaluation Command (Single Copy-Paste)
+## ⚡ Quick Evaluation Commands (Single Copy-Paste)
 
-To execute the complete end-to-end pipeline across all 5 benchmark rooms (`ROOM-01` through `ROOM-05`), verify all spatial constraints, generate line-traceable quotes, and export AutoCAD DXF blueprints:
-
+### 1. Canonical End-to-End Pipeline Execution:
 ```bash
 python runner.py --input RuleBound_Round1_Release/data --output OUTPUT
 ```
 
-*Or via Python module execution:*
+### 2. One-Command Reviewer Judge Mode:
 ```bash
-python -m rulebound.runner --input RuleBound_Round1_Release/data --output OUTPUT
+python judge.py
 ```
 
-To run the full adversarial benchmark matrix and generate all 4 machine-readable evidence reports (`challenge_evidence/`):
+### 3. Adversarial Competition Suite:
 ```bash
-python scripts/generate_challenge_evidence.py
+python adversarial_test.py
 ```
 
 ---
@@ -155,7 +154,7 @@ python -m venv .venv
 # On Linux/macOS:
 source .venv/bin/activate
 # On Windows:
-.venv\Scriptsctivate
+.venv\Scripts\activate
 
 # Install dependencies
 pip install -r requirements.txt
