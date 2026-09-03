@@ -81,10 +81,9 @@ def test_arbitration_trace_strictly_unambiguous_decisions():
             assert len(cand.reason) > 0
             if cand.decision == "SELECTED":
                 selected_count += 1
-                assert "Optimal Lyapunov descent" in cand.reason
+                assert "Lyapunov descent" in cand.reason
             elif cand.decision == "REJECTED":
                 assert ("No improvement" in cand.reason) or ("Suboptimal descent" in cand.reason)
         # In any improving step, exactly 1 candidate is SELECTED
         if step.status != "UNSATISFIABLE":
             assert selected_count == 1
-

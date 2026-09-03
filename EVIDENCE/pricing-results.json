@@ -1,0 +1,169 @@
+{
+  "suite_name": "RuleBound Pricing Boundary Arithmetic & Basis-Point Verification",
+  "timestamp": "2026-09-02T00:47:00Z",
+  "total_boundary_tests": 19,
+  "passed_tests": 19,
+  "failed_tests": 0,
+  "pass_rate_percentage": 100.0,
+  "tests": [
+    {
+      "parameter": "Quantity Break Discount (qty=4)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 4,
+      "expected_discount_bps": 0,
+      "actual_discount_bps": 0,
+      "expected_discount_inr": 0,
+      "actual_discount_inr": 0,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Quantity Break Discount (qty=5)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 5,
+      "expected_discount_bps": 300,
+      "actual_discount_bps": 300,
+      "expected_discount_inr": 2775,
+      "actual_discount_inr": 2775,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Quantity Break Discount (qty=9)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 9,
+      "expected_discount_bps": 300,
+      "actual_discount_bps": 300,
+      "expected_discount_inr": 4995,
+      "actual_discount_inr": 4995,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Quantity Break Discount (qty=10)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 10,
+      "expected_discount_bps": 700,
+      "actual_discount_bps": 700,
+      "expected_discount_inr": 12950,
+      "actual_discount_inr": 12950,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Quantity Break Discount (qty=19)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 19,
+      "expected_discount_bps": 700,
+      "actual_discount_bps": 700,
+      "expected_discount_inr": 24605,
+      "actual_discount_inr": 24605,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Quantity Break Discount (qty=20)",
+      "rule_id": "RB-PRC-009",
+      "quantity": 20,
+      "expected_discount_bps": 1000,
+      "actual_discount_bps": 1000,
+      "expected_discount_inr": 37000,
+      "actual_discount_inr": 37000,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Assembly Labour Rate (minutes=240)",
+      "rule_id": "RB-PRC-011",
+      "labour_minutes": 240,
+      "expected_rate_inr_per_hour": 900,
+      "actual_rate_inr_per_hour": 900,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Assembly Labour Rate (minutes=241)",
+      "rule_id": "RB-PRC-011",
+      "labour_minutes": 241,
+      "expected_rate_inr_per_hour": 800,
+      "actual_rate_inr_per_hour": 800,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Assembly Labour Rate (minutes=480)",
+      "rule_id": "RB-PRC-011",
+      "labour_minutes": 480,
+      "expected_rate_inr_per_hour": 800,
+      "actual_rate_inr_per_hour": 800,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Assembly Labour Rate (minutes=481)",
+      "rule_id": "RB-PRC-011",
+      "labour_minutes": 481,
+      "expected_rate_inr_per_hour": 750,
+      "actual_rate_inr_per_hour": 750,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Freight Calculation (net_goods_inr=100000)",
+      "rule_id": "RB-PRC-012",
+      "net_goods_inr": 100000,
+      "expected_freight_inr": 5000,
+      "actual_freight_inr": 5000,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Freight Calculation (net_goods_inr=100001)",
+      "rule_id": "RB-PRC-012",
+      "net_goods_inr": 100001,
+      "expected_freight_inr": 9000,
+      "actual_freight_inr": 9000,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Freight Calculation (net_goods_inr=250000)",
+      "rule_id": "RB-PRC-012",
+      "net_goods_inr": 250000,
+      "expected_freight_inr": 9000,
+      "actual_freight_inr": 9000,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Freight Calculation (net_goods_inr=250001)",
+      "rule_id": "RB-PRC-012",
+      "net_goods_inr": 250001,
+      "expected_freight_inr": 10000,
+      "actual_freight_inr": 10000,
+      "status": "PASS"
+    },
+    {
+      "parameter": "Exact Half-Up Arithmetic (12.5)",
+      "input_val": "12.5",
+      "expected_rounded": "13",
+      "actual_rounded": "13",
+      "status": "PASS"
+    },
+    {
+      "parameter": "Exact Half-Up Arithmetic (12.4)",
+      "input_val": "12.4",
+      "expected_rounded": "12",
+      "actual_rounded": "12",
+      "status": "PASS"
+    },
+    {
+      "parameter": "Exact Half-Up Arithmetic (12.6)",
+      "input_val": "12.6",
+      "expected_rounded": "13",
+      "actual_rounded": "13",
+      "status": "PASS"
+    },
+    {
+      "parameter": "Exact Half-Up Arithmetic (13.5)",
+      "input_val": "13.5",
+      "expected_rounded": "14",
+      "actual_rounded": "14",
+      "status": "PASS"
+    },
+    {
+      "parameter": "Exact Half-Up Arithmetic (14.5)",
+      "input_val": "14.5",
+      "expected_rounded": "15",
+      "actual_rounded": "15",
+      "status": "PASS"
+    }
+  ]
+}

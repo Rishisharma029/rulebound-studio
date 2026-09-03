@@ -66,15 +66,15 @@ class LayoutGenerator:
 
         door_swings = [get_door_swing_polygon(d, room, 850.0) for d in room.doors]
 
-        # Generate candidate grid points (step 50mm)
+        # Generate candidate grid points (step 100mm)
         grid_points: list[tuple[float, float]] = []
         y = min_y
         while y <= max_y:
             x = min_x
             while x <= max_x:
                 grid_points.append((x, y))
-                x += 50.0
-            y += 50.0
+                x += 100.0
+            y += 100.0
 
         placed_polys: list[list[tuple[float, float]]] = []
 

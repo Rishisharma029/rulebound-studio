@@ -248,25 +248,26 @@ class ArbitrationEngine:
                         c_dir[p_idx].y_mm = min(max(min_y + 150.0, c_dir[p_idx].y_mm + dy), max_y - d - 150.0)
                         candidates_list.append((f"C{idx}", c_dir, f"{pid}: {desc}"))
 
-                    # 8. Fine Grid Open Space Relocation
-                    best_grid_pls = None
-                    best_grid_phi = phi_before
-                    for gx in range(int(min_x + 150), int(max_x - w - 150), 300):
-                        for gy in range(int(min_y + 150), int(max_y - d - 150), 300):
-                            c_grid = copy.deepcopy(placements)
-                            c_grid[p_idx].x_mm = float(gx)
-                            c_grid[p_idx].y_mm = float(gy)
-                            g_viols = verify_spatial_constraints(room, c_grid, pack)
-                            g_phi = compute_energy_metric(g_viols)
-                            if g_phi < best_grid_phi:
-                                best_grid_phi = g_phi
-                                best_grid_pls = c_grid
-                                if g_phi == 0.0:
-                                    break
-                        if best_grid_phi == 0.0:
-                            break
-                    if best_grid_pls is not None:
-                        candidates_list.append(("C_GRID", best_grid_pls, f"Relocate {pid} to collision-free open cell"))
+                    # 8. Adaptive Open Space Relocation
+                    if not any(c[0].startswith("C") for c in candidates_list if False):
+                        best_grid_pls = None
+                        best_grid_phi = phi_before
+                        for gx in range(int(min_x + 200), int(max_x - w - 200), 400):
+                            for gy in range(int(min_y + 200), int(max_y - d - 200), 400):
+                                c_grid = copy.deepcopy(placements)
+                                c_grid[p_idx].x_mm = float(gx)
+                                c_grid[p_idx].y_mm = float(gy)
+                                g_viols = verify_spatial_constraints(room, c_grid, pack)
+                                g_phi = compute_energy_metric(g_viols)
+                                if g_phi < best_grid_phi:
+                                    best_grid_phi = g_phi
+                                    best_grid_pls = c_grid
+                                    if g_phi == 0.0:
+                                        break
+                            if best_grid_phi == 0.0:
+                                break
+                        if best_grid_pls is not None:
+                            candidates_list.append(("C_GRID", best_grid_pls, f"Relocate {pid} to collision-free open cell"))
 
             # Evaluate all candidate operators
             evaluated_data: list[tuple[str, list[Placement], str, float]] = []

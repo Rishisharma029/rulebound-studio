@@ -1,0 +1,317 @@
+{
+  "suite_name": "RuleBound Formal Lyapunov Arbitration Proof Stream",
+  "timestamp": "2026-09-02T00:47:00Z",
+  "room_id": "ROOM-01",
+  "initial_phi": 13144.1,
+  "final_phi": 0.0,
+  "total_repair_passes": 4,
+  "arbitration_status": "valid",
+  "lyapunov_energy_function": "Phi(L) = 1000 * num_violations + sum(penetration_depth) + sum(clearance_deficits)",
+  "passes": [
+    {
+      "iteration": 1,
+      "violation_rule_id": "RB-GEO-005",
+      "violation_summary": "Placement P001 (Northwind Desk 03) is 50.0mm from the perimeter wall (minimum 100.0mm required by RB-GEO-005).",
+      "affected_placements": [
+        "P001"
+      ],
+      "phi_before": 13144.1,
+      "candidates_evaluated": [
+        {
+          "candidate_id": "C2",
+          "action": "Snap P001 to collision-free anchor (2720, 120)",
+          "phi_before": 13144.1,
+          "phi_after": 7444.1,
+          "delta_phi": -5700.0,
+          "decision": "SELECTED",
+          "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -5700.0 (\u03a6: 13144.1 \u2192 7444.1)",
+          "phi_resulting": 7444.1,
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -5700.0 (\u03a6: 13144.1 \u2192 7444.1)"
+        },
+        {
+          "candidate_id": "C1",
+          "action": "Micro-shift P001 (+20mm X, +20mm Y)",
+          "phi_before": 13144.1,
+          "phi_after": 13124.1,
+          "delta_phi": -20.0,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -20.0) inferior to C2 (\u0394\u03a6 = -5700.0)",
+          "phi_resulting": 13124.1,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -20.0) inferior to C2 (\u0394\u03a6 = -5700.0)"
+        },
+        {
+          "candidate_id": "C4",
+          "action": "Snap P001 to interior wall envelope (150mm gap)",
+          "phi_before": 13144.1,
+          "phi_after": 12062.8,
+          "delta_phi": -1081.3,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -1081.3) inferior to C2 (\u0394\u03a6 = -5700.0)",
+          "phi_resulting": 12062.8,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -1081.3) inferior to C2 (\u0394\u03a6 = -5700.0)"
+        },
+        {
+          "candidate_id": "C7",
+          "action": "P001: East clearance shift +400mm",
+          "phi_before": 13144.1,
+          "phi_after": 12030.2,
+          "delta_phi": -1113.9,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -1113.9) inferior to C2 (\u0394\u03a6 = -5700.0)",
+          "phi_resulting": 12030.2,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -1113.9) inferior to C2 (\u0394\u03a6 = -5700.0)"
+        }
+      ],
+      "phi_after": 7444.1,
+      "status": "IN_PROGRESS",
+      "transformations": [
+        {
+          "placement_id": "P001",
+          "before": [
+            50.0,
+            50.0,
+            0.0
+          ],
+          "delta": [
+            2670.0,
+            70.0
+          ],
+          "after": [
+            2720.0,
+            120.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "violation_rule_id": "RB-GEO-006",
+      "violation_summary": "Placements P003 (Northwind Desk 03) and P004 (Northwind Chair 04) overlap by 500.0mm (RB-GEO-006 collision).",
+      "affected_placements": [
+        "P003",
+        "P004"
+      ],
+      "phi_before": 7444.1,
+      "candidates_evaluated": [
+        {
+          "candidate_id": "C2",
+          "action": "Snap P003 to collision-free anchor (3420, 720)",
+          "phi_before": 7444.1,
+          "phi_after": 4444.1,
+          "delta_phi": -3000.0,
+          "decision": "SELECTED",
+          "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -3000.0 (\u03a6: 7444.1 \u2192 4444.1)",
+          "phi_resulting": 4444.1,
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3000.0 (\u03a6: 7444.1 \u2192 4444.1)"
+        },
+        {
+          "candidate_id": "C1",
+          "action": "Micro-shift P003 (+20mm X, +20mm Y)",
+          "phi_before": 7444.1,
+          "phi_after": 7484.1,
+          "delta_phi": 40.0,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +40.0 (\u03a6: 7444.1 \u2192 7484.1 >= 7444.1)",
+          "phi_resulting": 7484.1,
+          "reason": "No improvement: \u0394\u03a6 = +40.0 (\u03a6: 7444.1 \u2192 7484.1 >= 7444.1)"
+        },
+        {
+          "candidate_id": "C6",
+          "action": "SAT Separation vector between P003 and P004",
+          "phi_before": 7444.1,
+          "phi_after": 7344.1,
+          "delta_phi": -100.0,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -100.0) inferior to C2 (\u0394\u03a6 = -3000.0)",
+          "phi_resulting": 7344.1,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -100.0) inferior to C2 (\u0394\u03a6 = -3000.0)"
+        },
+        {
+          "candidate_id": "C7",
+          "action": "P003: East clearance shift +400mm",
+          "phi_before": 7444.1,
+          "phi_after": 7444.1,
+          "delta_phi": 0.0,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 7444.1 \u2192 7444.1 >= 7444.1)",
+          "phi_resulting": 7444.1,
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 7444.1 \u2192 7444.1 >= 7444.1)"
+        }
+      ],
+      "phi_after": 4444.1,
+      "status": "IN_PROGRESS",
+      "transformations": [
+        {
+          "placement_id": "P003",
+          "before": [
+            2000.0,
+            4400.0,
+            0.0
+          ],
+          "delta": [
+            1420.0,
+            -3680.0
+          ],
+          "after": [
+            3420.0,
+            720.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "violation_rule_id": "RB-GEO-003",
+      "violation_summary": "Placement P002 (Northwind Desk 03) encroaches into the 850mm door swing arc of D1.",
+      "affected_placements": [
+        "P002"
+      ],
+      "phi_before": 4444.1,
+      "candidates_evaluated": [
+        {
+          "candidate_id": "C2",
+          "action": "Snap P002 to collision-free anchor (4320, 120)",
+          "phi_before": 4444.1,
+          "phi_after": 1370.0,
+          "delta_phi": -3074.1,
+          "decision": "SELECTED",
+          "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -3074.1 (\u03a6: 4444.1 \u2192 1370.0)",
+          "phi_resulting": 1370.0,
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -3074.1 (\u03a6: 4444.1 \u2192 1370.0)"
+        },
+        {
+          "candidate_id": "C1",
+          "action": "Micro-shift P002 (+20mm X, +20mm Y)",
+          "phi_before": 4444.1,
+          "phi_after": 4441.9,
+          "delta_phi": -2.2,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -2.2) inferior to C2 (\u0394\u03a6 = -3074.1)",
+          "phi_resulting": 4441.9,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -2.2) inferior to C2 (\u0394\u03a6 = -3074.1)"
+        },
+        {
+          "candidate_id": "C7",
+          "action": "P002: East clearance shift +400mm",
+          "phi_before": 4444.1,
+          "phi_after": 5653.6,
+          "delta_phi": 1209.5,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +1209.5 (\u03a6: 4444.1 \u2192 5653.6 >= 4444.1)",
+          "phi_resulting": 5653.6,
+          "reason": "No improvement: \u0394\u03a6 = +1209.5 (\u03a6: 4444.1 \u2192 5653.6 >= 4444.1)"
+        },
+        {
+          "candidate_id": "C8",
+          "action": "P002: West clearance shift -400mm",
+          "phi_before": 4444.1,
+          "phi_after": 4438.7,
+          "delta_phi": -5.4,
+          "decision": "REJECTED",
+          "decision_reason": "Suboptimal descent (\u0394\u03a6 = -5.4) inferior to C2 (\u0394\u03a6 = -3074.1)",
+          "phi_resulting": 4438.7,
+          "reason": "Suboptimal descent (\u0394\u03a6 = -5.4) inferior to C2 (\u0394\u03a6 = -3074.1)"
+        }
+      ],
+      "phi_after": 1370.0,
+      "status": "IN_PROGRESS",
+      "transformations": [
+        {
+          "placement_id": "P002",
+          "before": [
+            100.0,
+            100.0,
+            0.0
+          ],
+          "delta": [
+            4220.0,
+            20.0
+          ],
+          "after": [
+            4320.0,
+            120.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "violation_rule_id": "RB-GEO-008",
+      "violation_summary": "Task chair P004 has insufficient pull-out clearance to perimeter wall (380.0mm < 750mm required by RB-GEO-008).",
+      "affected_placements": [
+        "P004"
+      ],
+      "phi_before": 1370.0,
+      "candidates_evaluated": [
+        {
+          "candidate_id": "C2",
+          "action": "Snap P004 to collision-free anchor (5020, 720)",
+          "phi_before": 1370.0,
+          "phi_after": 0.0,
+          "delta_phi": -1370.0,
+          "decision": "SELECTED",
+          "decision_reason": "Strict Lyapunov descent: \u0394\u03a6 = -1370.0 (\u03a6: 1370.0 \u2192 0.0)",
+          "phi_resulting": 0.0,
+          "reason": "Strict Lyapunov descent: \u0394\u03a6 = -1370.0 (\u03a6: 1370.0 \u2192 0.0)"
+        },
+        {
+          "candidate_id": "C1",
+          "action": "Micro-shift P004 (+20mm X, +20mm Y)",
+          "phi_before": 1370.0,
+          "phi_after": 1390.0,
+          "delta_phi": 20.0,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +20.0 (\u03a6: 1370.0 \u2192 1390.0 >= 1370.0)",
+          "phi_resulting": 1390.0,
+          "reason": "No improvement: \u0394\u03a6 = +20.0 (\u03a6: 1370.0 \u2192 1390.0 >= 1370.0)"
+        },
+        {
+          "candidate_id": "C7",
+          "action": "P004: East clearance shift +400mm",
+          "phi_before": 1370.0,
+          "phi_after": 1370.0,
+          "delta_phi": 0.0,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
+          "phi_resulting": 1370.0,
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)"
+        },
+        {
+          "candidate_id": "C8",
+          "action": "P004: West clearance shift -400mm",
+          "phi_before": 1370.0,
+          "phi_after": 1370.0,
+          "delta_phi": 0.0,
+          "decision": "REJECTED",
+          "decision_reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)",
+          "phi_resulting": 1370.0,
+          "reason": "No improvement: \u0394\u03a6 = +0.0 (\u03a6: 1370.0 \u2192 1370.0 >= 1370.0)"
+        }
+      ],
+      "phi_after": 0.0,
+      "status": "REPAIRED",
+      "transformations": [
+        {
+          "placement_id": "P004",
+          "before": [
+            2500.0,
+            4500.0,
+            0.0
+          ],
+          "delta": [
+            2520.0,
+            -3780.0
+          ],
+          "after": [
+            5020.0,
+            720.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  ]
+}
