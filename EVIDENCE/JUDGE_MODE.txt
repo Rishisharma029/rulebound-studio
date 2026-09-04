@@ -3,7 +3,7 @@
 ================================================================
 
 [1/12] Executing PyTest unit test battery...
-  [OK] PyTest unit tests: PASSED
+  [FAIL] PyTest unit tests: FAILED
 
 [2/12] Cleaning output directories and generating candidate layouts...
   [OK] Primary pipeline generated 5 rooms in OUTPUT/

@@ -3128,6 +3128,8 @@
         });
         const result = await res.json();
         currentData.layout = result.layout;
+        currentData.layout.placements = result.layout.placements || [];
+        currentData.layout.violations = result.layout.violations || [];
         currentData.quote = result.quote;
         currentData.rule_audit = result.rule_audit;
         currentTraceSteps = result.trace || [];
@@ -3138,6 +3140,7 @@
         renderRuleAuditTable(result.rule_audit || []);
         renderQuoteLines(result.quote);
         updateExecutiveSummary(result.quote);
+        renderPinnedConstraintMonitor(result.rule_audit || [], result.layout.violations || []);
 
         if (result.is_valid && (!result.layout.violations || result.layout.violations.length === 0)) {
           updatePipelineState('valid');

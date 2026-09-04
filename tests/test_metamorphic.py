@@ -23,6 +23,14 @@ ROOT = Path(__file__).resolve().parents[1]
 PACK = load_asset_pack(ROOT / "RuleBound_Round1_Release/data")
 
 
+def _get_room02_layout() -> dict:
+    layout_path = ROOT / "OUTPUT/ROOM-02/layout.json"
+    if not layout_path.exists():
+        from runner import run_pipeline
+        run_pipeline(ROOT / "RuleBound_Round1_Release/data", ROOT / "OUTPUT")
+    return json.loads(layout_path.read_text(encoding="utf-8"))
+
+
 class TestMetamorphicRelations:
     """
     Formal Metamorphic Testing Suite.
@@ -40,7 +48,7 @@ class TestMetamorphicRelations:
         preserves all relative pairwise distances, overlap states, and zero-violation validity.
         """
         room = PACK.rooms_by_id["ROOM-02"]
-        layout_json = json.loads((ROOT / "OUTPUT/ROOM-02/layout.json").read_text(encoding="utf-8"))
+        layout_json = _get_room02_layout()
         original_placements = [
             Placement(
                 p["placement_id"], p["sku"], p["finish_id"],
@@ -99,7 +107,7 @@ class TestMetamorphicRelations:
           - The generated quote line items, quantities, and grand total in INR
         """
         room = PACK.rooms_by_id["ROOM-02"]
-        layout_json = json.loads((ROOT / "OUTPUT/ROOM-02/layout.json").read_text(encoding="utf-8"))
+        layout_json = _get_room02_layout()
         canonical_pls = [
             Placement(
                 p["placement_id"], p["sku"], p["finish_id"],
@@ -139,7 +147,7 @@ class TestMetamorphicRelations:
         guarantees byte-for-byte identical output and identical cryptographic digests.
         """
         room = PACK.rooms_by_id["ROOM-02"]
-        layout_json = json.loads((ROOT / "OUTPUT/ROOM-02/layout.json").read_text(encoding="utf-8"))
+        layout_json = _get_room02_layout()
         pls = [
             Placement(
                 p["placement_id"], p["sku"], p["finish_id"],

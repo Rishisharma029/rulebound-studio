@@ -4,7 +4,7 @@
     {
       "id": "domain_rules",
       "label": "14/14 domain rules",
-      "ok": true
+      "ok": false
     },
     {
       "id": "adversarial",
@@ -42,14 +42,14 @@
       "ok": true
     }
   ],
-  "elapsed_seconds": 484.44,
-  "git_commit": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
+  "elapsed_seconds": 697.45,
+  "git_commit": "44411e402512d4287b582c87801309e8370ba52b",
   "notes": [
     "Bitwise identity is verified by SHA-256 comparison of pipeline outputs in this environment.",
     "Domain rules are implemented and exercised by the official validator, unit tests, and adversarial suite.",
     "This HTML file is the intended first artifact for reviewers; supporting JSON remains in EVIDENCE/."
   ],
-  "pytest_passed": 94,
+  "pytest_passed": 84,
   "reproducibility": {
     "asset_pack_sha256": "8c928bdb3a010bd03b69c76a54d671187e970006b57654473d6937418cb33af4",
     "chain": [
@@ -59,7 +59,7 @@
         "stage": "Input SHA"
       },
       {
-        "digest": "e7d7bf2a3c4af376468f253882dcc1b6fe9c3d170546f382ccd308641d42d4b4",
+        "digest": "7d7775a2de059c99c4b15cf9ef673c08a07434acd95528f5e04997488f6f0fb7",
         "label": "Engine sources (rulebound/, runner, judge)",
         "stage": "Code SHA"
       },
@@ -69,49 +69,49 @@
         "stage": "Asset Pack SHA"
       },
       {
-        "digest": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
-        "label": "git 769c9af5f660 \u00b7 Python 3.14.7",
+        "digest": "44411e402512d4287b582c87801309e8370ba52b",
+        "label": "git 44411e402512 \u00b7 Python 3.14.7",
         "stage": "Execution"
       },
       {
-        "digest": "83883294d928bba639cc6b3110ea3787d02e4f8c7027d8219c789a9c8d2256cc",
+        "digest": "afb697983b1ffaa98769db112d012902050bd3696c619d2fd775538e1f294b51",
         "label": "20 hashed artifacts",
         "stage": "Output SHA"
       }
     ],
-    "code_sha256": "e7d7bf2a3c4af376468f253882dcc1b6fe9c3d170546f382ccd308641d42d4b4",
-    "git_commit": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
+    "code_sha256": "7d7775a2de059c99c4b15cf9ef673c08a07434acd95528f5e04997488f6f0fb7",
+    "git_commit": "44411e402512d4287b582c87801309e8370ba52b",
     "output_artifact_count": 20,
     "output_artifacts": {
       "ROOM-01/layout.dxf": "49bd08dc6c7d668f53f8352b643a68806c40437a3e45bb920de1ee976c205c39",
       "ROOM-01/layout.json": "f4ba31829fd7a510feb0459e5f5afacbc46fe22f62bcb518fc567739684c460d",
-      "ROOM-01/quality.json": "62385da2995398ffcffa8f666a85a577fed76fb2f2ab18c4ad017fd19aa7de12",
+      "ROOM-01/quality.json": "236cf7256ca9f6800eddc3c261c4d7279ca146bcfc16713ef2ad8002b2c27544",
       "ROOM-01/quote.json": "9a29d08609aa186ea938544e54a049fb37699e1c2e19d1e0fef12909df850367",
       "ROOM-02/layout.dxf": "e8ea9d508a09ffbc54e222540e320e524022dda008333d751f5f864fb13cf24f",
       "ROOM-02/layout.json": "e8a029ca9e382169ceb3eb13534d471d912cb6a6c2342f7b8d394d1bd9f2c1a9",
-      "ROOM-02/quality.json": "dc5e796a4ea75b700ff342c69bdbfdfbe306cbb2982a9b555040b90e16e4bef8",
+      "ROOM-02/quality.json": "6bc15f3b4c6f0e1e373fad977b5f65cc8809d55c3279ed9fe3cf3d330c67bdf6",
       "ROOM-02/quote.json": "31ff744afaf1a9d6f4ec0644a4797b115718dbbb7a4bb468c83337b5e0021d83",
       "ROOM-03/layout.dxf": "530d7cbab36ee1c7432856e8921f3c61945dcb1a51b8f620ba35c2ca8d2d99a1",
       "ROOM-03/layout.json": "e660cc0b2a3aed72fe41f57a9709d4a6b952fa98480d26c94d04991b66b76c4d",
-      "ROOM-03/quality.json": "90ccc1dd4fb71c343acc585eff5c0ef2f56cb773428ad764ab25061b1e87871f",
+      "ROOM-03/quality.json": "f938d76fab83f3018cae166698e1c5f820bbac04104492e75ebbec6a320afe95",
       "ROOM-03/quote.json": "c8f01913cde9f33b733b0f0d9d8e48609c227b4f2cfa112852c1d2239695ae8b",
       "ROOM-04/layout.dxf": "f618ed5b814bedf4875cf10b9670e6679ea37b63e770eee5a94333d31937efb8",
       "ROOM-04/layout.json": "a963296c7b7c645149eff1264061d83368743e01c4e5d452e4638f48f42ecb5d",
-      "ROOM-04/quality.json": "80392d9ec81bbbff7b9dfdcc7662567f3f3de62f57a7c03740ce03ca2611b1a9",
+      "ROOM-04/quality.json": "f7da4cd4ee6b44fd880b61bae3a8f4587417a38cffa86a670592eff4293d1b17",
       "ROOM-04/quote.json": "a49c764a1189b8b81cae989b2d8655652cb5cda76a8a760085e2e1fc49e6e22e",
       "ROOM-05/layout.dxf": "0dce66fccbec0667a202e157d045e550dd8d12801890411c29f62071546814d8",
       "ROOM-05/layout.json": "654cc7235f8f066bbef507e6ba13ca827bdeb1c2520bdec76b832ded5676f518",
-      "ROOM-05/quality.json": "8d8cca2bce5b5283745654c058d49facb768b60961ec2c1c8dc6f1dc4653ed13",
+      "ROOM-05/quality.json": "82b9e0b05f6efc93451a60475bd6d7759d65eb173ff5cf8273e7c06fbca9372c",
       "ROOM-05/quote.json": "92c50ad29257a4014da6e811371877c2ed1a3e95962f89ed28f6052997405fdd"
     },
-    "output_manifest_sha256": "83883294d928bba639cc6b3110ea3787d02e4f8c7027d8219c789a9c8d2256cc",
+    "output_manifest_sha256": "afb697983b1ffaa98769db112d012902050bd3696c619d2fd775538e1f294b51",
     "platform": "Windows 11 (AMD64)",
     "python_version": "3.14.7",
     "rules_sha256": "c63974b1bf163aeb1d49641e3f8f6975346009a859de357ff24184ad8970de87",
     "tests_collected": null,
-    "tests_passed": 94
+    "tests_passed": 84
   },
-  "reproducibility_ascii": "REPRODUCIBILITY\nInput SHA        8c928bdb3a010bd0\u2026\n       \u2193\nCode SHA         e7d7bf2a3c4af376\u2026\n       \u2193\nAsset Pack SHA   8c928bdb3a010bd0\u2026\n       \u2193\nExecution        769c9af5f660 \u00b7 3.14.7\n       \u2193\nOutput SHA       83883294d928bba6\u2026",
+  "reproducibility_ascii": "REPRODUCIBILITY\nInput SHA        8c928bdb3a010bd0\u2026\n       \u2193\nCode SHA         7d7775a2de059c99\u2026\n       \u2193\nAsset Pack SHA   8c928bdb3a010bd0\u2026\n       \u2193\nExecution        44411e402512 \u00b7 3.14.7\n       \u2193\nOutput SHA       afb697983b1ffaa9\u2026",
   "title": "RULEBOUND FINAL AUDIT",
   "verdict": "AUDIT FAILED"
 }

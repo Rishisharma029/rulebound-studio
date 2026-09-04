@@ -67,6 +67,8 @@ def run_judge_mode() -> int:
     _m = _re.search(r"(\d+) passed", (res_pytest.stdout or "") + (res_pytest.stderr or ""))
     if _m:
         pytest_passed_count = int(_m.group(1))
+    if not pytest_pass:
+        log(f"    PyTest output:\n{res_pytest.stdout or res_pytest.stderr}")
     log(f"  [{'OK' if pytest_pass else 'FAIL'}] PyTest unit tests: {'PASSED' if pytest_pass else 'FAILED'}\n")
 
     # Step 2: Generate All Outputs
@@ -130,14 +132,16 @@ def run_judge_mode() -> int:
     log("[7/12] Executing official check_determinism.py tool across fresh runs...")
     det_tool = ROOT / "RuleBound_Round1_Release/tools/check_determinism.py"
     tmp_work = ROOT / ".tmp_determinism"
-    runner_script = (ROOT / "runner.py").resolve()
-    cmd_template = f'"{sys.executable}" "{runner_script}" --input "{{input}}" --output "{{output}}"'
+    cmd_template = f'"{sys.executable}" runner.py --input "{{input}}" --output "{{output}}"'
     res_det = subprocess.run(
         [sys.executable, str(det_tool), "--command", cmd_template, "--input", str((ROOT / "RuleBound_Round1_Release/data").resolve()), "--work-dir", str(tmp_work.resolve())],
         capture_output=True,
         text=True
     )
     det_pass = (res_det.returncode == 0)
+    if not det_pass:
+        log(f"    Determinism stdout: {res_det.stdout}")
+        log(f"    Determinism stderr: {res_det.stderr}")
     if tmp_work.exists():
         shutil.rmtree(tmp_work, ignore_errors=True)
     log(f"  [{'OK' if det_pass else 'FAIL'}] Official Bitwise Determinism: {'PASSED' if det_pass else 'FAILED'}\n")

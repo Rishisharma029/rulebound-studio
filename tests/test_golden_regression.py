@@ -25,6 +25,12 @@ def test_golden_corpus_completeness():
         assert "expected_grand_total_inr" in data
 
 
+def _ensure_outputs_exist():
+    if not (OUTPUT_DIR / "ROOM-01/layout.json").exists():
+        from runner import run_pipeline
+        run_pipeline(ROOT / "RuleBound_Round1_Release/data", OUTPUT_DIR)
+
+
 @pytest.mark.parametrize("room_id", ["ROOM-01", "ROOM-02", "ROOM-03", "ROOM-04", "ROOM-05"])
 def test_golden_semantic_regression(room_id: str):
     """
@@ -35,6 +41,7 @@ def test_golden_semantic_regression(room_id: str):
       - Hard constraint violations
       - Procurement grand total in INR
     """
+    _ensure_outputs_exist()
     golden_file = GOLDEN_DIR / f"{room_id}_expected.json"
     golden = json.loads(golden_file.read_text(encoding="utf-8"))
 
@@ -81,6 +88,7 @@ def test_golden_sha256_canonical_hashes(room_id: str):
     Asserts bitwise determinism and byte-exact reproducibility
     against canonical SHA-256 hashes.
     """
+    _ensure_outputs_exist()
     golden_file = GOLDEN_DIR / f"{room_id}_expected.json"
     golden = json.loads(golden_file.read_text(encoding="utf-8"))
 
