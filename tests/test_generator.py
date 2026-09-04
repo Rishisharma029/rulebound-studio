@@ -48,3 +48,45 @@ def test_brief_parser_on_arbitrary_custom_brief():
     # Generate layout for arbitrary room
     placements = generator._solve_spatial_layout(custom_room, item_specs, PACK)
     assert len(placements) > 0
+
+
+def test_requirement_satisfaction_7_metrics_scoring():
+    from rulebound.ir import extract_requirement_ir, evaluate_requirement_satisfaction
+
+    custom_room = RoomSpec(
+        room_id="CUSTOM-ROOM-SCORE",
+        name="Scoring Test Room",
+        boundary_mm=[(0.0, 0.0), (8000.0, 0.0), (8000.0, 6000.0), (0.0, 6000.0)],
+        doors=[DoorSpec("D01", "south", 1000.0, 900.0, "left_inward")],
+        windows=[],
+        egress=EgressSpec("D01", (4000.0, 3000.0), 1100.0),
+        capacity=6,
+    )
+    brief_text = "Accommodate 6 team members with 6 workstations, 6 chairs, 2 storage credenzas, and 1 collaboration table. Prefer natural oak."
+    ir = extract_requirement_ir(brief_text, custom_room)
+
+    generator = LayoutGenerator()
+    item_specs = parse_brief_requirements(brief_text, custom_room, PACK)
+    placements = generator._solve_spatial_layout(custom_room, item_specs, PACK)
+
+    satisfaction = evaluate_requirement_satisfaction(ir, placements, custom_room, PACK)
+
+    # 1. Exactly 7 orthogonal metrics reported
+    assert len(satisfaction["metrics"]) == 7
+    expected_keys = {
+        "occupancy",
+        "desk_requirement",
+        "chair_requirement",
+        "storage_requirement",
+        "collaboration",
+        "finish_preference",
+        "openness_score",
+    }
+    assert set(satisfaction["metrics"].keys()) == expected_keys
+
+    # 2. Mathematical consistency: overall_percentage is the exact average of all 7 metrics
+    metric_values = [float(v.rstrip("%")) for v in satisfaction["metrics"].values()]
+    assert len(metric_values) == 7
+    expected_overall = round(sum(metric_values) / 7.0, 1)
+    assert satisfaction["overall_percentage"] == expected_overall
+

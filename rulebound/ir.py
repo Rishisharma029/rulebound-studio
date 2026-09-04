@@ -376,8 +376,16 @@ def evaluate_requirement_satisfaction(
     openness_ratio = max(0.0, (room_area_mm2 - total_furniture_area_mm2) / max(1.0, room_area_mm2))
     openness_pct = round(openness_ratio * 100.0, 1)
 
-    # 8. Overall weighted score
-    scores = [occupancy_pct, desk_pct, chair_pct, storage_pct, collab_pct, finish_pct]
+    # 8. Overall composite score across all 7 orthogonal dimensions
+    scores = [
+        occupancy_pct,
+        desk_pct,
+        chair_pct,
+        storage_pct,
+        collab_pct,
+        finish_pct,
+        openness_pct,
+    ]
     overall_pct = round(sum(scores) / len(scores), 1)
 
     return {

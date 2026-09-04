@@ -1,0 +1,14 @@
+{
+  "blocking_reasons": [
+    "Layout arbitration concluded with status 'unsatisfiable'."
+  ],
+  "currency": "INR",
+  "lines": [],
+  "quote_id": "QUOTE-ROOM-03",
+  "room_id": "ROOM-03",
+  "status": "blocked",
+  "summary": {
+    "grand_total_inr": 0
+  },
+  "summary_trace": []
+}
