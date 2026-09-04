@@ -44,21 +44,6 @@ class LayoutGenerator:
         item_specs = select_skus_from_ir(ir, pack)
         return self._solve_spatial_layout(room, item_specs, pack)
 
-    def generate_candidate_variants(
-        self,
-        room: RoomSpec,
-        pack: AssetPack,
-    ) -> dict[str, list[Placement]]:
-        canonical = self.generate_candidate_layout(room, pack)
-        cand_a = [Placement(p.placement_id, p.sku, "F01", p.x_mm, p.y_mm, p.rotation_deg) for p in canonical]
-        cand_b = [Placement(p.placement_id, p.sku, p.finish_id, p.x_mm, p.y_mm, p.rotation_deg) for p in canonical]
-        cand_c = [Placement(p.placement_id, p.sku, "F02", p.x_mm, p.y_mm, p.rotation_deg) for p in canonical]
-        return {
-            "Candidate A": cand_a,
-            "Candidate B": cand_b,
-            "Candidate C": cand_c,
-        }
-
     def _solve_spatial_layout(
         self,
         room: RoomSpec,

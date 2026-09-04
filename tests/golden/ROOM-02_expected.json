@@ -1,16 +1,17 @@
 {
-  "expected_family_counts": {
-    "accessory": 3,
-    "chair": 16,
-    "collaboration": 2,
-    "storage": 4
-  },
-  "expected_grand_total_inr": 445013,
+  "room_id": "ROOM-02",
   "expected_layout_status": "valid",
-  "expected_placement_count": 25,
   "expected_quote_status": "priced",
-  "expected_violations_count": 0,
+  "expected_placement_count": 25,
+  "expected_family_breakdown": {
+    "collaboration": 2,
+    "chair": 16,
+    "storage": 4,
+    "accessory": 3
+  },
+  "expected_violation_count": 0,
+  "expected_grand_total_inr": 445013,
   "layout_sha256": "e8a029ca9e382169ceb3eb13534d471d912cb6a6c2342f7b8d394d1bd9f2c1a9",
   "quote_sha256": "31ff744afaf1a9d6f4ec0644a4797b115718dbbb7a4bb468c83337b5e0021d83",
-  "room_id": "ROOM-02"
+  "dxf_sha256": "e8ea9d508a09ffbc54e222540e320e524022dda008333d751f5f864fb13cf24f"
 }

@@ -625,6 +625,21 @@ def evaluate_quality(req: VerifyRequest, user=Depends(verify_entra_id_token)):
     return report.to_dict()
 
 
+@app.get("/api/quality/{room_id}", tags=["Optimization & Decision Engine"])
+def get_room_quality(room_id: str, user=Depends(verify_entra_id_token)):
+    """Computes the 8-dimension deterministic quality scorecard and Pareto candidate comparison for a room."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
+    generator = LayoutGenerator()
+    placements = generator.generate_candidate_layout(room, pack)
+    from rulebound.optimizer import evaluate_layout_quality
+    quote = price_placements(room.room_id, placements, pack)
+    report = evaluate_layout_quality(room, placements, pack, quote=quote)
+    return report.to_dict()
+
+
 @app.get("/", response_class=HTMLResponse, tags=["Visualizer"])
 def index_visualizer():
     """Serves the interactive RuleBound Architectural CAD & Pricing Studio."""

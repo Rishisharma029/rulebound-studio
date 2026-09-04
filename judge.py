@@ -130,9 +130,10 @@ def run_judge_mode() -> int:
     log("[7/12] Executing official check_determinism.py tool across fresh runs...")
     det_tool = ROOT / "RuleBound_Round1_Release/tools/check_determinism.py"
     tmp_work = ROOT / ".tmp_determinism"
-    cmd_template = f'"{sys.executable}" runner.py --input "{{input}}" --output "{{output}}"'
+    runner_script = (ROOT / "runner.py").resolve()
+    cmd_template = f'"{sys.executable}" "{runner_script}" --input "{{input}}" --output "{{output}}"'
     res_det = subprocess.run(
-        [sys.executable, str(det_tool), "--command", cmd_template, "--input", str(ROOT / "RuleBound_Round1_Release/data"), "--work-dir", str(tmp_work)],
+        [sys.executable, str(det_tool), "--command", cmd_template, "--input", str((ROOT / "RuleBound_Round1_Release/data").resolve()), "--work-dir", str(tmp_work.resolve())],
         capture_output=True,
         text=True
     )

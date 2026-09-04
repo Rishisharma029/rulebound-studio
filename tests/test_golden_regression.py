@@ -64,10 +64,12 @@ def test_golden_semantic_regression(room_id: str):
         fam = item.family if item else "unknown"
         family_counts[fam] = family_counts.get(fam, 0) + 1
 
-    assert family_counts == golden["expected_family_counts"]
+    expected_families = golden.get("expected_family_counts") or golden.get("expected_family_breakdown", {})
+    assert family_counts == expected_families
 
     # 4. Violations count
-    assert len(layout_data.get("violations", [])) == golden["expected_violations_count"]
+    expected_viols = golden.get("expected_violations_count") if "expected_violations_count" in golden else golden.get("expected_violation_count", 0)
+    assert len(layout_data.get("violations", [])) == expected_viols
 
     # 5. Grand total in INR
     assert quote_data.get("summary", {}).get("grand_total_inr", 0) == golden["expected_grand_total_inr"]

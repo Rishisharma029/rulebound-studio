@@ -1,17 +1,18 @@
 {
-  "expected_family_counts": {
-    "accessory": 6,
-    "chair": 18,
-    "collaboration": 2,
-    "desk": 12,
-    "storage": 4
-  },
-  "expected_grand_total_inr": 0,
+  "room_id": "ROOM-05",
   "expected_layout_status": "unsatisfiable",
-  "expected_placement_count": 42,
   "expected_quote_status": "blocked",
-  "expected_violations_count": 16,
+  "expected_placement_count": 42,
+  "expected_family_breakdown": {
+    "desk": 12,
+    "collaboration": 2,
+    "chair": 18,
+    "storage": 4,
+    "accessory": 6
+  },
+  "expected_violation_count": 16,
+  "expected_grand_total_inr": 0,
   "layout_sha256": "654cc7235f8f066bbef507e6ba13ca827bdeb1c2520bdec76b832ded5676f518",
   "quote_sha256": "92c50ad29257a4014da6e811371877c2ed1a3e95962f89ed28f6052997405fdd",
-  "room_id": "ROOM-05"
+  "dxf_sha256": "0dce66fccbec0667a202e157d045e550dd8d12801890411c29f62071546814d8"
 }

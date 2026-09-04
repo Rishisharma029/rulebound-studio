@@ -3,7 +3,7 @@
 ================================================================
 
 [1/12] Executing PyTest unit test battery...
-  [OK] PyTest unit tests: PASSED (94 tests passed)
+  [OK] PyTest unit tests: PASSED
 
 [2/12] Cleaning output directories and generating candidate layouts...
   [OK] Primary pipeline generated 5 rooms in OUTPUT/
@@ -21,10 +21,10 @@
   [OK] Bounded Lyapunov Arbitration: PASSED
 
 [7/12] Executing official check_determinism.py tool across fresh runs...
-  [OK] Official Bitwise Determinism: PASSED
+  [FAIL] Official Bitwise Determinism: FAILED
 
-[8/12] Verifying SHA-256 checksums across all 20 output files...
-  [OK] SHA-256 file catalog: 20/20 output files hashed
+[8/12] Verifying SHA-256 checksums across all 15 output files...
+  [OK] SHA-256 file catalog: 20/15 output files hashed
 
 [9/12] Verifying AutoCAD DXF multi-layer CAD blueprints...
   [OK] AutoCAD DXF blueprints: 5/5 valid DXF files (+5 Bonus)
@@ -36,7 +36,8 @@
   [OK] Layout Optimization Engine: Candidate B optimal (94.1/100) across 8 dimensions
 
 [12/12] Running End-to-End Semantic Output Audit across all 5 rooms...
-  [OK] Semantic Output Audit: 40/40 verified (Placement-Quote bijection, SKU validity, finish compatibility, Phi=0 soundness)
+  [OK] Semantic Output Audit: 41/41 verified (Placement-Quote bijection, SKU validity, finish compatibility, Phi=0 soundness)
+
 
 ╔════════════════════════════════════════════╗
 ║         RULEBOUND FINAL JUDGE MODE         ║
@@ -46,13 +47,11 @@
 ║ Pricing invariants                    PASS ║
 ║ Arbitration                           PASS ║
 ║ Termination bound                     PASS ║
-║ Determinism                           PASS ║
+║ Determinism                           FAIL ║
 ║ Output schema                         PASS ║
 ║ DXF export                            PASS ║
 ║ Decision quality (Opt)                PASS ║
-║ Semantic output audit           40/40 PASS ║
+║ Semantic output audit           41/41 PASS ║
 ╠════════════════════════════════════════════╣
-║ FINAL RESULT:             SUBMISSION READY ║
+║ FINAL RESULT:                 AUDIT FAILED ║
 ╚════════════════════════════════════════════╝
-
-Saved judge transcript, FINAL_REPORT.html, and reproducibility.json to EVIDENCE

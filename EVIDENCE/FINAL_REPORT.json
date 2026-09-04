@@ -24,7 +24,7 @@
     {
       "id": "determinism",
       "label": "Determinism",
-      "ok": true
+      "ok": false
     },
     {
       "id": "dxf",
@@ -42,8 +42,8 @@
       "ok": true
     }
   ],
-  "elapsed_seconds": 38.4,
-  "git_commit": "29c88b66d75c4d9f69909ff993462e299d8413da",
+  "elapsed_seconds": 484.44,
+  "git_commit": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
   "notes": [
     "Bitwise identity is verified by SHA-256 comparison of pipeline outputs in this environment.",
     "Domain rules are implemented and exercised by the official validator, unit tests, and adversarial suite.",
@@ -59,7 +59,7 @@
         "stage": "Input SHA"
       },
       {
-        "digest": "3e8302b87be731c2ad829323f46f20e2f1a68ee2f68b3c1d1afbf0d8720d2121",
+        "digest": "e7d7bf2a3c4af376468f253882dcc1b6fe9c3d170546f382ccd308641d42d4b4",
         "label": "Engine sources (rulebound/, runner, judge)",
         "stage": "Code SHA"
       },
@@ -69,49 +69,49 @@
         "stage": "Asset Pack SHA"
       },
       {
-        "digest": "29c88b66d75c4d9f69909ff993462e299d8413da",
-        "label": "git 29c88b66d75c \u00b7 Python 3.14.7",
+        "digest": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
+        "label": "git 769c9af5f660 \u00b7 Python 3.14.7",
         "stage": "Execution"
       },
       {
-        "digest": "77cd17eb7764cd7722163be310749b45d5f3f2250d8413c71fb89476a2bdf08c",
+        "digest": "83883294d928bba639cc6b3110ea3787d02e4f8c7027d8219c789a9c8d2256cc",
         "label": "20 hashed artifacts",
         "stage": "Output SHA"
       }
     ],
-    "code_sha256": "3e8302b87be731c2ad829323f46f20e2f1a68ee2f68b3c1d1afbf0d8720d2121",
-    "git_commit": "29c88b66d75c4d9f69909ff993462e299d8413da",
+    "code_sha256": "e7d7bf2a3c4af376468f253882dcc1b6fe9c3d170546f382ccd308641d42d4b4",
+    "git_commit": "769c9af5f660f8e1f4fdee8a695fa02547569f5a",
     "output_artifact_count": 20,
     "output_artifacts": {
-      "ROOM-01/layout.dxf": "aaba38d3d2c7fe0378a58d72447e28ce01aaaeb7a3a854c3c45d59fe95ca7148",
-      "ROOM-01/layout.json": "3904828607c2cbdb9fb1697c3f2392047da8fcc86b6d4555a40a9b25a2a9d9c7",
-      "ROOM-01/quality.json": "cf0f2128f25ef5fc3b143eab665774bc4ad4e36c7b2a3df3079a7a79d38fc386",
+      "ROOM-01/layout.dxf": "49bd08dc6c7d668f53f8352b643a68806c40437a3e45bb920de1ee976c205c39",
+      "ROOM-01/layout.json": "f4ba31829fd7a510feb0459e5f5afacbc46fe22f62bcb518fc567739684c460d",
+      "ROOM-01/quality.json": "62385da2995398ffcffa8f666a85a577fed76fb2f2ab18c4ad017fd19aa7de12",
       "ROOM-01/quote.json": "9a29d08609aa186ea938544e54a049fb37699e1c2e19d1e0fef12909df850367",
-      "ROOM-02/layout.dxf": "af29fea9ac6256f3d3e86fd3e7061e16bf17ca44364bf3b0e6a630a5d3523d23",
-      "ROOM-02/layout.json": "c317bf203476f7cfe2b2196fa8ce6b24781b925ca7e3cd8c9dc1ac4436dd2f31",
-      "ROOM-02/quality.json": "c02701ca9fc6df6cd81b3c183899891898f8155913ade557f2c5a4a1ce419abe",
-      "ROOM-02/quote.json": "da920fc761699e468768eb46b0259853a32246ad948c024db82917ff9744b544",
-      "ROOM-03/layout.dxf": "43c6b5797c6b0452ec8dc64ac4794ca289ea1de32967d16cb68fe2361473fb24",
-      "ROOM-03/layout.json": "47eae210368fe9e0d9ac44752c4c2fc4680754f69ecbec5c92e9c991c1c83b6f",
-      "ROOM-03/quality.json": "b44d327492197417d3d8a48bb57d5413f551633d3f114cb0ef30c5cc7be33aa8",
+      "ROOM-02/layout.dxf": "e8ea9d508a09ffbc54e222540e320e524022dda008333d751f5f864fb13cf24f",
+      "ROOM-02/layout.json": "e8a029ca9e382169ceb3eb13534d471d912cb6a6c2342f7b8d394d1bd9f2c1a9",
+      "ROOM-02/quality.json": "dc5e796a4ea75b700ff342c69bdbfdfbe306cbb2982a9b555040b90e16e4bef8",
+      "ROOM-02/quote.json": "31ff744afaf1a9d6f4ec0644a4797b115718dbbb7a4bb468c83337b5e0021d83",
+      "ROOM-03/layout.dxf": "530d7cbab36ee1c7432856e8921f3c61945dcb1a51b8f620ba35c2ca8d2d99a1",
+      "ROOM-03/layout.json": "e660cc0b2a3aed72fe41f57a9709d4a6b952fa98480d26c94d04991b66b76c4d",
+      "ROOM-03/quality.json": "90ccc1dd4fb71c343acc585eff5c0ef2f56cb773428ad764ab25061b1e87871f",
       "ROOM-03/quote.json": "c8f01913cde9f33b733b0f0d9d8e48609c227b4f2cfa112852c1d2239695ae8b",
-      "ROOM-04/layout.dxf": "0dd6b071646874ef3e5b576eb506f8b1ccaa38bb6789090608e6a36bf5913c0d",
-      "ROOM-04/layout.json": "f85d987b95ee9c65f737859f6f4504266e94e121a752f2105f7bb4f4a0563299",
-      "ROOM-04/quality.json": "d10409ef1aff841cdb3850e8f2be0d6c9590b9530c048008b7b1512cc46c3430",
+      "ROOM-04/layout.dxf": "f618ed5b814bedf4875cf10b9670e6679ea37b63e770eee5a94333d31937efb8",
+      "ROOM-04/layout.json": "a963296c7b7c645149eff1264061d83368743e01c4e5d452e4638f48f42ecb5d",
+      "ROOM-04/quality.json": "80392d9ec81bbbff7b9dfdcc7662567f3f3de62f57a7c03740ce03ca2611b1a9",
       "ROOM-04/quote.json": "a49c764a1189b8b81cae989b2d8655652cb5cda76a8a760085e2e1fc49e6e22e",
-      "ROOM-05/layout.dxf": "54c1978ea6a1faa57275b1288a064ab28456776debf47f15e463db7f3128f062",
-      "ROOM-05/layout.json": "108f31711019fdf6bd00ff2354043687f4c365a826466ba9475e140dd0e81f40",
-      "ROOM-05/quality.json": "bbc135db74c36a915960a0623830a05e0646bcd51ce4c87b76352f1a21cf5cb3",
+      "ROOM-05/layout.dxf": "0dce66fccbec0667a202e157d045e550dd8d12801890411c29f62071546814d8",
+      "ROOM-05/layout.json": "654cc7235f8f066bbef507e6ba13ca827bdeb1c2520bdec76b832ded5676f518",
+      "ROOM-05/quality.json": "8d8cca2bce5b5283745654c058d49facb768b60961ec2c1c8dc6f1dc4653ed13",
       "ROOM-05/quote.json": "92c50ad29257a4014da6e811371877c2ed1a3e95962f89ed28f6052997405fdd"
     },
-    "output_manifest_sha256": "77cd17eb7764cd7722163be310749b45d5f3f2250d8413c71fb89476a2bdf08c",
+    "output_manifest_sha256": "83883294d928bba639cc6b3110ea3787d02e4f8c7027d8219c789a9c8d2256cc",
     "platform": "Windows 11 (AMD64)",
     "python_version": "3.14.7",
     "rules_sha256": "c63974b1bf163aeb1d49641e3f8f6975346009a859de357ff24184ad8970de87",
     "tests_collected": null,
     "tests_passed": 94
   },
-  "reproducibility_ascii": "REPRODUCIBILITY\nInput SHA        8c928bdb3a010bd0\u2026\n       \u2193\nCode SHA         3e8302b87be731c2\u2026\n       \u2193\nAsset Pack SHA   8c928bdb3a010bd0\u2026\n       \u2193\nExecution        29c88b66d75c \u00b7 3.14.7\n       \u2193\nOutput SHA       77cd17eb7764cd77\u2026",
+  "reproducibility_ascii": "REPRODUCIBILITY\nInput SHA        8c928bdb3a010bd0\u2026\n       \u2193\nCode SHA         e7d7bf2a3c4af376\u2026\n       \u2193\nAsset Pack SHA   8c928bdb3a010bd0\u2026\n       \u2193\nExecution        769c9af5f660 \u00b7 3.14.7\n       \u2193\nOutput SHA       83883294d928bba6\u2026",
   "title": "RULEBOUND FINAL AUDIT",
-  "verdict": "SUBMISSION READY"
+  "verdict": "AUDIT FAILED"
 }

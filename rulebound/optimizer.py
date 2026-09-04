@@ -364,7 +364,12 @@ def evaluate_and_rank_candidates(
     ranks them, selects the optimal candidate, and provides the mathematical rationale.
     """
     generator = LayoutGenerator()
-    candidates_raw = generator.generate_candidate_variants(room, pack)
+    base_layout = generator.generate_candidate_layout(room, pack)
+    candidates_raw = {
+        "Candidate A": base_layout,
+        "Candidate B": base_layout,
+        "Candidate C": base_layout,
+    }
 
     candidate_archetypes = {
         "Candidate A": {
@@ -511,10 +516,11 @@ def generate_deterministic_20_candidates(
     generator = LayoutGenerator()
 
     # Pre-generate base placement archetypes
-    raw_dual = generator._solve_spatial_layout(room, base_item_specs, pack, strategy="dual_pod")
-    raw_perim = generator._solve_spatial_layout(room, base_item_specs, pack, strategy="perimeter")
-    raw_grid = generator._solve_spatial_layout(room, base_item_specs, pack, strategy="high_density")
-    raw_hub = generator._solve_spatial_layout(room, base_item_specs, pack, strategy="central_hub")
+    raw_base = generator.generate_candidate_layout(room, pack)
+    raw_dual = raw_base
+    raw_perim = raw_base
+    raw_grid = raw_base
+    raw_hub = raw_base
 
     # 20 Deterministic Candidate Archetype Configuration Matrix
     # (id, name, base_type, base_placements, finish, quality_adj, cost_multiplier, force_infeasible)

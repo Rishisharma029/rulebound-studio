@@ -207,7 +207,7 @@
       "name": "Perimeter Single-Bank",
       "placements": [
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P001",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -215,7 +215,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P002",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -223,7 +223,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P003",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -231,7 +231,7 @@
           "y_mm": 720.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P004",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -239,7 +239,7 @@
           "y_mm": 720.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P005",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -247,7 +247,7 @@
           "y_mm": 1320.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P006",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -255,7 +255,7 @@
           "y_mm": 1420.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F03",
           "placement_id": "P007",
           "rotation_deg": 0.0,
           "sku": "NW-COL-001",
@@ -263,7 +263,7 @@
           "y_mm": 1320.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P008",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -271,7 +271,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P009",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -279,7 +279,7 @@
           "y_mm": 1920.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P010",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -287,7 +287,7 @@
           "y_mm": 1920.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P011",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -295,7 +295,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P012",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -303,7 +303,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P013",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -311,7 +311,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P014",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -319,7 +319,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P015",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -327,7 +327,7 @@
           "y_mm": 2520.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P016",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -335,7 +335,7 @@
           "y_mm": 2520.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P017",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -343,7 +343,7 @@
           "y_mm": 2620.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P018",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -351,7 +351,7 @@
           "y_mm": 2620.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F15",
           "placement_id": "P019",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -359,7 +359,7 @@
           "y_mm": 2620.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F02",
           "placement_id": "P020",
           "rotation_deg": 0.0,
           "sku": "NW-STO-002",
@@ -367,7 +367,7 @@
           "y_mm": 920.0
         },
         {
-          "finish_id": "F01",
+          "finish_id": "F02",
           "placement_id": "P021",
           "rotation_deg": 0.0,
           "sku": "NW-STO-002",
@@ -375,7 +375,7 @@
           "y_mm": 3120.0
         }
       ],
-      "quote_total_inr": 0,
+      "quote_total_inr": 337964,
       "reason": "Lower circulation efficiency (-5.0%) due to single perimeter corridor clustering",
       "score": 91.4,
       "status": "VALID"
@@ -396,7 +396,7 @@
       "name": "High-Density Grid",
       "placements": [
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P001",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -404,7 +404,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P002",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -412,7 +412,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P003",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -420,7 +420,7 @@
           "y_mm": 720.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P004",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -428,7 +428,7 @@
           "y_mm": 720.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P005",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -436,7 +436,7 @@
           "y_mm": 1320.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P006",
           "rotation_deg": 0.0,
           "sku": "NW-DES-003",
@@ -444,7 +444,7 @@
           "y_mm": 1420.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F03",
           "placement_id": "P007",
           "rotation_deg": 0.0,
           "sku": "NW-COL-001",
@@ -452,7 +452,7 @@
           "y_mm": 1320.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P008",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -460,7 +460,7 @@
           "y_mm": 120.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P009",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -468,7 +468,7 @@
           "y_mm": 1920.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P010",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -476,7 +476,7 @@
           "y_mm": 1920.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P011",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -484,7 +484,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P012",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -492,7 +492,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P013",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -500,7 +500,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P014",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -508,7 +508,7 @@
           "y_mm": 2020.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P015",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -516,7 +516,7 @@
           "y_mm": 2520.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P016",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -524,7 +524,7 @@
           "y_mm": 2520.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P017",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -532,7 +532,7 @@
           "y_mm": 2620.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P018",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -540,7 +540,7 @@
           "y_mm": 2620.0
         },
         {
-          "finish_id": "F02",
+          "finish_id": "F15",
           "placement_id": "P019",
           "rotation_deg": 0.0,
           "sku": "NW-CHA-004",
@@ -564,7 +564,7 @@
           "y_mm": 3120.0
         }
       ],
-      "quote_total_inr": 327061,
+      "quote_total_inr": 337964,
       "reason": "Reduced accessibility margin (-16.0%) and tighter rear clearances near egress",
       "score": 88.7,
       "status": "VALID"
