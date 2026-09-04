@@ -9,3 +9,6 @@ env/
 venv/
 .DS_Store
 Thumbs.db
+
+.tmp_determinism/
+
