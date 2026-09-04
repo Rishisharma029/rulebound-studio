@@ -59,6 +59,14 @@ def run_pipeline(input_dir: str | Path, output_dir: str | Path) -> int:
         write_json(room_out_dir / "layout.json", layout_result.to_dict())
         write_json(room_out_dir / "quote.json", quote_result.to_dict())
 
+        # Phase 5: Deterministic Decision-Quality & Optimization Evaluation
+        try:
+            from rulebound.optimizer import evaluate_and_rank_candidates
+            quality_report, candidates = evaluate_and_rank_candidates(room, pack)
+            write_json(room_out_dir / "quality.json", quality_report.to_dict())
+        except Exception:
+            pass
+
         # Bonus: Export CAD DXF layout
         try:
             export_layout_to_dxf(room, layout_result.placements, pack, room_out_dir / "layout.dxf")

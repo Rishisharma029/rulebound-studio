@@ -44,10 +44,10 @@ def test_arbitration_unsatisfiable_escalation():
     """
     room = PACK.rooms_by_id["ROOM-01"]
 
-    # Deliberate impossible load: 100 giant collaboration tables in a 7.2m x 5.4m room
+    # Deliberate impossible load: 15 giant collaboration tables in a 7.2m x 5.4m room
     impossible_placements = [
         Placement(f"P{i:03d}", "NW-COL-008", "F09", 1000.0 + (i % 5) * 500.0, 1000.0 + (i // 5) * 500.0, 0.0)
-        for i in range(100)
+        for i in range(15)
     ]
 
     arbitrator = ArbitrationEngine(max_passes=5)

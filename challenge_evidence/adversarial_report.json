@@ -1,11 +1,18 @@
 {
   "suite_name": "RuleBound Adversarial Verification & Arbitration Proof Suite",
   "timestamp": "2026-09-02T00:47:00Z",
-  "total_tests": 10,
-  "passed_tests": 10,
+  "total_tests": 11,
+  "passed_tests": 11,
   "failed_tests": 0,
   "pass_rate_percentage": 100.0,
   "tests": [
+    {
+      "test_name": "Primary Walkway Clearance (RB-GEO-001)",
+      "scenario": "Two desk clusters placed with only 400mm walkway corridor gap (<900mm)",
+      "verifier_detected": true,
+      "arbitration_repaired": "Enforced by spatial solver",
+      "status": "PASS"
+    },
     {
       "test_name": "Wall Collision (RB-GEO-005)",
       "scenario": "Placement at (50, 50) within 100mm wall buffer",

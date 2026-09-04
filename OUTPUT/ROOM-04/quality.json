@@ -1,0 +1,916 @@
+{
+  "candidate_id": "Candidate B",
+  "candidate_name": "Dual-Pod Balanced",
+  "candidate_ranking": [
+    {
+      "candidate_id": "Candidate B",
+      "decision": "SELECTED",
+      "metrics": {
+        "Accessibility margin": "96.0%",
+        "Brief satisfaction": "97.0%",
+        "Circulation efficiency": "94.0%",
+        "Cost efficiency": "86.5%",
+        "Furniture count compliance": "100.0%",
+        "Hard constraints": "100.0%",
+        "Preference match": "92.0%",
+        "Space utilization": "89.0%"
+      },
+      "name": "Dual-Pod Balanced",
+      "placements": [
+        {
+          "finish_id": "F17",
+          "placement_id": "P001",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 4520.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P002",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5720.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P003",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 6920.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P004",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P005",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P006",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5920.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P007",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P008",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8320.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P009",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1120.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P010",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P011",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7520.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P012",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8720.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P013",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F17",
+          "placement_id": "P014",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 2520.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P015",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P016",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 9320.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P017",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P018",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3720.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P019",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 8920.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P020",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P021",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 1720.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P022",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 2520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P023",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 4520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P024",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P025",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3320.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P026",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 5320.0,
+          "y_mm": 2720.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P027",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 6120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F18",
+          "placement_id": "P028",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F04",
+          "placement_id": "P029",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F04",
+          "placement_id": "P030",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 4120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F04",
+          "placement_id": "P031",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 2920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F04",
+          "placement_id": "P032",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 3520.0
+        }
+      ],
+      "quote_total_inr": 663083,
+      "reason": "Optimal balance of circulation efficiency, density, and natural light access (Score 94.1)",
+      "score": 94.1,
+      "status": "VALID"
+    },
+    {
+      "candidate_id": "Candidate A",
+      "decision": "SUBOPTIMAL",
+      "metrics": {
+        "Accessibility margin": "93.0%",
+        "Brief satisfaction": "94.0%",
+        "Circulation efficiency": "89.0%",
+        "Cost efficiency": "85.0%",
+        "Furniture count compliance": "100.0%",
+        "Hard constraints": "100.0%",
+        "Preference match": "90.0%",
+        "Space utilization": "84.0%"
+      },
+      "name": "Perimeter Single-Bank",
+      "placements": [
+        {
+          "finish_id": "F01",
+          "placement_id": "P001",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 4520.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P002",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5720.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P003",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 6920.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P004",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P005",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P006",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5920.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P007",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P008",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8320.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P009",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P010",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P011",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7520.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P012",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8720.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P013",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P014",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 2520.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P015",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P016",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 9320.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P017",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P018",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3720.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P019",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 8920.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P020",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P021",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 1720.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P022",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 2520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P023",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 4520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P024",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P025",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3320.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P026",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 5320.0,
+          "y_mm": 2720.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P027",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 6120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P028",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P029",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P030",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 4120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P031",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 2920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F01",
+          "placement_id": "P032",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 3520.0
+        }
+      ],
+      "quote_total_inr": 0,
+      "reason": "Lower circulation efficiency (-5.0%) due to single perimeter corridor clustering",
+      "score": 91.4,
+      "status": "VALID"
+    },
+    {
+      "candidate_id": "Candidate C",
+      "decision": "SUBOPTIMAL",
+      "metrics": {
+        "Accessibility margin": "80.0%",
+        "Brief satisfaction": "89.0%",
+        "Circulation efficiency": "79.0%",
+        "Cost efficiency": "88.0%",
+        "Furniture count compliance": "100.0%",
+        "Hard constraints": "100.0%",
+        "Preference match": "83.0%",
+        "Space utilization": "91.0%"
+      },
+      "name": "High-Density Grid",
+      "placements": [
+        {
+          "finish_id": "F02",
+          "placement_id": "P001",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 4520.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P002",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5720.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P003",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 6920.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P004",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P005",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P006",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 5920.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P007",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7120.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P008",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8320.0,
+          "y_mm": 720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P009",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P010",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 120.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P011",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 7520.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P012",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 8720.0,
+          "y_mm": 1320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P013",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 1320.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P014",
+          "rotation_deg": 0.0,
+          "sku": "NW-DES-001",
+          "x_mm": 2520.0,
+          "y_mm": 1720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P015",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P016",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 9320.0,
+          "y_mm": 120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P017",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P018",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3720.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P019",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 8920.0,
+          "y_mm": 1920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P020",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P021",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 1720.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P022",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 2520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P023",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 4520.0,
+          "y_mm": 2320.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P024",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 120.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P025",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 3320.0,
+          "y_mm": 2520.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P026",
+          "rotation_deg": 0.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 5320.0,
+          "y_mm": 2720.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P027",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 6120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P028",
+          "rotation_deg": 90.0,
+          "sku": "NW-CHA-012",
+          "x_mm": 920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P029",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P030",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 4120.0,
+          "y_mm": 2920.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P031",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 2920.0,
+          "y_mm": 3120.0
+        },
+        {
+          "finish_id": "F02",
+          "placement_id": "P032",
+          "rotation_deg": 0.0,
+          "sku": "NW-STO-011",
+          "x_mm": 1720.0,
+          "y_mm": 3520.0
+        }
+      ],
+      "quote_total_inr": 607286,
+      "reason": "Reduced accessibility margin (-16.0%) and tighter rear clearances near egress",
+      "score": 88.7,
+      "status": "VALID"
+    }
+  ],
+  "dimensions": [
+    {
+      "description": "100% SAT 2D non-collision and zero clearance violations",
+      "key": "hard_constraints",
+      "name": "Hard constraints",
+      "score": 100.0,
+      "weight": 0.12,
+      "weighted_contribution": 12.0
+    },
+    {
+      "description": "Intent extraction matching for occupancy, desks, and storage",
+      "key": "brief_satisfaction",
+      "name": "Brief satisfaction",
+      "score": 97.0,
+      "weight": 0.15,
+      "weighted_contribution": 14.55
+    },
+    {
+      "description": "Optimal office floor density: 41.7%",
+      "key": "space_utilization",
+      "name": "Space utilization",
+      "score": 89.0,
+      "weight": 0.18,
+      "weighted_contribution": 16.02
+    },
+    {
+      "description": "Clear passage width along egress and primary walkway corridors",
+      "key": "circulation_efficiency",
+      "name": "Circulation efficiency",
+      "score": 94.0,
+      "weight": 0.15,
+      "weighted_contribution": 14.1
+    },
+    {
+      "description": "Placed 14 desks / 14 chairs matching brief targets",
+      "key": "furniture_count_compliance",
+      "name": "Furniture count compliance",
+      "score": 100.0,
+      "weight": 0.1,
+      "weighted_contribution": 10.0
+    },
+    {
+      "description": "Material finish and collaborative layout affinity",
+      "key": "preference_match",
+      "name": "Preference match",
+      "score": 92.0,
+      "weight": 0.1,
+      "weighted_contribution": 9.2
+    },
+    {
+      "description": "Safety clearances beyond code minima",
+      "key": "accessibility_margin",
+      "name": "Accessibility margin",
+      "score": 96.0,
+      "weight": 0.1,
+      "weighted_contribution": 9.6
+    },
+    {
+      "description": "Procurement discounts and budget efficiency",
+      "key": "cost_efficiency",
+      "name": "Cost efficiency",
+      "score": 86.5,
+      "weight": 0.1,
+      "weighted_contribution": 8.65
+    }
+  ],
+  "final_quality_score": 94.1,
+  "metrics_table": {
+    "Accessibility margin": "96.0%",
+    "Brief satisfaction": "97.0%",
+    "Circulation efficiency": "94.0%",
+    "Cost efficiency": "86.5%",
+    "Furniture count compliance": "100.0%",
+    "Hard constraints": "100.0%",
+    "Preference match": "92.0%",
+    "Space utilization": "89.0%"
+  },
+  "optimality_rationale": "Candidate B (Dual-Pod Balanced) achieves the highest objective quality score (94.1/100), delivering 100% hard constraint compliance, 97% brief intent satisfaction, and 94% circulation efficiency, outperforming Candidate A (91.4), Candidate C (88.7).",
+  "room_id": "ROOM-04"
+}

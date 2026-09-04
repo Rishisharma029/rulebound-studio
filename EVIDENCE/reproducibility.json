@@ -1,0 +1,61 @@
+{
+  "asset_pack_sha256": "8c928bdb3a010bd03b69c76a54d671187e970006b57654473d6937418cb33af4",
+  "chain": [
+    {
+      "digest": "8c928bdb3a010bd03b69c76a54d671187e970006b57654473d6937418cb33af4",
+      "label": "Asset pack + briefs + rooms",
+      "stage": "Input SHA"
+    },
+    {
+      "digest": "3e8302b87be731c2ad829323f46f20e2f1a68ee2f68b3c1d1afbf0d8720d2121",
+      "label": "Engine sources (rulebound/, runner, judge)",
+      "stage": "Code SHA"
+    },
+    {
+      "digest": "8c928bdb3a010bd03b69c76a54d671187e970006b57654473d6937418cb33af4",
+      "label": "Released catalog, rules, finishes",
+      "stage": "Asset Pack SHA"
+    },
+    {
+      "digest": "29c88b66d75c4d9f69909ff993462e299d8413da",
+      "label": "git 29c88b66d75c \u00b7 Python 3.14.7",
+      "stage": "Execution"
+    },
+    {
+      "digest": "77cd17eb7764cd7722163be310749b45d5f3f2250d8413c71fb89476a2bdf08c",
+      "label": "20 hashed artifacts",
+      "stage": "Output SHA"
+    }
+  ],
+  "code_sha256": "3e8302b87be731c2ad829323f46f20e2f1a68ee2f68b3c1d1afbf0d8720d2121",
+  "git_commit": "29c88b66d75c4d9f69909ff993462e299d8413da",
+  "output_artifact_count": 20,
+  "output_artifacts": {
+    "ROOM-01/layout.dxf": "aaba38d3d2c7fe0378a58d72447e28ce01aaaeb7a3a854c3c45d59fe95ca7148",
+    "ROOM-01/layout.json": "3904828607c2cbdb9fb1697c3f2392047da8fcc86b6d4555a40a9b25a2a9d9c7",
+    "ROOM-01/quality.json": "cf0f2128f25ef5fc3b143eab665774bc4ad4e36c7b2a3df3079a7a79d38fc386",
+    "ROOM-01/quote.json": "9a29d08609aa186ea938544e54a049fb37699e1c2e19d1e0fef12909df850367",
+    "ROOM-02/layout.dxf": "af29fea9ac6256f3d3e86fd3e7061e16bf17ca44364bf3b0e6a630a5d3523d23",
+    "ROOM-02/layout.json": "c317bf203476f7cfe2b2196fa8ce6b24781b925ca7e3cd8c9dc1ac4436dd2f31",
+    "ROOM-02/quality.json": "c02701ca9fc6df6cd81b3c183899891898f8155913ade557f2c5a4a1ce419abe",
+    "ROOM-02/quote.json": "da920fc761699e468768eb46b0259853a32246ad948c024db82917ff9744b544",
+    "ROOM-03/layout.dxf": "43c6b5797c6b0452ec8dc64ac4794ca289ea1de32967d16cb68fe2361473fb24",
+    "ROOM-03/layout.json": "47eae210368fe9e0d9ac44752c4c2fc4680754f69ecbec5c92e9c991c1c83b6f",
+    "ROOM-03/quality.json": "b44d327492197417d3d8a48bb57d5413f551633d3f114cb0ef30c5cc7be33aa8",
+    "ROOM-03/quote.json": "c8f01913cde9f33b733b0f0d9d8e48609c227b4f2cfa112852c1d2239695ae8b",
+    "ROOM-04/layout.dxf": "0dd6b071646874ef3e5b576eb506f8b1ccaa38bb6789090608e6a36bf5913c0d",
+    "ROOM-04/layout.json": "f85d987b95ee9c65f737859f6f4504266e94e121a752f2105f7bb4f4a0563299",
+    "ROOM-04/quality.json": "d10409ef1aff841cdb3850e8f2be0d6c9590b9530c048008b7b1512cc46c3430",
+    "ROOM-04/quote.json": "a49c764a1189b8b81cae989b2d8655652cb5cda76a8a760085e2e1fc49e6e22e",
+    "ROOM-05/layout.dxf": "54c1978ea6a1faa57275b1288a064ab28456776debf47f15e463db7f3128f062",
+    "ROOM-05/layout.json": "108f31711019fdf6bd00ff2354043687f4c365a826466ba9475e140dd0e81f40",
+    "ROOM-05/quality.json": "bbc135db74c36a915960a0623830a05e0646bcd51ce4c87b76352f1a21cf5cb3",
+    "ROOM-05/quote.json": "92c50ad29257a4014da6e811371877c2ed1a3e95962f89ed28f6052997405fdd"
+  },
+  "output_manifest_sha256": "77cd17eb7764cd7722163be310749b45d5f3f2250d8413c71fb89476a2bdf08c",
+  "platform": "Windows 11 (AMD64)",
+  "python_version": "3.14.7",
+  "rules_sha256": "c63974b1bf163aeb1d49641e3f8f6975346009a859de357ff24184ad8970de87",
+  "tests_collected": null,
+  "tests_passed": 94
+}

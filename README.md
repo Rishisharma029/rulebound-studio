@@ -1,8 +1,8 @@
 # 🏛️ RuleBound Studio
 ### *Autonomous Commercial CAD Layout Synthesis, Continuous SAT Spatial Verification, Bounded Lyapunov Arbitration & Deterministic Pricing Engine*
 
-[![Deterministic](https://img.shields.io/badge/Determinism-100%25%20Bitwise%20SHA--256-06b6d4?style=for-the-badge&logo=shield)](https://github.com/Rishisharma029/rulebound-studio)
-[![Rules Verified](https://img.shields.io/badge/Constraints-14%2F14%20Hard%20Rules%20Passed-10b981?style=for-the-badge&logo=checkmarx)](https://github.com/Rishisharma029/rulebound-studio)
+[![Deterministic](https://img.shields.io/badge/Bitwise_Deterministic-Tested-06b6d4?style=for-the-badge&logo=shield)](https://github.com/Rishisharma029/rulebound-studio)
+[![Rules Verified](https://img.shields.io/badge/14%2F14_Rules-Implemented_%26_Verified-10b981?style=for-the-badge&logo=checkmarx)](https://github.com/Rishisharma029/rulebound-studio)
 [![FastAPI](https://img.shields.io/badge/API-FastAPI%20%2B%20OpenAPI%203.1-009688?style=for-the-badge&logo=fastapi)](https://github.com/Rishisharma029/rulebound-studio)
 [![AutoCAD DXF](https://img.shields.io/badge/AutoCAD-DXF%20R12%20(+5%20Bonus)-f59e0b?style=for-the-badge&logo=autodesk)](https://github.com/Rishisharma029/rulebound-studio)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
@@ -35,8 +35,8 @@ python adversarial_test.py
 Architected with a **strict irreversible Trust Boundary**, RuleBound cleanly decouples advisory AI generation from deterministic verification:
 - **No LLM in the Loop of Authority**: Generative models are restricted to advisory initial SKU placement proposals via typed intermediate requirement graphs (`RequirementIR`).
 - **Continuous 2D Separating Axis Theorem (SAT)**: Exact arbitrary-polygon collision and clearance verification (`RB-GEO-001` through `RB-GEO-008`).
-- **Bounded Deterministic Lyapunov Arbitration**: Monotonic penalty energy reduction ($\Phi(L) 	o 0$) guaranteed to converge in $\le 50$ iterations with explicit $(C_i, \Phi_{	ext{before}}, \Phi_{	ext{after}}, \Delta\Phi, 	ext{decision}, 	ext{reason})$ proof evaluations.
-- **Pure Integer INR Pricing Engine**: 100% deterministic Decimal half-up arithmetic enforcing tiered quantity discounts, finish uplifts, labor rate bands, and freight logistics with automated 6-point accounting invariant verification.
+- **Bounded Deterministic Lyapunov Arbitration**: Monotonic penalty energy reduction ($\Phi(L) \to 0$) on accepted operators, bounded by $K_{\max} = 50$, with explicit $(C_i, \Phi_{\mathrm{before}}, \Phi_{\mathrm{after}}, \Delta\Phi, \mathrm{decision}, \mathrm{reason})$ proof evaluations.
+- **Pure Integer INR Pricing Engine**: Decimal half-up arithmetic (tested) enforcing tiered quantity discounts, finish uplifts, labor rate bands, and freight logistics with automated accounting invariant verification.
 - **AutoCAD DXF Blueprint Generator (+5 Bonus)**: Direct multi-layer AutoCAD Release 12 CAD export.
 
 ---
@@ -121,8 +121,12 @@ All financial computations adhere strictly to integer INR arithmetic using Pytho
 $$egin{aligned}
 	ext{Line Invariants:} \quad
 &	ext{base} = 	ext{unit\_price} 	imes 	ext{qty} \
-&	ext{finish\_uplift} = \left\lfloor 	ext{base} 	imes rac{	ext{uplift\_bps}}{10000} + 0.5 ightfloor \
-&	ext{discount} = \left\lfloor 	ext{base} 	imes rac{	ext{discount\_bps}}{10000} + 0.5 ightfloor \
+&	ext{finish\_uplift} = \left\lfloor 	ext{base} 	imes rac{	ext{uplift\_bps}}{10000} + 0.5 
+ight
+floor \
+&	ext{discount} = \left\lfloor 	ext{base} 	imes rac{	ext{discount\_bps}}{10000} + 0.5 
+ight
+floor \
 &	ext{net\_goods} = 	ext{base} + 	ext{finish\_uplift} - 	ext{discount} \[6pt]
 	ext{Summary Invariants:} \quad
 &	ext{goods\_total} = \sum 	ext{line.net\_goods} \
@@ -175,18 +179,26 @@ python -m uvicorn rulebound.api:app --host 127.0.0.1 --port 8080 --reload
 
 ---
 
-## 🧪 Challenge Evidence & Verification Reports
+## 🧪 Evidence (open this first)
 
-Machine-readable JSON reports are generated in `challenge_evidence/` and `EVIDENCE/`:
-- **`challenge_evidence/adversarial_report.json`**: 11/11 adversarial spatial & catalog tests passing (100%).
-- **`challenge_evidence/pricing_boundary_report.json`**: 19/19 exact basis-point and threshold tests passing.
-- **`challenge_evidence/determinism_report.json`**: Multi-process & cross-`PYTHONHASHSEED` byte-identical SHA-256 validation (15/15 files).
-- **`challenge_evidence/arbitration_trace.json`**: Full Lyapunov proof stream traces across passes.
+Do not start in five JSON files. Open:
 
-Regenerate all evidence reports at any time with:
+**[`EVIDENCE/FINAL_REPORT.html`](EVIDENCE/FINAL_REPORT.html)**
+
+Then, if you want the raw proofs:
+
+- `EVIDENCE/FINAL_REPORT.json` — machine-readable twin of the HTML card
+- `EVIDENCE/reproducibility.json` — git commit, Python, platform, pack / rules / output SHA-256
+- `EVIDENCE/JUDGE_MODE.txt` — live Judge Mode transcript
+- `challenge_evidence/` — adversarial, pricing, determinism, and arbitration traces
+
+Regenerate the supporting JSON with:
 ```bash
 python scripts/generate_challenge_evidence.py
+python judge.py
 ```
+
+Adversarial coverage in the current suite is **11/11** cases. Pricing threshold tests and SHA-256 output identity are **tested in this runner**, not claimed as a mathematical guarantee for every future machine.
 
 ---
 
@@ -235,6 +247,25 @@ python scripts/generate_challenge_evidence.py
 ```
 
 ---
+
+## Known Limitations
+
+- Door swing geometry uses a polygonal approximation of the 850 mm arc, not a continuous circular solid.
+- Current requirement extraction is rule-based rather than open-ended LLM parsing. Briefs outside the released phrasing patterns may under-specify intent.
+- Entra ID integration requires deployment configuration for production signature validation; local Studio runs with auth disabled unless `REQUIRE_ENTRA_AUTH=true`.
+- Optimization is bounded to the released catalog and the five room models in the asset pack. It does not search an unbounded furniture universe.
+- Bitwise SHA-256 identity is verified for pipeline outputs in the tested Python/OS combination recorded in `EVIDENCE/reproducibility.json`.
+- Arbitration monotonicity applies to **accepted** repair operators inside `K_max`; geometrically overconstrained rooms escalate to `unsatisfiable` instead of looping.
+
+## Architecture decisions
+
+See [`docs/adr/`](docs/adr/README.md):
+
+- ADR-001 Why deterministic verification?
+- ADR-002 Why SAT geometry?
+- ADR-003 Why Decimal pricing?
+- ADR-004 Why bounded Lyapunov arbitration?
+- ADR-005 Why RequirementIR?
 
 ## 👥 Authors & Acknowledgments
 

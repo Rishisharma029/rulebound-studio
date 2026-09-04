@@ -2,7 +2,7 @@
   "suite_name": "RuleBound Multi-Process & Cross-Seed Determinism Proof",
   "timestamp": "2026-09-02T00:47:00Z",
   "total_rooms_verified": 5,
-  "total_files_verified": 15,
+  "total_files_verified": 20,
   "cross_process_identical": true,
   "cross_seed_identical": true,
   "floating_point_leakage": "ZERO (Strict Integer Basis-Point & Decimal Math)",
@@ -15,6 +15,10 @@
       "layout.json": {
         "size_bytes": 6393,
         "sha256": "f4ba31829fd7a510feb0459e5f5afacbc46fe22f62bcb518fc567739684c460d"
+      },
+      "quality.json": {
+        "size_bytes": 17794,
+        "sha256": "c2bfefac5a02882abcd4e971aac909f3537ceed8ae310992f5ed91afd98378e0"
       },
       "quote.json": {
         "size_bytes": 292,
@@ -30,6 +34,10 @@
         "size_bytes": 4431,
         "sha256": "e8a029ca9e382169ceb3eb13534d471d912cb6a6c2342f7b8d394d1bd9f2c1a9"
       },
+      "quality.json": {
+        "size_bytes": 20256,
+        "sha256": "9f336db3d35e9c32fb3910e243a9f58d0176ee3fe218d1a1ebe170e7423783ed"
+      },
       "quote.json": {
         "size_bytes": 4304,
         "sha256": "31ff744afaf1a9d6f4ec0644a4797b115718dbbb7a4bb468c83337b5e0021d83"
@@ -43,6 +51,10 @@
       "layout.json": {
         "size_bytes": 7941,
         "sha256": "e660cc0b2a3aed72fe41f57a9709d4a6b952fa98480d26c94d04991b66b76c4d"
+      },
+      "quality.json": {
+        "size_bytes": 20269,
+        "sha256": "425663b0be5a676aff6b1efb099715b1f5de3d85ecae932c1355afbb45d6ac92"
       },
       "quote.json": {
         "size_bytes": 292,
@@ -58,6 +70,10 @@
         "size_bytes": 8295,
         "sha256": "a963296c7b7c645149eff1264061d83368743e01c4e5d452e4638f48f42ecb5d"
       },
+      "quality.json": {
+        "size_bytes": 24573,
+        "sha256": "a585a40e7f0c624db1619e5669a4d9918a67c7e0e15e55a76c4300b9b599b578"
+      },
       "quote.json": {
         "size_bytes": 292,
         "sha256": "a49c764a1189b8b81cae989b2d8655652cb5cda76a8a760085e2e1fc49e6e22e"
@@ -71,6 +87,10 @@
       "layout.json": {
         "size_bytes": 14414,
         "sha256": "654cc7235f8f066bbef507e6ba13ca827bdeb1c2520bdec76b832ded5676f518"
+      },
+      "quality.json": {
+        "size_bytes": 30761,
+        "sha256": "068883941fe82e00309dc9324a9687f5c24cd945eec127523dc330758da6b8da"
       },
       "quote.json": {
         "size_bytes": 292,

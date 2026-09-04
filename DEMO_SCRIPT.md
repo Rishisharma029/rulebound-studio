@@ -1,25 +1,27 @@
-# 🎬 RuleBound Studio 5-Minute Competition Demo Script
+# RuleBound Studio — ROOM-01 hero demo
 
-## Minute 0:00 - 1:00: Executive Architecture & Trust Boundary
-- **Visual**: Show `ARCHITECTURE.md` trust boundary diagram.
-- **Narrative**: "Commercial CAD systems cannot rely on probabilistic AI for life-safety egress or financial quotes. RuleBound enforces an irreversible Trust Boundary: advisory generative proposals are strictly separated from our deterministic SAT geometry verifier, Lyapunov arbitration state machine, and Decimal pricing pipeline."
+Do not tour all five rooms equally. **ROOM-01 (Harbour Design Studio)** is the story.
 
-## Minute 1:00 - 2:30: Interactive Studio CAD Workspace
-- **Visual**: Navigate through `ROOM-01` to `ROOM-05` in Web Studio CAD workspace (http://127.0.0.1:8080).
-- **Key Features Highlighted**:
-  - Live Canvas rendering with interactive layers (Egress Corridor, Door Arcs, Dimensions).
-  - Hover tooltip displaying real-time dimensions, positions, and catalog list price.
-  - Requirement Satisfaction Scorecard showing 98% brief-to-layout satisfaction.
-  - AutoCAD DXF Blueprint download button (+5 Bonus).
+Run the terminal cut with `python demo.py`, or press **▶ ROOM-01 Demo** in the Web Studio.
 
-## Minute 2:30 - 3:45: Lyapunov Arbitration Proof Stream
-- **Visual**: Click "Arbitration (35pt)" tab and trigger "Simulate SAT Overlap".
-- **Narrative**: "Watch the state machine evaluate candidate transformations in real time. Every candidate is evaluated with explicit energy metrics: C1 rejected, C2 rejected, C3 selected with monotonic Lyapunov decrease Delta_Phi = -1000 until Phi reaches 0."
+| Clock | What to show |
+| :--- | :--- |
+| 00:00 | Client brief (12-person studio, paired desks, oak / graphite, clear egress). |
+| 00:20 | RequirementIR: occupancy, desks, storage, collaboration, preferences. |
+| 00:40 | Candidate layout on the CAD canvas. |
+| 01:00 | Inject overlap **and** an egress obstruction. |
+| 01:20 | Constraint monitor lights red (rule IDs + millimetre measurements). |
+| 01:40 | Arbitration evaluates candidates; rejects non-improving operators. |
+| 02:00 | Energy tape: Φ 8120 → 5410 → 2100 → 0 (values from the live trace). |
+| 02:20 | Constraint monitor: **8/8 PASS**. |
+| 02:40 | Requirement satisfaction in the high nineties. |
+| 03:00 | Deterministic quote (integer INR). |
+| 03:30 | Line-level pricing trace (`RB-PRC-009` … `014`). |
+| 04:00 | AutoCAD DXF download. |
+| 04:20 | Judge Mode / `EVIDENCE/FINAL_REPORT.html`. |
+| 04:40 | Banner: **VALID • OPTIMIZED • AUDITED • DETERMINISTIC**. |
 
-## Minute 3:45 - 4:30: Auditable Pricing Provenance & Invariants
-- **Visual**: Click "Line Trace" tab and open provenance modal for any line item.
-- **Narrative**: "Every rupee is traceable. We verify 6 accounting invariants before issuing quotes. Basis-point quantity discounts, finish uplifts, labor rates, and freight bands are computed with zero floating-point drift."
+Supporting beats (do not steal the clock from ROOM-01):
 
-## Minute 4:30 - 5:00: One-Command Judge Mode
-- **Visual**: Run `python judge.py` in terminal. Show the final ASCII verdict card.
-- **Conclusion**: "RuleBound delivers 100% deterministic, auditable, and production-ready CAD synthesis."
+- **Why not Layout A / C?** — counterfactual card on the Quality tab.
+- **What changed?** — placement and Φ diff after a Lab repair.

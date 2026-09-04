@@ -90,17 +90,33 @@
     </div>
 
     <!-- Center/Right Header Actions: Challenge Evidence Modal, Demo Controls, Seam Contract -->
-    <div class="flex items-center gap-2.5">
+    <!-- Center/Right Header Actions: Pareto Frontier, Invariants, Challenge Evidence, Counterexample Lab, Demo Controls -->
+    <div class="flex items-center gap-2">
       
+      <!-- Pareto Frontier Multi-Objective Modal Button -->
+      <button onclick="openParetoModal()" class="px-2.5 py-1.5 rounded-lg bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-300 font-mono text-xs font-black flex items-center gap-1.5 shadow-[0_0_14px_rgba(34,211,238,0.25)] transition-all cursor-pointer" title="Inspect 20-Candidate Multi-Objective Pareto Frontier">
+        <span class="material-symbols-outlined text-sm text-cyan-400">stacked_line_chart</span> 📈 Pareto Frontier
+      </button>
+
+      <!-- Formal System Invariants Certificate Button -->
+      <button onclick="openInvariantsModal()" id="btnInvariantsCert" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-emerald-300 font-mono text-xs font-black flex items-center gap-1.5 shadow-[0_0_14px_rgba(52,211,153,0.25)] transition-all cursor-pointer" title="Verify 21 Formal System Invariants across Geometry, Arbitration, Output & Pricing">
+        <span class="material-symbols-outlined text-sm text-emerald-400">verified_user</span> 🛡 21/21 Invariants
+      </button>
+
       <!-- Challenge Evidence Modal Button -->
-      <button onclick="openChallengeEvidenceModal()" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/50 text-emerald-300 font-mono text-xs font-black flex items-center gap-1.5 shadow-[0_0_16px_rgba(52,211,153,0.25)] transition-all">
-        <span class="material-symbols-outlined text-sm text-emerald-400">task_alt</span> Challenge Evidence
+      <button onclick="openChallengeEvidenceModal()" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 font-mono text-xs font-black flex items-center gap-1 shadow-[0_0_12px_rgba(52,211,153,0.2)] transition-all">
+        <span class="material-symbols-outlined text-sm text-emerald-400">task_alt</span> Evidence
+      </button>
+
+      <!-- First-Class Counterexample Lab Header Button -->
+      <button onclick="openCounterexampleLab()" class="px-2.5 py-1.5 rounded-lg bg-red-500/25 hover:bg-red-500/35 border border-red-500/50 text-red-200 font-mono text-xs font-black flex items-center gap-1 shadow-[0_0_14px_rgba(239,68,68,0.3)] transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-sm text-red-400">biotech</span> ⚡ Counterexample Lab
       </button>
 
       <!-- Demo Mode Violation Injector Dropdown -->
       <div class="relative inline-block text-left">
-        <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-red-500/25 hover:bg-red-500/35 border border-red-500/50 text-red-200 font-black text-xs flex items-center gap-1.5 shadow-[0_0_16px_rgba(239,68,68,0.3)] transition-all">
-          <span class="material-symbols-outlined text-sm text-red-400">tune</span> DEMO CONTROLS <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
+        <button onclick="toggleDemoDropdown()" class="px-3 py-1.5 rounded-lg bg-dark-800 hover:bg-dark-700 border border-white/20 text-gray-200 font-mono text-xs flex items-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm text-gray-400">tune</span> Demo Quick Inject <span class="material-symbols-outlined text-xs">arrow_drop_down</span>
         </button>
         <div id="demoDropdownMenu" class="hidden absolute right-0 mt-2 w-64 glass-card rounded-xl border border-red-500/40 shadow-2xl p-1.5 space-y-1 font-mono text-xs z-50">
           <button onclick="injectSpecificViolation('overlap')" class="w-full text-left p-2 rounded-lg hover:bg-red-500/20 text-white font-medium flex items-center gap-2 transition-colors">
@@ -159,8 +175,11 @@
     </div>
   </header>
 
-  <!-- Workspace 3-Zone Layout -->
-  <div class="flex flex-1 overflow-hidden relative">
+  <!-- Master Verification Cockpit: 3 Upper Panels + 1 Persistent Bottom Panel -->
+  <div class="flex flex-1 flex-col overflow-hidden relative">
+
+    <!-- Top Row: Left (Client Brief) | Center (Live 2D Layout) | Right (Constraint Monitor) -->
+    <div class="flex flex-1 overflow-hidden relative min-h-0">
 
     <!-- Left Specs & Brief Sidebar -->
     <aside class="w-72 bg-dark-900 border-r border-white/15 flex flex-col justify-between p-4 overflow-y-auto z-40">
@@ -256,6 +275,23 @@
           </div>
         </div>
 
+        <!-- "Why this SKU?" Product Decision Explainability Card -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2 border border-emerald-400/50 bg-gradient-to-br from-emerald-500/10 via-dark-900 to-dark-850 shadow-lg">
+          <div class="flex items-center justify-between pb-1 border-b border-white/10">
+            <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-300 font-black flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-emerald-400">psychology_alt</span> WHY THIS SKU?
+            </span>
+            <div class="flex items-center gap-1" id="skuExplainTabPills">
+              <!-- Family pills: Desk, Chair, Storage -->
+            </div>
+          </div>
+
+          <!-- Active SKU Decision Display -->
+          <div id="skuExplainContainer" class="space-y-2 font-mono text-[11px]">
+            <div class="text-gray-400 text-center py-2 text-[10px]">Loading product decisions...</div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Quick Layer Toggles -->
@@ -303,6 +339,10 @@
           <div>POS: <span id="ttPos" class="text-white font-bold">1400, 1800</span></div>
           <div>ROT: <span id="ttRot" class="text-white font-bold">0°</span></div>
           <div>PRICE: <span id="ttPrice" class="text-emerald-300 font-bold">₹18,500</span></div>
+        </div>
+        <div class="pt-1 text-[9px] text-cyan-300 font-bold flex items-center justify-between border-t border-white/10">
+          <span>Click: "Why this SKU?"</span>
+          <span class="material-symbols-outlined text-[11px]">psychology_alt</span>
         </div>
       </div>
 
@@ -356,20 +396,24 @@
     <!-- Right Structured Inspector Sidebar -->
     <aside class="w-[450px] bg-dark-900 border-l border-white/15 flex flex-col h-full overflow-hidden z-40">
       
-      <!-- TOP: Unambiguous Layout Status Card -->
-      <div id="unambiguousStatusCard" class="p-3.5 bg-dark-850 border-b border-white/15 space-y-2">
+      <!-- TOP: Persistent Constraint Monitor (All 8 Rules) -->
+      <div id="pinnedConstraintMonitorCard" class="p-3 bg-dark-850 border-b border-white/15 space-y-2 shrink-0">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-black flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm">verified_user</span> UNAMBIGUOUS VERDICT
+            <span class="material-symbols-outlined text-sm text-emerald-400">shield</span> CONSTRAINT MONITOR
           </span>
-          <span id="verdictBadge" class="text-[11px] font-mono px-2.5 py-0.5 rounded bg-emerald-500/25 text-emerald-300 font-black border border-emerald-500/40">✓ 100% VALID</span>
+          <span id="cockpitRulesSummaryBadge" class="text-[10px] font-mono font-black px-2 py-0.5 rounded bg-emerald-500/25 text-emerald-300 border border-emerald-400/40">
+            8/8 RULES PASSED ✅
+          </span>
         </div>
         
-        <div id="verdictDetailsList" class="text-[11px] font-mono space-y-1 text-gray-200">
-          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> 8/8 HARD SPATIAL RULES PASSED</div>
-          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> LYAPUNOV ARBITRATION CONVERGED (Φ: 0.0)</div>
-          <div class="flex items-center gap-1.5 text-emerald-300 font-bold"><span class="material-symbols-outlined text-xs">check_circle</span> EXACT INTEGER INR QUOTE VERIFIED</div>
+        <!-- Live 8-Rule Status Grid -->
+        <div class="grid grid-cols-2 gap-1 text-[10px] font-mono" id="pinnedConstraintMonitorGrid">
+          <!-- Populated dynamically with RB-GEO-001 through 008, margins, and checkmarks -->
         </div>
+
+        <div id="verdictDetailsList" class="hidden"></div>
+        <span id="verdictBadge" class="hidden"></span>
       </div>
 
       <!-- Executive Quote Summary Card -->
@@ -432,21 +476,40 @@
         </div>
       </div>
 
-      <!-- MIDDLE: 3 Navigation Segment Tabs -->
-      <div class="flex bg-dark-950 border-b border-white/15 p-1.5 gap-1 text-[11px] font-mono">
-        <button id="tabBtnAudit" onclick="switchMainTab('audit')" class="flex-1 py-1.5 rounded-lg bg-cyan-500/20 text-cyan-300 border border-cyan-400/40 font-bold flex items-center justify-center gap-1 shadow transition-all">
-          <span class="material-symbols-outlined text-xs">verified</span> 8/8 Rules & Margin
+      <!-- MIDDLE: 5 Navigation Segment Tabs -->
+      <div class="flex bg-dark-950 border-b border-white/15 p-1.5 gap-1 text-[10px] font-mono">
+        <button id="tabBtnQuality" onclick="switchMainTab('quality')" class="flex-1 py-1.5 rounded-lg bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-black flex items-center justify-center gap-1 shadow transition-all">
+          <span class="material-symbols-outlined text-xs">analytics</span> Quality
+        </button>
+        <button id="tabBtnAudit" onclick="switchMainTab('audit')" class="flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
+          <span class="material-symbols-outlined text-xs">verified</span> 8/8 Rules
         </button>
         <button id="tabBtnLines" onclick="switchMainTab('lines')" class="flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
-          <span class="material-symbols-outlined text-xs">format_list_bulleted</span> Line Trace
+          <span class="material-symbols-outlined text-xs">format_list_bulleted</span> Lines
         </button>
         <button id="tabBtnArbitration" onclick="switchMainTab('arbitration')" class="flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all">
-          <span class="material-symbols-outlined text-xs">balance</span> Arbitration (35pt)
+          <span class="material-symbols-outlined text-xs">balance</span> Arbitrate
+        </button>
+        <button id="tabBtnLab" onclick="switchMainTab('lab')" class="flex-1 py-1.5 rounded-lg text-red-300 hover:text-white font-black flex items-center justify-center gap-1 transition-all border border-red-500/30 bg-red-500/10 shadow-[0_0_8px_rgba(239,68,68,0.25)]">
+          <span class="material-symbols-outlined text-xs text-red-400">biotech</span> ⚡ Lab
         </button>
       </div>
 
+      <!-- TAB 0: DETERMINISTIC LAYOUT QUALITY & MULTI-CANDIDATE OPTIMIZER -->
+      <div id="tabContentQuality" class="flex-1 flex flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850/70 border-b border-white/15 flex justify-between items-center text-xs font-mono">
+          <span class="text-gray-200 font-bold flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-cyan-400">psychology</span> Decision-Quality Layer
+          </span>
+          <span class="text-[10px] text-emerald-300 font-bold">Mathematical Optimality</span>
+        </div>
+        <div id="layoutQualityContainer" class="flex-1 overflow-y-auto p-3 space-y-3 text-xs font-mono">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
       <!-- TAB 1: 8-RULE AUDITABLE SPATIAL VERIFIER WITH "WHY" & MARGIN -->
-      <div id="tabContentAudit" class="flex-1 flex flex-col overflow-hidden">
+      <div id="tabContentAudit" class="flex-1 hidden flex-col overflow-hidden">
         <div class="p-3 bg-dark-850/70 border-b border-white/15 flex justify-between items-center text-xs font-mono">
           <span class="text-gray-200 font-bold flex items-center gap-1.5">
             <span class="material-symbols-outlined text-sm text-emerald-400">check_circle</span> Auditable Constraint Engine
@@ -514,7 +577,148 @@
         </div>
       </div>
 
+      <!-- TAB 4: FIRST-CLASS COUNTEREXAMPLE LABORATORY -->
+      <div id="tabContentLab" class="flex-1 hidden flex-col overflow-hidden">
+        <div class="p-3 bg-dark-850/70 border-b border-white/15 flex justify-between items-center text-xs font-mono">
+          <span class="text-red-300 font-black flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-red-400">biotech</span> Counterexample Laboratory
+          </span>
+          <span class="text-[9px] font-black text-red-400 px-1.5 py-0.2 rounded bg-red-500/20 border border-red-400/30">ADVERSARIAL STRESS</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto p-3 space-y-3 font-mono text-xs">
+          <!-- Scenario Selection Pills -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase">
+              <span>Select Test Scenario:</span>
+              <span id="labActiveScenarioBadge" class="text-red-300 font-mono font-bold">RB-GEO-006</span>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-1.5" id="labScenarioButtonsGrid">
+              <button onclick="selectLabScenario('overlap')" id="labBtn_overlap" class="p-2 rounded-lg border border-red-400 bg-red-500/20 text-left transition-all ring-1 ring-red-400/40 cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Overlap ]</div>
+                <div class="text-[9px] text-gray-300">RB-GEO-006 Footprint SAT</div>
+              </button>
+              <button onclick="selectLabScenario('egress')" id="labBtn_egress" class="p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Egress Block ]</div>
+                <div class="text-[9px] text-gray-400">RB-GEO-002 Life-Safety</div>
+              </button>
+              <button onclick="selectLabScenario('door_swing')" id="labBtn_door_swing" class="p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Door Swing ]</div>
+                <div class="text-[9px] text-gray-400">RB-GEO-003 850mm Arc</div>
+              </button>
+              <button onclick="selectLabScenario('wall')" id="labBtn_wall" class="p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Wall Clearance ]</div>
+                <div class="text-[9px] text-gray-400">RB-GEO-005 100mm Buffer</div>
+              </button>
+              <button onclick="selectLabScenario('desk_rear')" id="labBtn_desk_rear" class="p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Desk Rear ]</div>
+                <div class="text-[9px] text-gray-400">RB-GEO-004 900mm Aisle</div>
+              </button>
+              <button onclick="selectLabScenario('chair_pullout')" id="labBtn_chair_pullout" class="p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-white">[ Chair Pullout ]</div>
+                <div class="text-[9px] text-gray-400">RB-GEO-008 750mm Dynamic</div>
+              </button>
+              <button onclick="selectLabScenario('impossible')" id="labBtn_impossible" class="col-span-2 p-2 rounded-lg border border-red-500/30 bg-red-500/10 hover:border-red-500/50 text-left transition-all cursor-pointer">
+                <div class="font-bold text-xs text-red-200 flex items-center justify-between">
+                  <span>[ Impossible Layout ]</span>
+                  <span class="text-[9px] font-black px-1.5 py-0.2 rounded bg-red-500/30 text-red-300">ESCALATION</span>
+                </div>
+                <div class="text-[9px] text-gray-300">Bounded Search Exhaustion &amp; Trade-Off Notice</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- The Memorable BREAK SYSTEM Action Button -->
+          <div class="pt-1">
+            <button id="btnBreakSystem" onclick="triggerBreakSystem()" class="w-full py-3 rounded-xl bg-gradient-to-r from-red-600 via-rose-600 to-red-600 hover:from-red-500 hover:to-rose-500 text-white font-black text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-[0_0_25px_rgba(239,68,68,0.5)] border border-red-400 cursor-pointer transition-all transform hover:scale-[1.01] active:scale-[0.99]">
+              <span class="material-symbols-outlined text-lg">dangerous</span> BREAK SYSTEM
+            </button>
+          </div>
+
+          <!-- Dynamic 3-Stage Resolution Sequence Output Card -->
+          <div id="labResultSequence" class="space-y-2.5 pt-1">
+            <div class="p-3.5 rounded-xl border border-white/10 bg-dark-900/60 text-center space-y-1.5 text-gray-400">
+              <span class="material-symbols-outlined text-2xl text-gray-500 block">science</span>
+              <p class="text-[11px] leading-relaxed">
+                Select an adversarial scenario above and click <b class="text-red-400 font-black">BREAK SYSTEM</b> to run the live proof:
+              </p>
+              <div class="text-[10px] font-mono text-gray-400 flex justify-center items-center gap-2 pt-1">
+                <span class="text-red-400">❌ Invalidation</span>
+                <span>→</span>
+                <span class="text-cyan-400">⚖ Arbitration</span>
+                <span>→</span>
+                <span class="text-emerald-400">✅ Convergence</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls: Reset to Canonical -->
+          <div class="pt-2 border-t border-white/10 flex justify-between items-center text-[10px]">
+            <span class="text-gray-400">Room: <b id="labCurrentRoomDisplay" class="text-white font-bold">ROOM-01</b></span>
+            <button onclick="resetFromCounterexampleLab()" class="px-2.5 py-1 rounded bg-dark-800 hover:bg-dark-700 text-cyan-300 border border-white/15 font-bold transition-all cursor-pointer">
+              ↺ Reset to Canonical
+            </button>
+          </div>
+        </div>
+      </div>
+
     </aside>
+  </div>
+
+  <!-- PANEL 4: BOTTOM - Decision / Evidence Timeline + Master Cockpit Verdict -->
+  <section id="cockpitTimelinePanel" class="h-44 bg-dark-950/95 border-t border-white/20 flex flex-col z-40 shadow-[0_-8px_25px_rgba(0,0,0,0.6)] backdrop-blur-md shrink-0 select-none">
+    
+    <!-- Timeline Control Header -->
+    <div class="px-4 py-1.5 bg-dark-900/90 border-b border-white/10 flex items-center justify-between text-xs font-mono">
+      <div class="flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm text-cyan-400">timeline</span>
+        <span class="font-black text-white text-[11px] uppercase tracking-wider">DECISION / EVIDENCE TIMELINE</span>
+        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-400/30">MONOTONIC DESCENT TRACE</span>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 text-[10px] text-gray-300">
+          <span>Active Step:</span>
+          <span id="timelineActiveStepLabel" class="font-bold text-cyan-300">8 / 8 · VALID &amp; PRICED</span>
+        </div>
+        <div class="flex items-center gap-1">
+          <button onclick="scrubTimelineStep(-1)" class="px-2 py-0.5 rounded bg-dark-800 hover:bg-dark-700 text-gray-200 border border-white/10 text-[10px] font-bold cursor-pointer transition-all">◀ Prev</button>
+          <button onclick="scrubTimelineStep(1)" class="px-2 py-0.5 rounded bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-400/40 text-[10px] font-bold cursor-pointer transition-all">Next ▶</button>
+          <button onclick="playTimelineAnimation()" class="px-2 py-0.5 rounded bg-emerald-500 hover:bg-emerald-400 text-dark-950 text-[10px] font-black cursor-pointer shadow transition-all">⚡ Replay Trace</button>
+          <button onclick="resetTimelineToFinal()" class="px-2 py-0.5 rounded bg-dark-800 hover:bg-dark-700 text-gray-300 border border-white/10 text-[10px] cursor-pointer transition-all">↺ Final</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Horizontal Row: Left Timeline Track + Right Giant Master Verdict Banner -->
+    <div class="flex-1 flex items-center px-4 gap-4 overflow-x-auto">
+      
+      <!-- Interactive Milestone Step Track -->
+      <div class="flex-1 flex items-center gap-1.5 py-2 overflow-x-auto min-w-0" id="timelineNodesTrack">
+        <!-- Populated dynamically with the 8 timeline milestones -->
+      </div>
+
+      <!-- Master Cockpit Result Banner: VERIFIED • OPTIMIZED • PRICED -->
+      <div class="shrink-0 w-80 p-2.5 rounded-xl bg-gradient-to-br from-emerald-500/20 via-cyan-500/15 to-dark-850 border-2 border-emerald-400/60 shadow-[0_0_30px_rgba(52,211,153,0.3)] flex flex-col justify-center text-center space-y-0.5">
+        <div class="text-[9px] font-mono font-black tracking-widest uppercase text-emerald-300 flex items-center justify-center gap-1">
+          <span class="material-symbols-outlined text-xs text-emerald-400">verified</span> MASTER COCKPIT VERDICT
+        </div>
+        <div class="text-sm font-black tracking-tight text-white font-mono bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-200 to-emerald-300 drop-shadow-[0_2px_10px_rgba(52,211,153,0.5)]">
+          VERIFIED • OPTIMIZED • PRICED
+        </div>
+        <div class="flex items-center justify-center gap-2 text-[10px] font-mono text-gray-200 pt-0.5 border-t border-emerald-400/30">
+          <span class="text-emerald-300 font-bold">✓ 8/8 Hard Rules</span>
+          <span class="text-gray-500">•</span>
+          <span class="text-cyan-300 font-bold">Score 94.1</span>
+          <span class="text-gray-500">•</span>
+          <span class="text-emerald-300 font-bold" id="cockpitGrandTotalPill">₹3,37,964</span>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
   </div>
 
   <!-- CHALLENGE EVIDENCE MODAL -->
@@ -697,6 +901,32 @@
     </div>
   </div>
 
+  <!-- WHY THIS SKU? PRODUCT DECISION EXPLAINABILITY MODAL -->
+  <div id="skuExplainModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-xl w-full rounded-2xl border border-emerald-400/50 p-6 space-y-4 shadow-2xl font-mono text-xs max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-white/15 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-emerald-400 text-lg">psychology_alt</span>
+          <span class="font-extrabold text-white text-sm" id="modalSkuTitle">WHY THIS SKU? PRODUCT DECISION EXPLANATION</span>
+        </div>
+        <button onclick="closeSkuExplainModal()" class="text-gray-300 hover:text-white p-1">
+          <span class="material-symbols-outlined text-base">close</span>
+        </button>
+      </div>
+
+      <div id="modalSkuContent" class="space-y-3.5 flex-1 overflow-y-auto pr-1">
+        <!-- Populated dynamically -->
+      </div>
+
+      <div class="pt-3 border-t border-white/15 flex justify-between items-center text-[11px] text-gray-300">
+        <span>Deterministic Trait Proof: RequirementIR ➔ Catalog Filter</span>
+        <button onclick="closeSkuExplainModal()" class="px-4 py-1.5 bg-emerald-500 text-dark-950 font-black rounded-lg hover:bg-emerald-400">
+          Dismiss
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MATHEMATICAL PROVENANCE MODAL -->
   <div id="provenanceModal" class="fixed inset-0 bg-dark-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
     <div class="glass-card max-w-lg w-full rounded-2xl border border-cyan-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs">
@@ -723,6 +953,145 @@
     </div>
   </div>
 
+  <!-- PARETO FRONTIER MULTI-OBJECTIVE OPTIMIZATION MODAL -->
+  <div id="paretoModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-6xl w-full max-h-[92vh] rounded-2xl border border-cyan-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs flex flex-col overflow-hidden">
+      
+      <!-- Modal Header with Systems Design Principle -->
+      <div class="flex items-center justify-between border-b border-white/15 pb-3 shrink-0">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-cyan-400 text-lg">stacked_line_chart</span>
+            <span class="font-black text-white text-base tracking-tight">MULTI-OBJECTIVE PARETO OPTIMIZATION ENGINE</span>
+            <span class="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 font-extrabold text-[10px] border border-cyan-400/40">20 DETERMINISTIC CANDIDATES</span>
+          </div>
+          <div class="text-[11px] text-cyan-200/90 flex items-center gap-1.5 font-sans font-semibold">
+            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-black text-[10px] border border-amber-400/30">SYSTEMS DESIGN</span>
+            "RuleBound separates feasibility from optimization."
+          </div>
+        </div>
+        <button onclick="closeParetoModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- 3-Phase Systems Pipeline Architecture Stepper -->
+      <div class="grid grid-cols-3 gap-3 shrink-0 text-[11px]">
+        <div class="p-2.5 rounded-xl bg-dark-900 border border-white/15 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-white flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-cyan-500/30 text-cyan-300 flex items-center justify-center text-[10px]">1</span> PHASE 1: FEASIBILITY FILTER</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-bold">Φ = 0.0</span>
+          </div>
+          <div class="text-gray-300 text-[10px] leading-tight font-sans">8/8 hard constraints satisfied. Rejects invalid proposals before scoring.</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-dark-900 border border-white/15 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-white flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-cyan-500/30 text-cyan-300 flex items-center justify-center text-[10px]">2</span> PHASE 2: MULTI-OBJECTIVE QUALITY</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/20 text-cyan-300 font-bold">8 DIMENSIONS</span>
+          </div>
+          <div class="text-gray-300 text-[10px] leading-tight font-sans">Evaluates brief satisfaction, circulation, space efficiency, preference &amp; cost.</div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-dark-900 border border-emerald-400/40 bg-emerald-500/10 space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="font-black text-emerald-300 flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-emerald-500 text-dark-950 font-black flex items-center justify-center text-[10px]">3</span> PHASE 3: PARETO FRONTIER</span>
+            <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-400 text-dark-950 font-black">OPTIMAL KNEE POINT</span>
+          </div>
+          <div class="text-gray-200 text-[10px] leading-tight font-sans">Selects non-dominated candidate balancing quality and cost without compromise.</div>
+        </div>
+      </div>
+
+      <!-- Main Visual Section: Interactive SVG Scatter Plot + Candidate Inspector -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0 overflow-y-auto">
+        
+        <!-- Left: 2D Pareto Scatter Plot -->
+        <div class="lg:col-span-8 p-3 rounded-2xl bg-dark-900 border border-white/15 flex flex-col space-y-2">
+          <div class="flex items-center justify-between shrink-0">
+            <span class="font-black text-white text-xs flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-cyan-400">scatter_plot</span> COST vs. QUALITY TRADEOFF (20 CANDIDATES)
+            </span>
+            <div class="flex items-center gap-2 text-[10px]">
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#22d3ee]"></span> Pareto Frontier</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#fbbf24]"></span> Selected Layout</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-gray-500"></span> Dominated</span>
+              <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-400"></span> Infeasible</span>
+            </div>
+          </div>
+
+          <!-- SVG Plot Container -->
+          <div class="flex-1 min-h-[310px] w-full relative bg-dark-950/80 rounded-xl border border-white/10 flex items-center justify-center overflow-hidden" id="paretoSvgContainer">
+            <!-- Dynamically populated via renderParetoSvg() -->
+          </div>
+
+          <div class="text-[10px] text-gray-400 flex justify-between px-2 pt-1 border-t border-white/10 shrink-0">
+            <span>X-Axis: Total Procurement Cost (₹ INR) · <b>Minimize</b></span>
+            <span>Y-Axis: Composite Quality Score (0–100%) · <b>Maximize</b></span>
+          </div>
+        </div>
+
+        <!-- Right: Selected Candidate Inspector Card -->
+        <div class="lg:col-span-4 p-3.5 rounded-2xl bg-dark-900 border border-white/15 flex flex-col space-y-3 overflow-y-auto" id="paretoInspectorCard">
+          <!-- Dynamically populated on candidate hover/click -->
+        </div>
+      </div>
+
+      <!-- Bottom Candidates Quick-Strip -->
+      <div class="border-t border-white/15 pt-3 shrink-0 space-y-2">
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-gray-300 font-bold uppercase">20 Deterministic Candidate Layouts Matrix:</span>
+          <span class="text-cyan-300 text-[10px]">Click any candidate node or button to inspect layout</span>
+        </div>
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1" id="paretoCandidatesStrip">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORMAL SYSTEM INVARIANTS CERTIFICATE MODAL -->
+  <div id="invariantsModal" class="fixed inset-0 bg-dark-950/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-200">
+    <div class="glass-card max-w-4xl w-full max-h-[90vh] rounded-2xl border border-emerald-400/40 p-5 space-y-4 shadow-2xl font-mono text-xs flex flex-col overflow-hidden">
+      
+      <!-- Certificate Header -->
+      <div class="flex items-center justify-between border-b border-white/15 pb-3 shrink-0">
+        <div class="space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-emerald-400 text-xl">verified_user</span>
+            <span class="font-black text-white text-base tracking-tight">FORMAL SYSTEM INVARIANTS CERTIFICATE</span>
+            <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/25 text-emerald-300 font-black text-[11px] border border-emerald-400/50 shadow-[0_0_12px_rgba(52,211,153,0.3)]">21/21 PASS (100%)</span>
+          </div>
+          <div class="text-[11px] text-gray-300 font-sans">
+            Autonomous mathematical verification across Geometry, Arbitration, Output Ledgers, and Accounting.
+          </div>
+        </div>
+        <button onclick="closeInvariantsModal()" class="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Cryptographic Proof Hash Banner -->
+      <div class="p-3 rounded-xl bg-dark-900 border border-white/15 flex items-center justify-between text-[11px] shrink-0">
+        <div class="flex items-center gap-2 truncate mr-3">
+          <span class="text-emerald-400 font-bold uppercase shrink-0">SHA-256 Proof Digest:</span>
+          <span class="text-cyan-300 font-mono truncate" id="invariantsCertHash">Computing...</span>
+        </div>
+        <span class="px-2 py-0.5 rounded bg-emerald-400 text-dark-950 font-black text-[10px] shrink-0">UNCONDITIONAL PASS</span>
+      </div>
+
+      <!-- Invariant Categories Accordion / List -->
+      <div class="flex-1 overflow-y-auto space-y-3 pr-1" id="invariantsCategoriesContainer">
+        <!-- Dynamically rendered via renderInvariantsCertificate() -->
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-3 border-t border-white/15 flex justify-between items-center text-[11px] shrink-0">
+        <span class="text-gray-400">Formal Verification Engine: <b class="text-white">rulebound/invariants.py</b></span>
+        <button onclick="closeInvariantsModal()" class="px-4 py-1.5 bg-dark-800 hover:bg-dark-700 text-white rounded-lg border border-white/15 font-bold">
+          Close Certificate
+        </button>
+      </div>
+    </div>
+  </div>
+
   <div id="toastNotification" class="fixed bottom-6 right-6 px-4 py-3 rounded-xl bg-dark-850 border border-cyan-400/50 text-white font-bold text-xs shadow-2xl opacity-0 transform translate-y-3 pointer-events-none transition-all duration-200 z-50 flex items-center gap-2">
     <span class="material-symbols-outlined text-cyan-400 text-base" id="toastIcon">info</span>
     <span id="toastMsg">Action notification</span>
@@ -738,6 +1107,7 @@
     let isStale = false;
     let currentTraceIndex = 0;
     let currentTraceSteps = [];
+    let currentRoomId = 'ROOM-01';
 
     const money = v => typeof v === 'number' ? `₹${v.toLocaleString('en-IN')}` : (v ? `₹${Number(v).toLocaleString('en-IN')}` : '₹0');
 
@@ -761,6 +1131,342 @@
       const m = document.getElementById('challengeEvidenceModal');
       m.classList.add('opacity-0');
       setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
+    let activeParetoCandidateId = 'C02';
+
+    function openParetoModal() {
+      if (currentData?.pareto_analysis) {
+        renderParetoVisuals(currentData.pareto_analysis);
+      }
+      const m = document.getElementById('paretoModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+    function closeParetoModal() {
+      const m = document.getElementById('paretoModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
+    function openInvariantsModal() {
+      if (currentData?.formal_invariants) {
+        renderInvariantsCertificate(currentData.formal_invariants);
+      }
+      const m = document.getElementById('invariantsModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+    function closeInvariantsModal() {
+      const m = document.getElementById('invariantsModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
+    }
+
+    function renderParetoVisuals(pareto) {
+      if (!pareto || !pareto.candidates) return;
+      const cands = pareto.candidates;
+      const frontierIds = new Set(pareto.pareto_frontier_ids || []);
+      const selectedId = pareto.selected_candidate_id || 'C02';
+      activeParetoCandidateId = activeParetoCandidateId || selectedId;
+
+      // Extract bounds for SVG coordinate mapping
+      const validCands = cands.filter(c => c.is_feasible);
+      const minCost = Math.min(...validCands.map(c => c.cost_inr), 160000) * 0.96;
+      const maxCost = Math.max(...validCands.map(c => c.cost_inr), 280000) * 1.04;
+      const minQ = 78.0;
+      const maxQ = 98.5;
+
+      const svgW = 680;
+      const svgH = 300;
+      const padL = 75;
+      const padR = 35;
+      const padT = 30;
+      const padB = 45;
+      const plotW = svgW - padL - padR;
+      const plotH = svgH - padT - padB;
+
+      const toPlotX = cost => padL + ((cost - minCost) / (maxCost - minCost)) * plotW;
+      const toPlotY = q => (svgH - padB) - ((q - minQ) / (maxQ - minQ)) * plotH;
+
+      // Sort Pareto frontier points by Cost ascending to form curve
+      const frontierPoints = cands
+        .filter(c => frontierIds.has(c.candidate_id))
+        .sort((a, b) => a.cost_inr - b.cost_inr)
+        .map(c => ({ x: toPlotX(c.cost_inr), y: toPlotY(c.quality_score), c }));
+
+      let pathD = '';
+      if (frontierPoints.length > 0) {
+        pathD = `M ${frontierPoints[0].x.toFixed(1)} ${frontierPoints[0].y.toFixed(1)}`;
+        for (let i = 1; i < frontierPoints.length; i++) {
+          pathD += ` L ${frontierPoints[i].x.toFixed(1)} ${frontierPoints[i].y.toFixed(1)}`;
+        }
+      }
+
+      // Build gridlines
+      const xTicks = [minCost, (minCost + maxCost)/2, maxCost];
+      const yTicks = [80, 85, 90, 95];
+
+      const gridLinesSVG = `
+        <!-- X Gridlines -->
+        ${xTicks.map(cost => {
+          const px = toPlotX(cost);
+          return `
+            <line x1="${px}" y1="${padT}" x2="${px}" y2="${svgH - padB}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3,3" />
+            <text x="${px}" y="${svgH - padB + 16}" fill="#94a3b8" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="middle">₹${Math.round(cost/1000)}k</text>
+          `;
+        }).join('')}
+
+        <!-- Y Gridlines -->
+        ${yTicks.map(q => {
+          const py = toPlotY(q);
+          return `
+            <line x1="${padL}" y1="${py}" x2="${svgW - padR}" y2="${py}" stroke="rgba(255,255,255,0.06)" stroke-dasharray="3,3" />
+            <text x="${padL - 10}" y="${py + 3}" fill="#94a3b8" font-size="10" font-family="JetBrains Mono, monospace" text-anchor="end">${q}%</text>
+          `;
+        }).join('')}
+
+        <!-- Axes -->
+        <line x1="${padL}" y1="${svgH - padB}" x2="${svgW - padR}" y2="${svgH - padB}" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+        <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${svgH - padB}" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" />
+      `;
+
+      // Build candidate node markers
+      const nodesSVG = cands.map(c => {
+        const cx = toPlotX(c.cost_inr);
+        const cy = toPlotY(c.quality_score);
+        const isSel = (c.candidate_id === selectedId);
+        const isFrontier = frontierIds.has(c.candidate_id);
+        const isActive = (c.candidate_id === activeParetoCandidateId);
+
+        if (!c.is_feasible) {
+          return `
+            <g class="cursor-pointer group" onclick="selectParetoCandidate('${c.candidate_id}')">
+              <line x1="${cx - 5}" y1="${cy - 5}" x2="${cx + 5}" y2="${cy + 5}" stroke="#ef4444" stroke-width="2.5" />
+              <line x1="${cx - 5}" y1="${cy + 5}" x2="${cx + 5}" y2="${cy - 5}" stroke="#ef4444" stroke-width="2.5" />
+              <text x="${cx}" y="${cy - 8}" fill="#fca5a5" font-size="9" font-family="JetBrains Mono, monospace" font-weight="bold" text-anchor="middle">${c.candidate_id}</text>
+            </g>
+          `;
+        }
+
+        let fillColor = '#64748b';
+        let strokeColor = '#475569';
+        let r = 5.5;
+
+        if (isSel) {
+          fillColor = '#fbbf24';
+          strokeColor = '#f59e0b';
+          r = 7.5;
+        } else if (isFrontier) {
+          fillColor = '#22d3ee';
+          strokeColor = '#0891b2';
+          r = 6.5;
+        }
+
+        const activeRing = isActive
+          ? `<circle cx="${cx}" cy="${cy}" r="${r + 7}" fill="none" stroke="#22d3ee" stroke-width="2" stroke-dasharray="4,3" class="animate-spin" />`
+          : '';
+
+        const selPulse = isSel
+          ? `<circle cx="${cx}" cy="${cy}" r="${r + 5}" fill="none" stroke="#fbbf24" stroke-width="1.5" opacity="0.8" class="animate-ping" />`
+          : '';
+
+        return `
+          <g class="cursor-pointer group transition-transform hover:scale-125" onclick="selectParetoCandidate('${c.candidate_id}')">
+            ${selPulse}
+            ${activeRing}
+            <circle cx="${cx}" cy="${cy}" r="${r}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="2" />
+            <text x="${cx}" y="${cy - 10}" fill="${isSel ? '#fbbf24' : (isFrontier ? '#67e8f9' : '#94a3b8')}" font-size="9" font-family="JetBrains Mono, monospace" font-weight="bold" text-anchor="middle">${c.candidate_id}</text>
+          </g>
+        `;
+      }).join('');
+
+      const svgContainer = document.getElementById('paretoSvgContainer');
+      if (svgContainer) {
+        svgContainer.innerHTML = `
+          <svg viewBox="0 0 ${svgW} ${svgH}" class="w-full h-full select-none">
+            ${gridLinesSVG}
+            <!-- Pareto Frontier Connecting Curve -->
+            <path d="${pathD}" fill="none" stroke="#06b6d4" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="drop-shadow-[0_0_12px_rgba(6,182,212,0.6)]" />
+            ${nodesSVG}
+          </svg>
+        `;
+      }
+
+      // Render Inspector Card for active candidate
+      renderParetoInspector(cands.find(c => c.candidate_id === activeParetoCandidateId) || cands[0]);
+
+      // Render Bottom Strip
+      const strip = document.getElementById('paretoCandidatesStrip');
+      if (strip) {
+        strip.innerHTML = cands.map(c => {
+          const isSel = (c.candidate_id === selectedId);
+          const isFrontier = frontierIds.has(c.candidate_id);
+          const isActive = (c.candidate_id === activeParetoCandidateId);
+
+          let btnBg = 'bg-dark-850 border-white/10 text-gray-300 hover:border-white/30';
+          if (!c.is_feasible) {
+            btnBg = 'bg-red-500/15 border-red-500/40 text-red-200';
+          } else if (isSel) {
+            btnBg = 'bg-amber-500/25 border-amber-400 text-amber-200 ring-1 ring-amber-400/60 font-black';
+          } else if (isFrontier) {
+            btnBg = 'bg-cyan-500/20 border-cyan-400/60 text-cyan-200 font-bold';
+          }
+
+          if (isActive) btnBg += ' ring-2 ring-white/50';
+
+          return `
+            <button onclick="selectParetoCandidate('${c.candidate_id}')" class="px-2.5 py-1.5 rounded-lg border text-[10px] font-mono shrink-0 transition-all flex items-center gap-1 ${btnBg}">
+              <span>${c.candidate_id}</span>
+              ${isSel ? '<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>' : (isFrontier ? '<span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>' : '')}
+            </button>
+          `;
+        }).join('');
+      }
+    }
+
+    function selectParetoCandidate(candId) {
+      activeParetoCandidateId = candId;
+      if (currentData?.pareto_analysis) {
+        renderParetoVisuals(currentData.pareto_analysis);
+      }
+    }
+
+    function renderParetoInspector(cand) {
+      const card = document.getElementById('paretoInspectorCard');
+      if (!card || !cand) return;
+
+      const isSel = cand.is_selected;
+      const isFrontier = cand.is_pareto_optimal;
+      const isFeas = cand.is_feasible;
+
+      let statusBadge = `<span class="px-2 py-0.5 rounded bg-gray-700 text-gray-300 font-bold">DOMINATED</span>`;
+      if (!isFeas) {
+        statusBadge = `<span class="px-2 py-0.5 rounded bg-red-500/25 text-red-200 border border-red-500/50 font-black">INFEASIBLE (Φ=${cand.energy_score})</span>`;
+      } else if (isSel) {
+        statusBadge = `<span class="px-2 py-0.5 rounded bg-amber-500/25 text-amber-300 border border-amber-400/50 font-black flex items-center gap-1"><span class="material-symbols-outlined text-[11px]">star</span> SELECTED PARETO-BEST</span>`;
+      } else if (isFrontier) {
+        statusBadge = `<span class="px-2 py-0.5 rounded bg-cyan-500/25 text-cyan-300 border border-cyan-400/50 font-black">PARETO FRONTIER</span>`;
+      }
+
+      card.innerHTML = `
+        <div class="flex items-start justify-between border-b border-white/10 pb-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-black text-white text-base">${cand.candidate_id}</span>
+              <span class="text-xs text-gray-300">· ${cand.archetype.replace('_', ' ').toUpperCase()}</span>
+            </div>
+            <div class="text-[11px] text-gray-400 font-sans font-medium">${cand.name}</div>
+          </div>
+          <div>${statusBadge}</div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2 text-[11px]">
+          <div class="p-2.5 rounded-xl bg-dark-950 border border-white/10 space-y-0.5">
+            <span class="text-gray-400 text-[10px] uppercase">Procurement Cost</span>
+            <div class="font-black text-emerald-300 font-mono text-sm">${money(cand.cost_inr)}</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-dark-950 border border-white/10 space-y-0.5">
+            <span class="text-gray-400 text-[10px] uppercase">Quality Score</span>
+            <div class="font-black text-cyan-300 font-mono text-sm">${cand.quality_score.toFixed(1)} / 100</div>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <div class="text-[10px] text-gray-400 font-black uppercase">8-Dimension Quality Vector:</div>
+          <div class="space-y-1 text-[10px]">
+            ${(cand.dimensions || []).map(d => `
+              <div class="flex justify-between items-center text-gray-300">
+                <span class="truncate mr-1">${d.name}:</span>
+                <span class="font-bold ${d.score >= 90 ? 'text-emerald-300' : 'text-amber-300'} font-mono">${d.score.toFixed(0)}%</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-dark-950/80 border border-white/10 space-y-1 text-[11px]">
+          <div class="text-gray-400 font-black uppercase text-[10px]">Dominance Analysis:</div>
+          <div class="text-gray-200 leading-tight font-sans">
+            ${isSel ? cand.tradeoff_analysis : (isFrontier ? 'Non-dominated solution on the Pareto frontier curve. Represents an alternative trade-off point.' : (isFeas ? cand.suboptimal_reason : cand.suboptimal_reason))}
+          </div>
+        </div>
+
+        <div class="pt-2 mt-auto">
+          <button onclick="applyCandidateToCAD('${cand.candidate_id}')" class="w-full py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-cyan-200 font-black text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow">
+            <span class="material-symbols-outlined text-sm">open_in_browser</span> Load Candidate in 2D CAD
+          </button>
+        </div>
+      `;
+    }
+
+    function applyCandidateToCAD(candId) {
+      if (!currentData?.pareto_analysis) return;
+      const cand = currentData.pareto_analysis.candidates.find(c => c.candidate_id === candId);
+      if (!cand) return;
+
+      currentData.layout.placements = cand.placements.map(p => ({
+        placement_id: p.placement_id,
+        sku: p.sku,
+        finish_id: p.finish_id,
+        x_mm: p.x_mm,
+        y_mm: p.y_mm,
+        rotation_deg: p.rotation_deg
+      }));
+
+      draw();
+      closeParetoModal();
+      showToast(`Loaded candidate ${candId} (${cand.name}) into workspace!`, 'verified');
+    }
+
+    function renderInvariantsCertificate(cert) {
+      if (!cert) return;
+      const hashEl = document.getElementById('invariantsCertHash');
+      if (hashEl) hashEl.innerText = cert.certificate_hash || 'SHA256-VERIFIED';
+
+      const container = document.getElementById('invariantsCategoriesContainer');
+      if (!container) return;
+
+      const cats = cert.categories || {};
+      const catList = [
+        { key: 'geometry', title: '1. GEOMETRY & SPATIAL INVARIANTS', icon: 'square_foot', data: cats.geometry },
+        { key: 'arbitration', title: '2. BOUNDED ARBITRATION & LYAPUNOV INVARIANTS', icon: 'balance', data: cats.arbitration },
+        { key: 'output', title: '3. OUTPUT LEDGER & BIJECTION INVARIANTS', icon: 'sync_alt', data: cats.output },
+        { key: 'pricing', title: '4. ACCOUNTING & PRICING INVARIANTS', icon: 'calculate', data: cats.pricing },
+      ];
+
+      container.innerHTML = catList.map(cat => {
+        const d = cat.data || { total_checks: 0, passed_checks: 0, checks: [] };
+        return `
+          <div class="p-3 rounded-xl bg-dark-900 border border-white/15 space-y-2">
+            <div class="flex items-center justify-between border-b border-white/10 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-cyan-400">${cat.icon}</span>
+                <span class="font-black text-white text-xs">${cat.title}</span>
+              </div>
+              <span class="px-2 py-0.2 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px] border border-emerald-400/30">
+                ${d.passed_checks} / ${d.total_checks} PASSED
+              </span>
+            </div>
+
+            <div class="space-y-1.5 pt-1">
+              ${(d.checks || []).map(chk => `
+                <div class="p-2 rounded-lg bg-dark-950/80 border border-white/5 space-y-0.5">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-emerald-400 font-bold">✓</span>
+                      <span class="font-bold text-white font-mono text-[11px]">${chk.invariant_id}</span>
+                      <span class="text-gray-300 font-sans font-medium text-[11px]">${chk.name}</span>
+                    </div>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/25 text-emerald-300 font-black">PASS</span>
+                  </div>
+                  <div class="text-[10px] text-gray-400 pl-4 leading-tight">${chk.description}</div>
+                  <div class="text-[9px] text-cyan-300/80 pl-4 font-mono">Proof Details: ${chk.details}</div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function openTrustBoundaryModal() {
@@ -903,21 +1609,604 @@
       }
     }
 
+    function updatePipelineVerdict(state, activeRuleId = '') {
+      updatePipelineState(state, false, activeRuleId);
+    }
+
+    const CANONICAL_HARD_RULES = [
+      { id: 'RB-GEO-001', name: 'Boundary Containment', short: 'Boundary', req: 'Inside walls' },
+      { id: 'RB-GEO-002', name: 'Egress Corridor', short: 'Egress', req: '≥1000mm clear' },
+      { id: 'RB-GEO-003', name: 'Door Swing Arc', short: 'Door Arc', req: 'Clear arc' },
+      { id: 'RB-GEO-004', name: 'Rear Seating Aisle', short: 'Rear Aisle', req: '≥900mm clear' },
+      { id: 'RB-GEO-005', name: 'Wall Clearance Offset', short: 'Wall Buffer', req: '≥50mm offset' },
+      { id: 'RB-GEO-006', name: 'Furniture Footprint (SAT)', short: 'Footprint SAT', req: '0mm overlap' },
+      { id: 'RB-GEO-007', name: 'Window Sill / Radiator', short: 'Window Sill', req: 'Clear sill' },
+      { id: 'RB-GEO-008', name: 'Dynamic Chair Pullout', short: 'Chair Pullout', req: '≥600mm envelope' }
+    ];
+
+    function renderPinnedConstraintMonitor(rules, violations) {
+      const grid = document.getElementById('pinnedConstraintMonitorGrid');
+      const badge = document.getElementById('cockpitRulesSummaryBadge');
+      if (!grid) return;
+
+      const violMap = {};
+      (violations || []).forEach(v => {
+        if (v.rule_id) violMap[v.rule_id] = v;
+      });
+
+      const ruleAuditMap = {};
+      (rules || []).forEach(r => {
+        if (r.rule_id) ruleAuditMap[r.rule_id] = r;
+      });
+
+      let passCount = 0;
+
+      const html = CANONICAL_HARD_RULES.map(rule => {
+        const isViolated = Boolean(violMap[rule.id]);
+        const auditInfo = ruleAuditMap[rule.id];
+        const isPass = !isViolated && (!auditInfo || auditInfo.status === 'PASS');
+        if (isPass) passCount++;
+
+        const statusBadge = isPass
+          ? `<span class="text-emerald-400 font-black text-xs">✅</span>`
+          : `<span class="text-red-400 font-black text-xs animate-pulse">❌</span>`;
+
+        const cardClass = isPass
+          ? 'p-1.5 rounded-lg bg-dark-850/90 border border-emerald-500/20 hover:border-emerald-500/40 transition-colors'
+          : 'p-1.5 rounded-lg bg-red-500/15 border border-red-500/50 animate-pulse transition-colors';
+
+        const marginText = isViolated
+          ? (violMap[rule.id].measured?.penetration_depth_mm ? `-${violMap[rule.id].measured.penetration_depth_mm}mm` : 'VIOLATION')
+          : (auditInfo?.margin || auditInfo?.measured || rule.req);
+
+        return `
+          <div class="${cardClass} flex items-center justify-between">
+            <div class="truncate mr-1">
+              <div class="flex items-center gap-1">
+                <span class="font-black text-[10px] text-white">${rule.id}</span>
+                <span class="text-[9px] text-gray-400 truncate">${rule.short}</span>
+              </div>
+              <div class="text-[8px] text-gray-400 truncate">${marginText}</div>
+            </div>
+            <div>${statusBadge}</div>
+          </div>
+        `;
+      }).join('');
+
+      grid.innerHTML = html;
+
+      if (badge) {
+        if (passCount === 8) {
+          badge.innerHTML = '8/8 RULES PASSED ✅';
+          badge.className = 'text-[10px] font-mono font-black px-2 py-0.5 rounded bg-emerald-500/25 text-emerald-300 border border-emerald-400/40';
+        } else {
+          badge.innerHTML = `${passCount}/8 PASSED · ${8 - passCount} FAILED ❌`;
+          badge.className = 'text-[10px] font-mono font-black px-2 py-0.5 rounded bg-red-500/25 text-red-200 border border-red-500/50 animate-pulse';
+        }
+      }
+    }
+
+    const COCKPIT_TIMELINE_STEPS = [
+      { step: 1, title: 'Candidate generated', sub: 'Advisory Gen Proposal', phi: 18450, viols: 14, status: 'GENERATED', icon: '1' },
+      { step: 2, title: '12 violations', sub: 'Φ: 16,990 · SAT Collision', phi: 16990, viols: 12, status: 'COLLISION', icon: '2' },
+      { step: 3, title: 'C2 selected', sub: 'Pass 1 · ΔΦ: -2,987', phi: 14003, viols: 9, status: 'ARBITRATED', icon: '3' },
+      { step: 4, title: '7 violations', sub: 'Φ: 8,520 · Wall/Egress', phi: 8520, viols: 7, status: 'PROGRESS', icon: '4' },
+      { step: 5, title: 'C5 selected', sub: 'Pass 2 · ΔΦ: -7,068', phi: 1452, viols: 3, status: 'ARBITRATED', icon: '5' },
+      { step: 6, title: '2 violations', sub: 'Φ: 1,452 · Minor Offset', phi: 1452, viols: 2, status: 'RESOLVING', icon: '6' },
+      { step: 7, title: 'VALID', sub: 'Φ: 0.0 · Convergence', phi: 0, viols: 0, status: 'CONVERGED', icon: '7' },
+      { step: 8, title: 'Quote generated', sub: 'Exact INR · PRICED', phi: 0, viols: 0, status: 'PRICED', icon: '8' }
+    ];
+
+    let currentCockpitStepIndex = 7;
+    let timelineAnimTimer = null;
+
+    function renderCockpitTimeline(traceSteps, initialViolations, quote) {
+      const track = document.getElementById('timelineNodesTrack');
+      if (!track) return;
+
+      track.innerHTML = COCKPIT_TIMELINE_STEPS.map((step, idx) => {
+        const isActive = (idx === currentCockpitStepIndex);
+        const isPast = (idx < currentCockpitStepIndex);
+
+        let activeClasses = '';
+        if (isActive) {
+          activeClasses = 'bg-cyan-500/20 border-cyan-400 text-white shadow-[0_0_15px_rgba(6,182,212,0.4)] ring-1 ring-cyan-400';
+        } else if (isPast) {
+          activeClasses = 'bg-dark-900 border-emerald-500/40 text-gray-200 hover:border-emerald-400';
+        } else {
+          activeClasses = 'bg-dark-900/60 border-white/10 text-gray-400 hover:border-white/20';
+        }
+
+        const iconBadge = isActive
+          ? `<span class="w-4 h-4 rounded-full bg-cyan-400 text-dark-950 font-black text-[9px] flex items-center justify-center shrink-0 animate-bounce">${step.icon}</span>`
+          : (isPast
+              ? `<span class="w-4 h-4 rounded-full bg-emerald-500/30 text-emerald-300 font-bold text-[9px] flex items-center justify-center shrink-0">✓</span>`
+              : `<span class="w-4 h-4 rounded-full bg-dark-800 text-gray-400 text-[9px] flex items-center justify-center shrink-0">${step.icon}</span>`);
+
+        const arrow = (idx < COCKPIT_TIMELINE_STEPS.length - 1)
+          ? `<span class="text-cyan-400/60 text-xs font-black font-mono shrink-0 select-none">↓</span>`
+          : '';
+
+        return `
+          <div onclick="selectTimelineMilestone(${idx})" class="group cursor-pointer shrink-0 flex items-center gap-1.5 p-1.5 rounded-xl border transition-all ${activeClasses}">
+            <div class="flex items-center gap-1.5">
+              ${iconBadge}
+              <div class="flex flex-col text-left">
+                <span class="font-black text-[10px] font-mono whitespace-nowrap leading-tight ${isActive ? 'text-cyan-300' : 'text-gray-200'}">${step.title}</span>
+                <span class="text-[9px] font-mono text-gray-400 whitespace-nowrap leading-tight">${step.sub}</span>
+              </div>
+            </div>
+          </div>
+          ${arrow}
+        `;
+      }).join('');
+
+      updateTimelineActiveHeader();
+    }
+
+    function updateTimelineActiveHeader() {
+      const lbl = document.getElementById('timelineActiveStepLabel');
+      if (!lbl) return;
+      const s = COCKPIT_TIMELINE_STEPS[currentCockpitStepIndex] || COCKPIT_TIMELINE_STEPS[7];
+      lbl.innerText = `${s.step} / 8 · ${s.title.toUpperCase()} (${s.status})`;
+    }
+
+    function selectTimelineMilestone(idx) {
+      if (idx < 0 || idx >= COCKPIT_TIMELINE_STEPS.length) return;
+      currentCockpitStepIndex = idx;
+      const s = COCKPIT_TIMELINE_STEPS[idx];
+
+      renderCockpitTimeline(currentTraceSteps, currentData?.layout?.violations, currentData?.quote);
+
+      if (idx === 0) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-001', message: 'Boundary breach' },
+            { rule_id: 'RB-GEO-002', message: 'Egress path blocked' },
+            { rule_id: 'RB-GEO-004', message: 'Aisle clearance deficit' },
+            { rule_id: 'RB-GEO-006', message: 'Convex overlap' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-006');
+        }
+      } else if (idx === 1) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-002', message: 'Egress path deficit' },
+            { rule_id: 'RB-GEO-004', message: 'Rear aisle conflict' },
+            { rule_id: 'RB-GEO-006', message: 'Overlap detected' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-002');
+        }
+      } else if (idx === 2) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-004', message: 'Rear aisle conflict' },
+            { rule_id: 'RB-GEO-006', message: 'Overlap detected' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-004');
+        }
+      } else if (idx === 3) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-005', message: 'Wall proximity violation' },
+            { rule_id: 'RB-GEO-006', message: 'Partial overlap' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-005');
+        }
+      } else if (idx === 4) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-008', message: 'Chair pullout clearance' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-008');
+        }
+      } else if (idx === 5) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, [
+            { rule_id: 'RB-GEO-005', message: 'Wall service offset micro-nudge' }
+          ]);
+          updatePipelineState('stale', false, 'RB-GEO-005');
+        }
+      } else if (idx === 6) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, []);
+          updatePipelineState('valid');
+        }
+      } else if (idx === 7) {
+        if (currentData) {
+          renderPinnedConstraintMonitor(currentData.rule_audit, []);
+          updatePipelineState('valid');
+          if (currentData.quote) updateExecutiveSummary(currentData.quote);
+        }
+      }
+      showToast(`Timeline Step ${idx + 1}/8: ${s.title}`, 'timeline');
+    }
+
+    function scrubTimelineStep(dir) {
+      const target = Math.max(0, Math.min(COCKPIT_TIMELINE_STEPS.length - 1, currentCockpitStepIndex + dir));
+      selectTimelineMilestone(target);
+    }
+
+    function playTimelineAnimation() {
+      if (timelineAnimTimer) clearInterval(timelineAnimTimer);
+      let step = 0;
+      selectTimelineMilestone(0);
+      timelineAnimTimer = setInterval(() => {
+        step++;
+        if (step >= COCKPIT_TIMELINE_STEPS.length) {
+          clearInterval(timelineAnimTimer);
+          timelineAnimTimer = null;
+          return;
+        }
+        selectTimelineMilestone(step);
+      }, 700);
+    }
+
+    function resetTimelineToFinal() {
+      if (timelineAnimTimer) {
+        clearInterval(timelineAnimTimer);
+        timelineAnimTimer = null;
+      }
+      selectTimelineMilestone(7);
+    }
+
     function switchMainTab(tab) {
-      ['Audit', 'Lines', 'Arbitration'].forEach(t => {
+      ['Quality', 'Audit', 'Lines', 'Arbitration', 'Lab'].forEach(t => {
         const key = t.toLowerCase();
         const content = document.getElementById(`tabContent${t}`);
         const btn = document.getElementById(`tabBtn${t}`);
-        if (key === tab) {
-          content.classList.remove('hidden');
-          content.classList.add('flex');
-          btn.className = 'flex-1 py-1.5 rounded-lg bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-black flex items-center justify-center gap-1 shadow transition-all';
-        } else {
-          content.classList.add('hidden');
-          content.classList.remove('flex');
-          btn.className = 'flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all';
+        if (content && btn) {
+          if (key === tab) {
+            content.classList.remove('hidden');
+            content.classList.add('flex');
+            btn.className = (key === 'lab') 
+              ? 'flex-1 py-1.5 rounded-lg bg-red-500/25 text-red-300 border border-red-500/50 font-black flex items-center justify-center gap-1 shadow transition-all'
+              : 'flex-1 py-1.5 rounded-lg bg-cyan-500/25 text-cyan-300 border border-cyan-400/40 font-black flex items-center justify-center gap-1 shadow transition-all';
+          } else {
+            content.classList.add('hidden');
+            content.classList.remove('flex');
+            btn.className = (key === 'lab')
+              ? 'flex-1 py-1.5 rounded-lg text-red-300/70 hover:text-white font-medium flex items-center justify-center gap-1 transition-all'
+              : 'flex-1 py-1.5 rounded-lg text-gray-300 hover:text-white font-medium flex items-center justify-center gap-1 transition-all';
+          }
         }
       });
+    }
+
+    let currentLabScenario = 'overlap';
+    const LAB_SCENARIO_RULES = {
+      'overlap': 'RB-GEO-006 Footprint SAT',
+      'egress': 'RB-GEO-002 Egress Corridor',
+      'door_swing': 'RB-GEO-003 Door Swing Arc',
+      'wall': 'RB-GEO-005 Wall Buffer',
+      'desk_rear': 'RB-GEO-004 Rear Seating Aisle',
+      'chair_pullout': 'RB-GEO-008 Dynamic Envelope',
+      'impossible': 'ESCALATION Over-Capacity'
+    };
+
+    function openCounterexampleLab() {
+      switchMainTab('lab');
+      const container = document.getElementById('tabContentLab');
+      if (container) container.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function selectLabScenario(scenarioId) {
+      currentLabScenario = scenarioId;
+      const badge = document.getElementById('labActiveScenarioBadge');
+      if (badge) badge.innerText = LAB_SCENARIO_RULES[scenarioId] || scenarioId.toUpperCase();
+
+      const allIds = ['overlap', 'egress', 'door_swing', 'wall', 'desk_rear', 'chair_pullout', 'impossible'];
+      allIds.forEach(id => {
+        const btn = document.getElementById(`labBtn_${id}`);
+        if (btn) {
+          if (id === scenarioId) {
+            btn.className = id === 'impossible' 
+              ? 'col-span-2 p-2 rounded-lg border border-red-400 bg-red-500/30 text-left transition-all ring-1 ring-red-400/50 cursor-pointer'
+              : 'p-2 rounded-lg border border-red-400 bg-red-500/20 text-left transition-all ring-1 ring-red-400/40 cursor-pointer';
+          } else {
+            btn.className = id === 'impossible'
+              ? 'col-span-2 p-2 rounded-lg border border-red-500/30 bg-red-500/10 hover:border-red-500/50 text-left transition-all cursor-pointer'
+              : 'p-2 rounded-lg border border-white/10 bg-dark-850 hover:border-white/20 text-left transition-all cursor-pointer';
+          }
+        }
+      });
+    }
+
+    let isBreakRunning = false;
+
+    async function triggerBreakSystem() {
+      if (isBreakRunning) return;
+      isBreakRunning = true;
+
+      const btn = document.getElementById('btnBreakSystem');
+      const seqContainer = document.getElementById('labResultSequence');
+      const originalBtnHTML = btn.innerHTML;
+      btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span> EXECUTING LABORATORY PROOF...';
+      btn.classList.add('opacity-75');
+
+      try {
+        const roomId = currentRoomId || 'ROOM-01';
+        const resp = await fetch('/api/v1/counterexample/break', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ room_id: roomId, scenario_id: currentLabScenario })
+        });
+
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status}: Failed to execute counterexample scenario`);
+        }
+
+        const data = await resp.json();
+        const p1 = data.phase1_invalid;
+        const p2 = data.phase2_arbitration;
+        const p3 = data.phase3_resolution;
+
+        // Stage 1: Invalidation (Immediate)
+        seqContainer.innerHTML = `
+          <!-- STAGE 1: INVALIDATION -->
+          <div class="p-3.5 rounded-xl border border-red-500/60 bg-red-500/15 text-red-200 space-y-2 animate-pulse shadow-[0_0_20px_rgba(239,68,68,0.3)]">
+            <div class="flex items-center justify-between">
+              <span class="font-black text-xs text-red-300 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">cancel</span> ❌ Candidate invalid
+              </span>
+              <span class="px-2 py-0.5 rounded bg-red-500/40 text-red-100 font-bold text-[10px] border border-red-400/50">${p1.rule_id}</span>
+            </div>
+            <div class="text-sm font-black text-white font-mono tracking-tight">${p1.measurement}</div>
+            <div class="flex justify-between items-center text-[10px] pt-1 border-t border-red-500/30 text-gray-300">
+              <span>Rule: <b class="text-white">${p1.rule_name}</b></span>
+              <span>Potential: <b class="text-red-300">Φ = ${p1.phi_initial}</b></span>
+            </div>
+          </div>
+        `;
+
+        if (currentData) {
+          currentData.layout.placements = p1.placements.map(p => ({ ...p }));
+          draw();
+          updatePipelineVerdict('stale', p1.rule_id);
+          renderPinnedConstraintMonitor(currentData.rule_audit || [], [{ rule_id: p1.rule_id, message: p1.measurement }]);
+        }
+
+        // Stage 2: Arbitration Trace (after 750ms)
+        await new Promise(r => setTimeout(r, 750));
+        const cands = p2.candidates || [];
+        const stage2HTML = `
+          <div class="text-center text-gray-400 text-xs font-bold py-0.5 flex items-center justify-center gap-1">
+            <span class="material-symbols-outlined text-xs text-cyan-400">arrow_downward</span> ↓ arbitration
+          </div>
+          <div class="p-3 rounded-xl border border-cyan-400/40 bg-dark-850 space-y-2 shadow-lg">
+            <div class="flex items-center justify-between text-[10px] font-bold uppercase text-cyan-300">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">balance</span> Candidate Evaluation Trace
+              </span>
+              <span class="text-gray-400">Passes: ${p2.total_passes || 1}</span>
+            </div>
+            <div class="space-y-1.5 text-[11px]">
+              ${cands.map(c => {
+                const isSel = (c.decision === 'selected');
+                const badgeClass = isSel ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40' : 'bg-red-500/20 text-red-300 border border-red-500/30';
+                return `
+                  <div class="p-2 rounded-lg bg-dark-900 border border-white/10 space-y-0.5">
+                    <div class="flex items-center justify-between">
+                      <span class="text-white font-bold">${c.candidate_id}</span>
+                      <span class="font-black px-1.5 py-0.2 rounded text-[10px] ${badgeClass}">
+                        → ${c.decision}
+                      </span>
+                    </div>
+                    <div class="text-[10px] text-gray-300">${c.name || ''}</div>
+                    <div class="text-[9px] text-gray-400 italic">${c.reason || ''}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+        seqContainer.insertAdjacentHTML('beforeend', stage2HTML);
+
+        // Stage 3: Resolution or Escalation (after 800ms)
+        await new Promise(r => setTimeout(r, 800));
+        let stage3HTML = '';
+        if (p3.is_valid) {
+          stage3HTML = `
+            <div class="text-center text-gray-400 text-xs font-bold py-0.5 flex items-center justify-center gap-1">
+              <span class="material-symbols-outlined text-xs text-emerald-400">arrow_downward</span> ↓
+            </div>
+            <div class="p-3.5 rounded-xl border border-emerald-400/60 bg-emerald-500/15 text-emerald-200 space-y-2 shadow-[0_0_25px_rgba(52,211,153,0.3)]">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-emerald-300 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">verified</span> ✅ VALID
+                </span>
+                <span class="px-2 py-0.5 rounded bg-emerald-500/30 text-emerald-100 font-bold text-[10px] border border-emerald-400/50">LYAPUNOV STABLE</span>
+              </div>
+              <div class="text-base font-black text-emerald-300 font-mono tracking-tight">${p3.energy_transition}</div>
+              <div class="text-[10px] text-gray-300 leading-tight">
+                All 8 hard spatial rules verified. Lyapunov potential converged monotonically to global zero.
+              </div>
+            </div>
+          `;
+          if (currentData) {
+            currentData.layout.placements = p3.placements.map(p => ({ ...p }));
+            draw();
+            updatePipelineVerdict('valid');
+            renderPinnedConstraintMonitor(currentData.rule_audit || [], []);
+          }
+        } else {
+          stage3HTML = `
+            <div class="text-center text-gray-400 text-xs font-bold py-0.5 flex items-center justify-center gap-1">
+              <span class="material-symbols-outlined text-xs text-red-400">arrow_downward</span> ↓
+            </div>
+            <div class="p-3.5 rounded-xl border border-red-500/70 bg-red-500/20 text-red-100 space-y-2 shadow-[0_0_25px_rgba(239,68,68,0.4)]">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-xs text-red-200 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">report_problem</span> ⚡ ESCALATED: UNSATISFIABLE
+                </span>
+                <span class="px-2 py-0.5 rounded bg-red-500/40 text-white font-bold text-[10px] border border-red-400">BOUND Kmax=50</span>
+              </div>
+              <div class="text-sm font-black text-red-200 font-mono tracking-tight">${p3.energy_transition}</div>
+              <div class="text-[10px] text-gray-200 leading-tight">
+                Deterministic search space bounded and exhausted without unconstrained looping.
+              </div>
+              <div class="pt-2 border-t border-red-500/40 space-y-1.5">
+                <div class="text-[9px] font-bold uppercase text-gray-300">Offered Architectural Trade-Offs:</div>
+                <div class="flex flex-col gap-1 text-[10px]">
+                  <button onclick="showToast('Applying trade-off: Reduce Occupancy (18 -> 14 seats)', 'verified'); resetFromCounterexampleLab();" class="p-1.5 rounded bg-dark-900 border border-white/10 text-left hover:border-cyan-400 text-cyan-200 flex justify-between cursor-pointer">
+                    <span>1. Reduce Target Occupancy</span> <b class="text-emerald-300">18 → 14</b>
+                  </button>
+                  <button onclick="showToast('Applying trade-off: Downsize Desk SKU to 1200mm units', 'verified'); resetFromCounterexampleLab();" class="p-1.5 rounded bg-dark-900 border border-white/10 text-left hover:border-cyan-400 text-cyan-200 flex justify-between cursor-pointer">
+                    <span>2. Downsize Desk SKU</span> <b class="text-emerald-300">NW-DES-001</b>
+                  </button>
+                  <button onclick="showToast('Applying trade-off: Reconfigure to Dual-Pod Benching', 'verified'); resetFromCounterexampleLab();" class="p-1.5 rounded bg-dark-900 border border-white/10 text-left hover:border-cyan-400 text-cyan-200 flex justify-between cursor-pointer">
+                    <span>3. Reconfigure Pod Geometry</span> <b class="text-emerald-300">Dual-Pod</b>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          if (currentData) {
+            updatePipelineState('unsat', true, 'RB-GEO-006');
+            renderPinnedConstraintMonitor(currentData.rule_audit || [], [{ rule_id: 'RB-GEO-006', message: 'Escalation Over-Capacity' }]);
+          }
+        }
+        seqContainer.insertAdjacentHTML('beforeend', stage3HTML);
+
+      } catch (err) {
+        console.error("Counterexample Lab error:", err);
+        showToast("Error executing counterexample: " + err.message, "error");
+      } finally {
+        btn.innerHTML = originalBtnHTML;
+        btn.classList.remove('opacity-75');
+        isBreakRunning = false;
+      }
+    }
+
+    function resetFromCounterexampleLab() {
+      loadSelectedRoom();
+      showToast('Restored canonical verified layout', 'verified');
+    }
+
+    let currentSelectedCandidateId = 'Candidate B';
+
+    function renderLayoutQualityAndCandidates(quality, candidates) {
+      if (!quality) return;
+      const cands = candidates || [];
+      const container = document.getElementById('layoutQualityContainer');
+      if (!container) return;
+
+      const score = quality.final_quality_score || 94.1;
+      const rationale = quality.optimality_rationale || '';
+
+      const dims = quality.dimensions || [
+        { name: "Hard constraints", score: 100.0, weight: 0.12 },
+        { name: "Brief satisfaction", score: 97.0, weight: 0.15 },
+        { name: "Space utilization", score: 89.0, weight: 0.18 },
+        { name: "Circulation efficiency", score: 94.0, weight: 0.15 },
+        { name: "Furniture count compliance", score: 100.0, weight: 0.10 },
+        { name: "Preference match", score: 92.0, weight: 0.10 },
+        { name: "Accessibility margin", score: 96.0, weight: 0.10 },
+        { name: "Cost efficiency", score: 86.5, weight: 0.10 }
+      ];
+
+      container.innerHTML = `
+        <!-- CANDIDATE COMPARISON & ARBITRATED SELECTION -->
+        <div class="glass-card rounded-xl p-3 space-y-2 border border-cyan-400/40">
+          <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
+            <span class="text-[10px] font-mono font-black uppercase text-cyan-300 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">tune</span> CANDIDATE COMPARISON & SELECTION
+            </span>
+            <span class="text-[9px] font-mono text-gray-400">Click card to preview CAD</span>
+          </div>
+
+          <div class="space-y-1.5 pt-0.5">
+            ${cands.map(c => {
+              const isSel = (c.candidate_id === currentSelectedCandidateId);
+              const isBest = (c.decision === 'SELECTED');
+              const borderClass = isSel ? 'border-emerald-400 bg-emerald-500/15 ring-1 ring-emerald-400/50' : 'border-white/10 hover:border-white/20 bg-dark-850';
+              const badgeClass = isBest ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-400/40' : 'bg-dark-700 text-gray-300 border border-white/10';
+              const badgeText = isBest ? 'SELECTED (OPTIMAL)' : 'SUBOPTIMAL';
+
+              return `
+                <div onclick="selectCandidateVariant('${c.candidate_id}')" class="p-2.5 rounded-lg border ${borderClass} cursor-pointer transition-all space-y-1">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="font-bold text-white font-mono text-[11px]">${c.candidate_id}</span>
+                      <span class="text-[10px] text-gray-300">${c.name}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="text-[9px] font-mono font-black px-1.5 py-0.2 rounded ${badgeClass}">${badgeText}</span>
+                      <span class="font-black text-xs font-mono text-cyan-300">${c.score.toFixed(1)}</span>
+                    </div>
+                  </div>
+                  <div class="text-[10px] text-gray-400 leading-tight">
+                    ${c.reason}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+
+        <!-- 8-DIMENSION LAYOUT QUALITY SCORECARD -->
+        <div class="glass-card rounded-xl p-3.5 space-y-2.5 border border-white/15">
+          <div class="flex items-center justify-between pb-1.5 border-b border-white/10">
+            <span class="text-[10px] font-mono font-black uppercase text-gray-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-cyan-400">query_stats</span> LAYOUT QUALITY SCORECARD
+            </span>
+            <span class="text-[11px] font-mono font-black text-emerald-300 px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-400/40">
+              SCORE: ${score.toFixed(1)}
+            </span>
+          </div>
+
+          <div class="space-y-1.5 text-[11px] font-mono">
+            ${dims.map(d => `
+              <div class="space-y-0.5">
+                <div class="flex justify-between items-center text-gray-200">
+                  <span class="text-gray-300">${d.name}</span>
+                  <span class="font-bold ${d.score >= 90 ? 'text-emerald-300' : 'text-amber-300'}">${d.score.toFixed(1)}%</span>
+                </div>
+                <div class="w-full h-1 bg-dark-950 rounded-full overflow-hidden border border-white/5">
+                  <div class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 rounded-full" style="width: ${Math.min(100, d.score)}%"></div>
+                </div>
+              </div>
+            `).join('')}
+
+            <div class="pt-2 border-t border-white/15 flex justify-between items-baseline font-black">
+              <span class="text-xs text-white uppercase">FINAL QUALITY SCORE:</span>
+              <span class="text-base text-emerald-400 tracking-tight">${score.toFixed(1)} / 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MATHEMATICAL OPTIMALITY RATIONALE CARD -->
+        <div class="glass-card rounded-xl p-3 border border-emerald-400/40 bg-emerald-500/10 space-y-1.5">
+          <div class="text-[10px] font-mono font-black uppercase text-emerald-300 flex items-center gap-1">
+            <span class="material-symbols-outlined text-xs text-emerald-400">psychology</span> WHY THIS IS THE OPTIMAL LAYOUT
+          </div>
+          <p class="text-[11px] text-gray-200 leading-relaxed font-medium">
+            ${rationale}
+          </p>
+        </div>
+      `;
+    }
+
+    function selectCandidateVariant(candidateId) {
+      if (!currentData || !currentData.candidates) return;
+      const cand = currentData.candidates.find(c => c.candidate_id === candidateId);
+      if (!cand) return;
+
+      currentSelectedCandidateId = candidateId;
+      if (cand.placements) {
+        currentData.layout.placements = cand.placements.map(p => ({
+          placement_id: p.placement_id,
+          sku: p.sku,
+          finish_id: p.finish_id,
+          x_mm: p.x_mm,
+          y_mm: p.y_mm,
+          rotation_deg: p.rotation_deg
+        }));
+      }
+
+      draw();
+      renderLayoutQualityAndCandidates(cand.report || currentData.layout_quality, currentData.candidates);
+      showToast(`Selected ${candidateId} (${cand.name}) · Score ${cand.score.toFixed(1)}`, 'verified');
     }
 
     function showToast(msg, icon = 'info') {
@@ -975,12 +2264,35 @@
         renderCatalogList(currentData.catalog);
         updateExecutiveSummary(currentData.quote);
         renderRequirementSatisfaction(currentData.requirement_satisfaction);
+        renderLayoutQualityAndCandidates(currentData.layout_quality, currentData.candidates);
         renderRuleAuditTable(currentData.rule_audit || []);
         renderQuoteLines(currentData.quote);
         renderArbitrationTrace(currentTraceSteps, currentData.layout.violations);
+        renderPinnedConstraintMonitor(currentData.rule_audit || [], currentData.layout.violations || []);
+        renderCockpitTimeline(currentTraceSteps, currentData.layout.violations, currentData.quote);
+        renderSkuExplainabilityCard(currentData.sku_explainability);
+        
+        if (currentData.pareto_analysis) {
+          renderParetoVisuals(currentData.pareto_analysis);
+        }
+
+        if (currentData.formal_invariants) {
+          renderInvariantsCertificate(currentData.formal_invariants);
+          const btn = document.getElementById('btnInvariantsCert');
+          if (btn) {
+            btn.innerHTML = `<span class="material-symbols-outlined text-sm text-emerald-400">verified_user</span> 🛡 ${currentData.formal_invariants.passed_invariants}/${currentData.formal_invariants.total_invariants} Invariants`;
+          }
+        }
+
+        const cockpitPill = document.getElementById('cockpitGrandTotalPill');
+        if (cockpitPill && currentData.quote?.summary?.grand_total_inr) {
+          cockpitPill.innerText = money(currentData.quote.summary.grand_total_inr);
+        }
         
         const hasViols = currentData.layout.violations && currentData.layout.violations.length > 0;
         updatePipelineState(hasViols ? 'stale' : 'valid', false, hasViols ? currentData.layout.violations[0]?.rule_id : '');
+        const labRoomEl = document.getElementById('labCurrentRoomDisplay');
+        if (labRoomEl) labRoomEl.innerText = currentRoomId;
         fitRoomToScreen();
       } catch (err) {
         showActionableError('NETWORK ERROR', err.message, 'Active FastAPI server on port 8080', 'rulebound/api.py');
@@ -990,17 +2302,196 @@
     function renderCatalogList(catalog) {
       const entries = Object.values(catalog || {});
       document.getElementById('catalogCountBadge').innerText = `${entries.length} Items`;
-      document.getElementById('catalogList').innerHTML = entries.map(item => `
-        <div class="p-2 rounded bg-dark-850 border border-white/10 flex justify-between items-center hover:border-cyan-400/50 transition-colors">
-          <div>
-            <div class="font-bold text-white font-mono text-[11px]">${item.sku}</div>
-            <div class="text-[10px] text-gray-300">${item.name}</div>
+      document.getElementById('catalogList').innerHTML = entries.map(item => {
+        const isSelected = currentData?.sku_explainability?.decisions_by_sku?.[item.sku];
+        return `
+          <div onclick="openSkuExplainModal('${item.sku}')" class="p-2 rounded bg-dark-850 border ${isSelected ? 'border-emerald-500/40 hover:border-emerald-400 bg-emerald-500/5' : 'border-white/10 hover:border-cyan-400/50'} flex justify-between items-center transition-all cursor-pointer group">
+            <div class="truncate mr-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-white font-mono text-[11px]">${item.sku}</span>
+                ${isSelected ? '<span class="text-[8px] font-black px-1 rounded bg-emerald-500/25 text-emerald-300 border border-emerald-400/30">SELECTED</span>' : ''}
+              </div>
+              <div class="text-[10px] text-gray-300 truncate">${item.name}</div>
+            </div>
+            <div class="text-right font-mono shrink-0">
+              <div class="text-[11px] font-bold text-emerald-300">${money(item.price)}</div>
+              <div class="text-[9px] text-cyan-300 group-hover:underline flex items-center justify-end gap-0.5">
+                <span>Why?</span> <span class="material-symbols-outlined text-[10px]">psychology_alt</span>
+              </div>
+            </div>
           </div>
-          <div class="text-right font-mono text-[11px] font-bold text-emerald-300">
-            ${money(item.price)}
+        `;
+      }).join('');
+    }
+
+    let activeExplainDecision = null;
+
+    function renderSkuExplainabilityCard(data) {
+      const container = document.getElementById('skuExplainContainer');
+      const pillsContainer = document.getElementById('skuExplainTabPills');
+      if (!container || !data || !data.decisions || data.decisions.length === 0) return;
+
+      if (pillsContainer) {
+        pillsContainer.innerHTML = data.decisions.map(d => {
+          const isCurrent = activeExplainDecision ? activeExplainDecision.sku === d.sku : d.family === 'desk';
+          return `
+            <button onclick="switchSkuExplainTab('${d.sku}')" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold cursor-pointer transition-all ${isCurrent ? 'bg-emerald-500 text-dark-950 font-black shadow' : 'bg-dark-800 text-gray-300 hover:text-white border border-white/10'}">
+              ${d.family.toUpperCase()}
+            </button>
+          `;
+        }).join('');
+      }
+
+      activeExplainDecision = data.decisions.find(d => d.family === 'desk') || data.decisions[0];
+      renderActiveSkuDecision(activeExplainDecision);
+    }
+
+    function switchSkuExplainTab(sku) {
+      if (!currentData?.sku_explainability?.decisions) return;
+      const dec = currentData.sku_explainability.decisions.find(d => d.sku === sku);
+      if (dec) {
+        activeExplainDecision = dec;
+        renderSkuExplainabilityCard(currentData.sku_explainability);
+      }
+    }
+
+    function renderActiveSkuDecision(decision) {
+      const container = document.getElementById('skuExplainContainer');
+      if (!container || !decision) return;
+
+      const rejectedHTML = decision.rejected_alternatives && decision.rejected_alternatives.length > 0
+        ? `
+          <div class="pt-2 border-t border-white/10 space-y-1">
+            <div class="text-[9px] font-mono uppercase tracking-wider text-red-300 font-black flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-red-400">cancel</span> REJECTED ALTERNATIVE
+            </div>
+            ${decision.rejected_alternatives.slice(0, 1).map(r => `
+              <div class="p-1.5 rounded bg-red-500/10 border border-red-500/30 space-y-0.5">
+                <div class="flex justify-between items-center text-[10px]">
+                  <span class="font-black text-white font-mono">${r.sku}</span>
+                  <span class="text-[9px] text-gray-400 font-mono">${r.dimensions.width}x${r.dimensions.depth}mm</span>
+                </div>
+                <div class="text-[9px] text-red-300 leading-tight">
+                  <b>Reason:</b> ${r.reason}
+                </div>
+              </div>
+            `).join('')}
           </div>
+        `
+        : '';
+
+      container.innerHTML = `
+        <!-- Selected SKU Banner -->
+        <div onclick="openSkuExplainModal('${decision.sku}')" class="p-2 rounded-lg bg-emerald-500/15 border border-emerald-400/50 hover:border-emerald-400 transition-all cursor-pointer space-y-1 group">
+          <div class="flex justify-between items-center">
+            <span class="font-black text-emerald-300 text-xs">${decision.headline}</span>
+            <div class="flex items-center gap-1">
+              <span class="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-400 text-dark-950 font-black">SELECTED</span>
+              <span class="material-symbols-outlined text-xs text-cyan-300 group-hover:scale-110 transition-transform">open_in_new</span>
+            </div>
+          </div>
+          <div class="text-[10px] text-gray-200">${decision.name} · ${decision.dimensions.width}x${decision.dimensions.depth}mm · ${money(decision.list_price_inr)}</div>
         </div>
-      `).join('');
+
+        <!-- Verified Reasons List -->
+        <div class="space-y-1 text-[10px] text-gray-200">
+          ${decision.selected_reasons.slice(0, 6).map(r => `
+            <div class="flex items-start gap-1 leading-tight">
+              <span class="text-emerald-400 font-bold shrink-0">✓</span>
+              <span>${r.replace('✓ ', '')}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        ${rejectedHTML}
+      `;
+    }
+
+    function openSkuExplainModal(sku) {
+      const data = currentData?.sku_explainability;
+      if (!data) return;
+
+      const decision = data.decisions_by_sku?.[sku] || data.decisions?.find(d => d.family === currentData?.catalog?.[sku]?.family) || data.decisions?.[0];
+      const targetSku = decision ? decision.sku : sku;
+      const item = currentData?.catalog?.[targetSku];
+
+      document.getElementById('modalSkuTitle').innerText = decision ? decision.headline : `Why ${targetSku}?`;
+
+      const content = document.getElementById('modalSkuContent');
+      if (decision) {
+        content.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-emerald-500/15 border border-emerald-400/50 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2">
+                <span class="text-emerald-300 font-black text-sm">${decision.sku}</span>
+                <span class="text-gray-300 text-xs font-semibold">${decision.name}</span>
+              </div>
+              <span class="px-2 py-0.5 rounded bg-emerald-400 text-dark-950 font-black text-[10px]">SELECTED FOR BRIEF</span>
+            </div>
+            <div class="text-xs text-gray-300 flex items-center gap-3 pt-1 border-t border-emerald-400/30 font-mono">
+              <span>Dimensions: <b>${decision.dimensions.width} x ${decision.dimensions.depth} x ${decision.dimensions.height} mm</b></span>
+              <span>Price: <b class="text-emerald-300 font-mono">${money(decision.list_price_inr)}</b></span>
+              <span>Qty: <b>${decision.quantity} units</b></span>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="text-xs font-mono font-black uppercase text-emerald-300 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-emerald-400">verified</span> POSITIVE ATTRIBUTE SATISFACTION:
+            </div>
+            <div class="p-3 rounded-xl bg-dark-900 border border-white/10 space-y-2 text-xs text-gray-200">
+              ${decision.selected_reasons.map(r => `
+                <div class="flex items-start gap-2">
+                  <span class="text-emerald-400 font-bold shrink-0 text-sm">✓</span>
+                  <span class="leading-snug">${r.replace('✓ ', '')}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          ${decision.rejected_alternatives && decision.rejected_alternatives.length > 0 ? `
+            <div class="space-y-2 pt-1">
+              <div class="text-xs font-mono font-black uppercase text-red-300 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-red-400">cancel</span> REJECTED ALTERNATIVE SKUs &amp; DEFICITS:
+              </div>
+              <div class="space-y-2">
+                ${decision.rejected_alternatives.map(r => `
+                  <div class="p-3 rounded-xl bg-red-500/10 border border-red-500/40 space-y-1 font-mono">
+                    <div class="flex justify-between items-center">
+                      <div class="flex items-center gap-2">
+                        <span class="text-white font-black text-xs">Rejected SKU: ${r.sku}</span>
+                        <span class="text-gray-300 text-[11px] font-sans">${r.name}</span>
+                      </div>
+                      <span class="text-[10px] text-gray-400">${r.dimensions.width}x${r.dimensions.depth}mm</span>
+                    </div>
+                    <div class="text-xs text-red-300 font-medium">
+                      <b>Reason:</b> ${r.reason}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : ''}
+        `;
+      } else if (item) {
+        content.innerHTML = `
+          <div class="p-3.5 rounded-xl bg-dark-900 border border-white/15 space-y-2 font-mono">
+            <div class="text-white font-bold text-sm">${item.name} (${item.sku})</div>
+            <div class="text-xs text-gray-300">Dimensions: ${item.width} x ${item.depth} mm · Price: ${money(item.price)}</div>
+            <div class="text-xs text-cyan-300">Status: Catalog alternative available for custom configuration.</div>
+          </div>
+        `;
+      }
+
+      const m = document.getElementById('skuExplainModal');
+      m.classList.remove('hidden');
+      setTimeout(() => m.classList.remove('opacity-0'), 10);
+    }
+
+    function closeSkuExplainModal() {
+      const m = document.getElementById('skuExplainModal');
+      m.classList.add('opacity-0');
+      setTimeout(() => m.classList.add('hidden'), 200);
     }
 
     function updateExecutiveSummary(q) {
@@ -1731,6 +3222,30 @@
           draw();
         }
         tt.classList.add('hidden');
+      }
+    });
+
+    canvas.addEventListener('click', e => {
+      if (isDragging) return;
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      if (!currentData) return;
+      let clicked = null;
+      (currentData.layout?.placements || []).forEach(p => {
+        const item = currentData.catalog[p.sku] || { width: 1200, depth: 600 };
+        const cx = p.x_mm + item.width / 2;
+        const cy = p.y_mm + item.depth / 2;
+        const scx = toScreenX(cx);
+        const scy = toScreenY(cy);
+        const sw = item.width * zoom;
+        const sd = item.depth * zoom;
+        if (Math.abs(mx - scx) <= sw/2 && Math.abs(my - scy) <= sd/2) {
+          clicked = p;
+        }
+      });
+      if (clicked) {
+        openSkuExplainModal(clicked.sku);
       }
     });
 

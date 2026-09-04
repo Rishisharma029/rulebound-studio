@@ -85,7 +85,7 @@
       "placement_id": "P011",
       "rotation_deg": 0.0,
       "sku": "NW-DES-001",
-      "x_mm": 7420.0,
+      "x_mm": 7520.0,
       "y_mm": 1320.0
     },
     {
@@ -93,7 +93,7 @@
       "placement_id": "P012",
       "rotation_deg": 0.0,
       "sku": "NW-DES-001",
-      "x_mm": 8620.0,
+      "x_mm": 8720.0,
       "y_mm": 1320.0
     },
     {
@@ -101,15 +101,15 @@
       "placement_id": "P013",
       "rotation_deg": 0.0,
       "sku": "NW-DES-001",
-      "x_mm": 2520.0,
-      "y_mm": 1620.0
+      "x_mm": 1320.0,
+      "y_mm": 1720.0
     },
     {
       "finish_id": "F17",
       "placement_id": "P014",
       "rotation_deg": 0.0,
       "sku": "NW-DES-001",
-      "x_mm": 1320.0,
+      "x_mm": 2520.0,
       "y_mm": 1720.0
     },
     {
@@ -149,7 +149,7 @@
       "placement_id": "P019",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 8820.0,
+      "x_mm": 8920.0,
       "y_mm": 1920.0
     },
     {
@@ -157,23 +157,23 @@
       "placement_id": "P020",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 2520.0,
-      "y_mm": 2220.0
+      "x_mm": 1000.0,
+      "y_mm": 2600.0
     },
     {
       "finish_id": "F18",
       "placement_id": "P021",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 4420.0,
-      "y_mm": 2220.0
+      "x_mm": 1720.0,
+      "y_mm": 2320.0
     },
     {
       "finish_id": "F18",
       "placement_id": "P022",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 820.0,
+      "x_mm": 2520.0,
       "y_mm": 2320.0
     },
     {
@@ -181,7 +181,7 @@
       "placement_id": "P023",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 1520.0,
+      "x_mm": 4520.0,
       "y_mm": 2320.0
     },
     {
@@ -197,7 +197,7 @@
       "placement_id": "P025",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 3220.0,
+      "x_mm": 3320.0,
       "y_mm": 2520.0
     },
     {
@@ -205,31 +205,31 @@
       "placement_id": "P026",
       "rotation_deg": 0.0,
       "sku": "NW-CHA-012",
-      "x_mm": 5120.0,
-      "y_mm": 2520.0
+      "x_mm": 5360.0,
+      "y_mm": 2760.0
     },
     {
       "finish_id": "F18",
       "placement_id": "P027",
-      "rotation_deg": 0.0,
+      "rotation_deg": 90.0,
       "sku": "NW-CHA-012",
-      "x_mm": 2220.0,
-      "y_mm": 2820.0
+      "x_mm": 6120.0,
+      "y_mm": 2920.0
     },
     {
       "finish_id": "F18",
       "placement_id": "P028",
-      "rotation_deg": 0.0,
+      "rotation_deg": 90.0,
       "sku": "NW-CHA-012",
-      "x_mm": 3920.0,
-      "y_mm": 2820.0
+      "x_mm": 920.0,
+      "y_mm": 3120.0
     },
     {
       "finish_id": "F04",
       "placement_id": "P029",
       "rotation_deg": 0.0,
       "sku": "NW-STO-011",
-      "x_mm": 820.0,
+      "x_mm": 1720.0,
       "y_mm": 2920.0
     },
     {
@@ -237,15 +237,15 @@
       "placement_id": "P030",
       "rotation_deg": 0.0,
       "sku": "NW-STO-011",
-      "x_mm": 5820.0,
-      "y_mm": 3020.0
+      "x_mm": 4120.0,
+      "y_mm": 2920.0
     },
     {
       "finish_id": "F04",
       "placement_id": "P031",
       "rotation_deg": 0.0,
       "sku": "NW-STO-011",
-      "x_mm": 4620.0,
+      "x_mm": 2920.0,
       "y_mm": 3120.0
     },
     {
@@ -253,13 +253,45 @@
       "placement_id": "P032",
       "rotation_deg": 0.0,
       "sku": "NW-STO-011",
-      "x_mm": 120.0,
-      "y_mm": 3420.0
+      "x_mm": 1720.0,
+      "y_mm": 3520.0
     }
   ],
   "room_id": "ROOM-04",
   "status": "unsatisfiable",
   "violations": [
+    {
+      "affected_placement_ids": [
+        "P020",
+        "P028"
+      ],
+      "measured": {
+        "penetration_depth_mm": 100.0
+      },
+      "message": "Placements P020 (Northwind Chair 12) and P028 (Northwind Chair 12) overlap by 100.0mm (RB-GEO-006 collision).",
+      "repair_options": [],
+      "required": {
+        "max_overlap_depth_mm": 0.0
+      },
+      "rule_id": "RB-GEO-006",
+      "violation_id": "V-001"
+    },
+    {
+      "affected_placement_ids": [
+        "P013",
+        "P029"
+      ],
+      "measured": {
+        "rear_clearance_mm": 600.0
+      },
+      "message": "Occupied desk P013 rear zone obstructed by P029 (600.0mm < 900mm required by RB-GEO-004).",
+      "repair_options": [],
+      "required": {
+        "min_rear_clearance_mm": 900.0
+      },
+      "rule_id": "RB-GEO-004",
+      "violation_id": "V-002"
+    },
     {
       "affected_placement_ids": [
         "P014",
@@ -274,23 +306,39 @@
         "min_rear_clearance_mm": 900.0
       },
       "rule_id": "RB-GEO-004",
-      "violation_id": "V-001"
+      "violation_id": "V-003"
     },
     {
       "affected_placement_ids": [
-        "P021",
-        "P031"
+        "P018",
+        "P030"
       ],
       "measured": {
-        "pull_out_clearance_mm": 300.0
+        "pull_out_clearance_mm": 400.0
       },
-      "message": "Task chair P021 pull-out zone obstructed by P031 (300.0mm < 750mm required by RB-GEO-008).",
+      "message": "Task chair P018 pull-out zone obstructed by P030 (400.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-002"
+      "violation_id": "V-004"
+    },
+    {
+      "affected_placement_ids": [
+        "P021",
+        "P029"
+      ],
+      "measured": {
+        "pull_out_clearance_mm": 0.0
+      },
+      "message": "Task chair P021 pull-out zone obstructed by P029 (0.0mm < 750mm required by RB-GEO-008).",
+      "repair_options": [],
+      "required": {
+        "min_pull_out_clearance_mm": 750.0
+      },
+      "rule_id": "RB-GEO-008",
+      "violation_id": "V-005"
     },
     {
       "affected_placement_ids": [
@@ -306,55 +354,39 @@
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-003"
+      "violation_id": "V-006"
     },
     {
       "affected_placement_ids": [
         "P023",
-        "P029"
+        "P030"
       ],
       "measured": {
         "pull_out_clearance_mm": 0.0
       },
-      "message": "Task chair P023 pull-out zone obstructed by P029 (0.0mm < 750mm required by RB-GEO-008).",
+      "message": "Task chair P023 pull-out zone obstructed by P030 (0.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-004"
+      "violation_id": "V-007"
     },
     {
       "affected_placement_ids": [
-        "P024",
-        "P032"
-      ],
-      "measured": {
-        "pull_out_clearance_mm": 300.0
-      },
-      "message": "Task chair P024 pull-out zone obstructed by P032 (300.0mm < 750mm required by RB-GEO-008).",
-      "repair_options": [],
-      "required": {
-        "min_pull_out_clearance_mm": 750.0
-      },
-      "rule_id": "RB-GEO-008",
-      "violation_id": "V-005"
-    },
-    {
-      "affected_placement_ids": [
-        "P026",
+        "P025",
         "P031"
       ],
       "measured": {
         "pull_out_clearance_mm": 0.0
       },
-      "message": "Task chair P026 pull-out zone obstructed by P031 (0.0mm < 750mm required by RB-GEO-008).",
+      "message": "Task chair P025 pull-out zone obstructed by P031 (0.0mm < 750mm required by RB-GEO-008).",
       "repair_options": [],
       "required": {
         "min_pull_out_clearance_mm": 750.0
       },
       "rule_id": "RB-GEO-008",
-      "violation_id": "V-006"
+      "violation_id": "V-008"
     }
   ]
 }

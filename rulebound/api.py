@@ -13,11 +13,14 @@ from pydantic import BaseModel, Field
 
 from rulebound.arbitration import ArbitrationEngine, compute_energy_metric
 from rulebound.constraints import audit_spatial_constraints, verify_spatial_constraints
+from rulebound.counterexample import execute_counterexample_laboratory, get_counterexample_scenarios
 from rulebound.dxf import export_layout_to_dxf
 from rulebound.generator import LayoutGenerator
 from rulebound.loader import load_asset_pack
 from rulebound.models import Placement, RoomSpec, Violation
 from rulebound.pricing import price_placements
+from rulebound.counterfactual import explain_all_counterfactuals, explain_counterfactual
+from rulebound.layout_diff import diff_layouts
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT_DIR / "RuleBound_Round1_Release/data"
@@ -114,6 +117,18 @@ class PricingRequest(BaseModel):
     pack_id: str = Field("default", example="default", description="Asset pack identifier")
 
 
+class CounterexampleRequest(BaseModel):
+    room_id: str = Field("ROOM-01", example="ROOM-01", description="Target room identifier")
+    scenario_id: str = Field("overlap", example="overlap", description="Scenario identifier (overlap, egress, door_swing, wall, desk_rear, chair_pullout, impossible)")
+
+
+class LayoutDiffRequest(BaseModel):
+    room_id: str = Field("ROOM-01", example="ROOM-01")
+    before: list[PlacementDTO]
+    after: list[PlacementDTO]
+    reason_hint: Optional[str] = Field(None, example="RB-GEO-002")
+
+
 @app.get("/health", tags=["System Health"])
 def health_check():
     """Returns the operational status of the RuleBound Engine."""
@@ -157,10 +172,32 @@ def get_room_full_data(room_id: str):
     layout_res = arbitrator.arbitrate(room, placements, pack)
     quote_res = price_placements(room_id, layout_res.placements, pack)
 
-    from rulebound.ir import extract_requirement_ir, evaluate_requirement_satisfaction
+    from rulebound.ir import extract_requirement_ir, evaluate_requirement_satisfaction, select_skus_from_ir
+    from rulebound.optimizer import evaluate_and_rank_candidates
+    from rulebound.explainability import explain_sku_decisions
+    from rulebound.traceability import build_traceability_matrix
     brief_text = pack.briefs.get(room.room_id, "")
     ir = extract_requirement_ir(brief_text, room)
     satisfaction = evaluate_requirement_satisfaction(ir, layout_res.placements, room, pack)
+    quality_report, candidates_ranked = evaluate_and_rank_candidates(room, pack)
+    item_specs = select_skus_from_ir(ir, pack)
+    sku_expl = explain_sku_decisions(ir, room, pack, item_specs)
+    rtm = build_traceability_matrix(ir, layout_res.placements, room, pack, brief_text)
+
+    from rulebound.optimizer import build_pareto_optimization_suite
+    from rulebound.invariants import verify_all_system_invariants
+    pareto_suite = build_pareto_optimization_suite(room, pack)
+    spatial_audits = audit_spatial_constraints(room, layout_res.placements, pack)
+    formal_invariants_cert = verify_all_system_invariants(
+        room=room,
+        placements=layout_res.placements,
+        quote=quote_res,
+        pack=pack,
+        trace=arbitrator.last_trace,
+        audits=spatial_audits,
+        final_status=layout_res.status,
+        is_valid=(layout_res.status == "valid"),
+    )
 
     catalog_dict = {
         item.sku: {
@@ -193,12 +230,97 @@ def get_room_full_data(room_id: str):
         },
         "requirement_ir": ir.to_dict(),
         "requirement_satisfaction": satisfaction,
+        "traceability_matrix": rtm.to_dict(),
+        "layout_quality": quality_report.to_dict(),
+        "pareto_analysis": pareto_suite.to_dict(),
+        "formal_invariants": formal_invariants_cert.to_dict(),
+        "candidates": candidates_ranked,
+        "sku_explainability": sku_expl,
+        "counterfactual": explain_all_counterfactuals(room, pack),
         "layout": layout_res.to_dict(),
         "arbitration_trace": [t.to_dict() for t in arbitrator.last_trace],
-        "rule_audit": audit_spatial_constraints(room, layout_res.placements, pack),
+        "rule_audit": spatial_audits,
         "quote": quote_res.to_dict(),
         "catalog": catalog_dict,
     }
+
+
+@app.get("/api/v1/room/{room_id}/pareto", tags=["Optimization & Decision Engine"])
+def get_room_pareto(room_id: str):
+    """Retrieves 20 deterministic candidate layouts with Cost vs. Quality Pareto frontier and optimal selection."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    from rulebound.optimizer import build_pareto_optimization_suite
+    suite = build_pareto_optimization_suite(room, pack)
+    return suite.to_dict()
+
+
+@app.get("/api/v1/room/{room_id}/invariants", tags=["Formal Invariant Verification"])
+def get_room_invariants(room_id: str):
+    """Audits all 21 formal system invariants across Geometry, Arbitration, Output, and Pricing."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    from rulebound.generator import LayoutGenerator
+    from rulebound.arbitration import ArbitrationEngine
+    from rulebound.constraints import audit_spatial_constraints
+    from rulebound.invariants import verify_all_system_invariants
+    generator = LayoutGenerator()
+    placements = generator.generate_candidate_layout(room, pack)
+    arbitrator = ArbitrationEngine()
+    layout_res = arbitrator.arbitrate(room, placements, pack)
+    quote_res = price_placements(room_id, layout_res.placements, pack)
+    spatial_audits = audit_spatial_constraints(room, layout_res.placements, pack)
+    cert = verify_all_system_invariants(
+        room=room,
+        placements=layout_res.placements,
+        quote=quote_res,
+        pack=pack,
+        trace=arbitrator.last_trace,
+        audits=spatial_audits,
+        final_status=layout_res.status,
+        is_valid=(layout_res.status == "valid"),
+    )
+    return cert.to_dict()
+
+
+@app.get("/api/v1/room/{room_id}/sku-explainability", tags=["Explainability Engine"])
+def get_sku_explainability(room_id: str):
+    """Explains why specific catalog SKUs were selected and why alternatives were rejected."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    from rulebound.ir import extract_requirement_ir, select_skus_from_ir
+    from rulebound.explainability import explain_sku_decisions
+    brief_text = pack.briefs.get(room_id, "")
+    ir = extract_requirement_ir(brief_text, room)
+    item_specs = select_skus_from_ir(ir, pack)
+    return explain_sku_decisions(ir, room, pack, item_specs)
+
+
+@app.get("/api/v1/room/{room_id}/traceability", tags=["Traceability Matrix"])
+def get_room_traceability(room_id: str):
+    """Returns the end-to-end requirement traceability matrix."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    from rulebound.generator import LayoutGenerator
+    from rulebound.arbitration import ArbitrationEngine
+    from rulebound.ir import extract_requirement_ir
+    from rulebound.traceability import build_traceability_matrix
+    brief_text = pack.briefs.get(room_id, "")
+    ir = extract_requirement_ir(brief_text, room)
+    generator = LayoutGenerator()
+    placements = generator.generate_candidate_layout(room, pack)
+    arbitrator = ArbitrationEngine()
+    layout_res = arbitrator.arbitrate(room, placements, pack)
+    rtm = build_traceability_matrix(ir, layout_res.placements, room, pack, brief_text)
+    return rtm.to_dict()
 
 
 @app.post("/api/v1/arbitration/simulate_violation", tags=["Arbitration Engine"])
@@ -317,6 +439,29 @@ def arbitrate_with_trace(req: VerifyRequest):
     }
 
 
+@app.get("/api/v1/counterexample/scenarios", tags=["Counterexample Laboratory"])
+def list_counterexample_scenarios():
+    """Returns the catalog of 7 standard adversarial test scenarios for judge demonstration."""
+    return {"scenarios": get_counterexample_scenarios()}
+
+
+@app.post("/api/v1/counterexample/break", tags=["Counterexample Laboratory"])
+def break_system(req: CounterexampleRequest):
+    """
+    Executes the interactive Counterexample Laboratory:
+    1. Deliberately breaks the layout with targeted spatial violation.
+    2. Runs deterministic spatial verification (Candidate invalid, Rule ID, exact depth).
+    3. Runs Bounded Lyapunov Arbitration with candidate evaluation trace.
+    4. Proves convergence to VALID (Phi: initial -> 0) or ESCALATED: UNSATISFIABLE.
+    """
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+
+    return execute_counterexample_laboratory(room, pack, req.scenario_id)
+
+
 @app.get("/api/v1/room/{room_id}/dxf", tags=["CAD Engine"])
 def download_dxf(room_id: str):
     """Exports multi-layer 2D AutoCAD-compatible DXF blueprint."""
@@ -395,6 +540,89 @@ def calculate_quote(req: PricingRequest, user=Depends(verify_entra_id_token)):
     ]
     quote = price_placements(req.room_id, placements, pack)
     return quote.to_dict()
+
+
+@app.get("/api/v1/room/{room_id}/candidates", tags=["Optimization & Decision Engine"])
+def get_room_candidates(room_id: str):
+    """Retrieves synthesized multi-candidate layouts (Candidate A, B, C) with 8-dimension quality scores and selection proofs."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    from rulebound.optimizer import evaluate_and_rank_candidates
+    report, candidates = evaluate_and_rank_candidates(room, pack)
+    return {
+        "room_id": room_id,
+        "selected_candidate_id": report.candidate_id,
+        "final_quality_score": report.final_quality_score,
+        "optimality_rationale": report.optimality_rationale,
+        "report": report.to_dict(),
+        "candidates": candidates,
+    }
+
+
+def _dto_to_placements(dtos: list[PlacementDTO]) -> list[Placement]:
+    return [
+        Placement(
+            placement_id=p.placement_id,
+            sku=p.sku,
+            finish_id=p.finish_id,
+            x_mm=p.x_mm,
+            y_mm=p.y_mm,
+            rotation_deg=p.rotation_deg,
+        )
+        for p in dtos
+    ]
+
+
+@app.get("/api/v1/room/{room_id}/counterfactual", tags=["Explainability Engine"])
+def get_counterfactual(room_id: str, rejected: str = "Candidate A"):
+    """Why was an alternate topology rejected relative to the selected layout?"""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    return explain_counterfactual(room, pack, rejected)
+
+
+@app.post("/api/v1/layout/diff", tags=["Explainability Engine"])
+def post_layout_diff(req: LayoutDiffRequest):
+    """What changed between two layouts: moved SKUs, rule clearances, and Φ."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found.")
+    return diff_layouts(
+        room,
+        pack,
+        _dto_to_placements(req.before),
+        _dto_to_placements(req.after),
+        reason_hint=req.reason_hint,
+    )
+
+
+@app.post("/api/v1/layout/evaluate_quality", tags=["Optimization & Decision Engine"])
+def evaluate_quality(req: VerifyRequest, user=Depends(verify_entra_id_token)):
+    """Evaluates candidate furniture layout across the 8 orthogonal quality dimensions."""
+    pack = load_asset_pack(DATA_DIR)
+    room = pack.rooms_by_id.get(req.room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room specification not found in asset pack.")
+    placements = [
+        Placement(
+            placement_id=p.placement_id,
+            sku=p.sku,
+            finish_id=p.finish_id,
+            x_mm=p.x_mm,
+            y_mm=p.y_mm,
+            rotation_deg=p.rotation_deg,
+        )
+        for p in req.placements
+    ]
+    from rulebound.optimizer import evaluate_layout_quality
+    quote = price_placements(room.room_id, placements, pack)
+    report = evaluate_layout_quality(room, placements, pack, quote=quote)
+    return report.to_dict()
 
 
 @app.get("/", response_class=HTMLResponse, tags=["Visualizer"])
